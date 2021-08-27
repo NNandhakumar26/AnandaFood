@@ -27,7 +27,7 @@ class _SplashState extends State<Splash> {
   }
 
   getPage() async {
-    Timer(Duration(milliseconds: 2800), () {
+    Timer(Duration(milliseconds: 3200), () {
       print('To Home page');
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => Homepage()));
@@ -67,6 +67,7 @@ class _SplashState extends State<Splash> {
                   'assets/json/Stars.json',
                   width: Get.width / 1.03,
                   repeat: true,
+                  reverse: false,
                 ),
               ),
             ),
@@ -76,11 +77,11 @@ class _SplashState extends State<Splash> {
                 children: [
                   AnimatedOpacity(
                     opacity: _visible ? 0.0 : 1,
-                    curve: Curves.easeIn,
-                    duration: Duration(milliseconds: 1400),
+                    curve: Curves.bounceInOut,
+                    duration: Duration(milliseconds: 1600),
                     child: Center(
                       child: Card(
-                        elevation: 8.0,
+                        elevation: 8,
                         shape: CircleBorder(side: BorderSide.none),
                         borderOnForeground: true,
                         shadowColor: Style.primary.withOpacity(0.2),
@@ -138,14 +139,14 @@ class _SplashState extends State<Splash> {
                             shadows: [
                               Shadow(
                                 blurRadius: 0.8,
-                                color: Style.accentDark,
-                                offset: Offset(0.051, 0.51),
+                                color: Style.accentDark.withOpacity(0.60),
+                                offset: Offset(0.51, 0.851),
                               ),
-                              Shadow(
-                                blurRadius: 0.8,
-                                color: Style.primary,
-                                offset: Offset(0.1, 0.1),
-                              ),
+                              // Shadow(
+                              //   blurRadius: 0.8,
+                              //   color: Style.primary,
+                              //   offset: Offset(0.1, 0.1),
+                              // ),
                             ],
                             fontWeight: FontWeight.w500,
                           ),
@@ -163,14 +164,18 @@ class _SplashState extends State<Splash> {
                   Text(
                     'Build 2.0.3\tDate: ${date.day}.${date.month}.${date.year}\tBy DE Kuwait',
                     textAlign: TextAlign.center,
-                    style: Style.caption,
+                    style: Style.caption.copyWith(
+                      fontSize: 10,
+                    ),
                   ),
                   SizedBox(
                     height: 2,
                   ),
                   Text(
                     'Copyright by SubCrb Kuwait 2021',
-                    style: Style.caption,
+                    style: Style.caption.copyWith(
+                      fontSize: 10,
+                    ),
                   ),
                 ],
               ),
