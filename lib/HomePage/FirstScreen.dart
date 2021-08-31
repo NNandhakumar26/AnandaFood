@@ -580,7 +580,11 @@ class TitleRow extends StatelessWidget {
 
     return TextButton(
       style: textButtonStyle(),
-      onPressed: () {},
+      onPressed: () {
+        print(Style.temp.value);
+        Style.temp.value = '0xffff0000';
+        print(Style.temp.value);
+      },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,

@@ -1,12 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 class Style {
-  static const Color primaryDark = Color(0xFF306628);
-  static const Color primary800 = Color(0xFF4f8839);
-  static const primary = Color(0xff74B04C);
-  static const Color primary400 = Color(0xFF94c96d);
-  static const Color primary100 = Color(0xFFd9ecca);
-  static const Color primary50 = Color(0xFFf0f8ea);
+  static final storage = GetStorage();
+
+  static final temp = ''.obs;
+  static final Rx<Color> tempr =
+      Color(int.parse('0xFF' + storage.read('primary'))).obs;
+  // static final tempr = Color(0xff74B04C).obs;
+  // static const Color primaryDark  = Color(0xFF306628);
+  // static const Color primary800   = Color(0xFF4f8839);
+  // static const primary            = Color(0xff74B04C);
+  // static const Color primary400   = Color(0xFF94c96d);
+  // static const Color primary100   = Color(0xFFd9ecca);
+  // static const Color primary50    = Color(0xFFf0f8ea);
+
+  static final Color primaryDark = tempr.value;
+  static final Color primary800 = tempr.value;
+  static final Color primary = tempr.value;
+  static final Color primary400 = tempr.value;
+  static final Color primary100 = tempr.value;
+  static final Color primary50 = tempr.value;
+
+  static final Color prime900 = tempr.value;
+  static final Color prime800 = tempr.value;
+  static final Color prime700 = tempr.value;
+  static final Color prime600 = tempr.value;
+  static final Color prime500 = tempr.value;
+  static final Color prime400 = tempr.value;
+  static final Color prime300 = tempr.value;
+  static final Color prime200 = tempr.value;
+  static final Color prime100 = tempr.value;
+  static final Color prime50 = tempr.value;
 
   static const Color accent = Color(0xFF4D434B);
   static const Color accentDark = Color(0xFF2b2229);
@@ -15,16 +41,16 @@ class Style {
   static const Color lightText = Color(0xFF6C6C6C);
   static const Color dark_grey = Color(0xFF313A44);
 
-  static const Color prime900 = Color(0xff006d01);
-  static const Color prime800 = Color(0xff1d9019);
-  static const Color prime700 = Color(0xff39a424);
-  static const Color prime600 = Color(0xff51b82e);
-  static const Color prime500 = Color(0xff60c836);
-  static const Color prime400 = Color(0xff7ad157);
-  static const Color prime300 = Color(0xff94d977);
-  static const Color prime200 = Color(0xffb4e49f);
-  static const Color prime100 = Color(0xffd2efc5);
-  static const Color prime50 = Color(0xffedf9e8);
+  // static const Color prime900 = Color(0xff006d01);
+  // static const Color prime800 = Color(0xff1d9019);
+  // static const Color prime700 = Color(0xff39a424);
+  // static const Color prime600 = Color(0xff51b82e);
+  // static const Color prime500 = Color(0xff60c836);
+  // static const Color prime400 = Color(0xff7ad157);
+  // static const Color prime300 = Color(0xff94d977);
+  // static const Color prime200 = Color(0xffb4e49f);
+  // static const Color prime100 = Color(0xffd2efc5);
+  // static const Color prime50 = Color(0xffedf9e8);
   static const Color background = Color(0xffD9DBDA);
   static const String fontName = 'Poppins';
 
@@ -101,4 +127,16 @@ class Style {
     letterSpacing: 0.2,
     color: lightText, // was lightText
   );
+}
+
+class ColorUtil extends Color {
+  static int getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll("#", "");
+    if (hexColor.length == 6) {
+      hexColor = "FF" + hexColor;
+    }
+    return int.parse(hexColor, radix: 16);
+  }
+
+  ColorUtil(final String hexColor) : super(getColorFromHex(hexColor));
 }

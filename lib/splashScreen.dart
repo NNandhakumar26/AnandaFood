@@ -19,11 +19,16 @@ class _SplashState extends State<Splash> {
   void initState() {
     super.initState();
     getPage();
-    Future.delayed(Duration(milliseconds: 500), () {
-      setState(() {
-        _visible = !_visible;
-      });
-    });
+    Future.delayed(
+      Duration(milliseconds: 500),
+      () {
+        setState(
+          () {
+            _visible = !_visible;
+          },
+        );
+      },
+    );
   }
 
   getPage() async {

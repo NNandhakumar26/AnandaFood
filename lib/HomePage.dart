@@ -1,6 +1,7 @@
 import 'package:dot_navigation_bar/dot_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:subscription_mobile_app/HomePage/FirstScreen.dart';
+import 'package:subscription_mobile_app/LastPage/ColourSelector.dart';
 import 'package:subscription_mobile_app/Theme.dart';
 
 class Homepage extends StatefulWidget {
@@ -29,11 +30,7 @@ class _HomepageState extends State<Homepage> {
         child: Text('Third Data'),
       ),
     ),
-    Center(
-      child: Container(
-        child: Text('Third Data'),
-      ),
-    ),
+    ColourPicker(),
     // FirstScreen(),
     // MainScreen(),
     // // SearchScreen(),
