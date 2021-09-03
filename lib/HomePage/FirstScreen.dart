@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:subscription_mobile_app/Theme.dart';
@@ -15,6 +13,17 @@ class FirstScreen extends StatefulWidget {
 
 class _FirstScreenState extends State<FirstScreen> {
   final input = [];
+  final colors = [
+    Colors.brown[400],
+    Colors.green[400],
+    Colors.red[400],
+    Colors.blue[400],
+    Colors.deepPurple[400],
+    Colors.orange[400],
+    Colors.red[400],
+    Colors.pink[400],
+    Colors.deepOrange[400],
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +32,7 @@ class _FirstScreenState extends State<FirstScreen> {
         scrollDirection: Axis.vertical,
         child: Container(
           margin: EdgeInsets.all(8),
-          color: Colors.white,
+          color: Style.white,
           child: Column(
             children: [
               SizedBox(
@@ -46,6 +55,8 @@ class _FirstScreenState extends State<FirstScreen> {
                       style: Style.headline.copyWith(
                         letterSpacing: 0.4,
                         fontWeight: FontWeight.w600,
+                        //TODO: Check the font color
+                        color: Style.prime[900],
                       ),
                     ),
                     SizedBox(
@@ -71,7 +82,7 @@ class _FirstScreenState extends State<FirstScreen> {
                       'Categories',
                       style: Style.title.copyWith(
                           fontWeight: FontWeight.w600,
-                          color: Colors.black.withOpacity(0.87)),
+                          color: Style.black.withOpacity(0.87)),
                     ),
                     TitleRow(
                       sub: 'See All',
@@ -112,7 +123,7 @@ class _FirstScreenState extends State<FirstScreen> {
                       textAlign: TextAlign.center,
                       style: thisPageStyle.copyWith(
                         fontSize: 20,
-                        color: Colors.black.withOpacity(0.80),
+                        color: Style.black.withOpacity(0.80),
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -148,34 +159,26 @@ class _FirstScreenState extends State<FirstScreen> {
                   ],
                 ),
               ),
+              //TODO: CHECK FOR THE IMBALANCE IN STYLE HERE
               Container(
-                height: 250,
+                height: Get.height / 2.58,
                 width: Get.width / 1.091,
                 color: Colors.grey.withOpacity(0.03),
+                // color: Colors.red,
                 child: GridView.builder(
                   physics: BouncingScrollPhysics(),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
-                    childAspectRatio: 2,
+                    // childAspectRatio: 1,
                     crossAxisSpacing: 2.0,
                     mainAxisSpacing: 2.0,
                     mainAxisExtent: 80,
                   ),
                   itemCount: 9,
                   itemBuilder: (context, index) {
-                    final colors = [
-                      Colors.brown[400],
-                      Colors.green[400],
-                      Colors.red[400],
-                      Colors.blue[400],
-                      Colors.deepPurple[400],
-                      Colors.orange[400],
-                      Colors.red[400],
-                      Colors.pink[400],
-                      Colors.deepOrange[400],
-                    ];
                     return Container(
                       margin: EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+                      height: 320,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.elliptical(8, 8)),
                         boxShadow: [
@@ -236,6 +239,7 @@ class _FirstScreenState extends State<FirstScreen> {
                   },
                 ),
               ),
+
               SizedBox(
                 height: 8,
               ),
@@ -527,7 +531,6 @@ class _FirstScreenState extends State<FirstScreen> {
               ),
               Container(
                 height: 240,
-                // color: Colors.deepOrange.withOpacity(0.87),
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: 5,
@@ -541,6 +544,9 @@ class _FirstScreenState extends State<FirstScreen> {
                   },
                 ),
               ),
+              SizedBox(
+                height: 80,
+              )
             ],
           ),
         ),
@@ -550,7 +556,7 @@ class _FirstScreenState extends State<FirstScreen> {
 
   TextStyle thisPageStyle = Style.title.copyWith(
     fontWeight: FontWeight.w600,
-    color: Colors.black.withOpacity(0.87),
+    color: Style.black.withOpacity(0.87),
   );
 }
 
@@ -566,8 +572,8 @@ class TitleRow extends StatelessWidget {
         // backgroundColor:
         //     MaterialStateProperty.all<Color>(
         //         Colors.white.withOpacity(0.32)),
-        overlayColor:
-            MaterialStateProperty.all<Color>(Colors.grey.withOpacity(0.091)),
+        overlayColor: MaterialStateProperty.all<Color>(
+            Style.dark_grey.withOpacity(0.091)),
         // elevation:
         //     MaterialStateProperty.all<double>(5.0),
         padding: MaterialStateProperty.all<EdgeInsets>(
@@ -580,11 +586,7 @@ class TitleRow extends StatelessWidget {
 
     return TextButton(
       style: textButtonStyle(),
-      onPressed: () {
-        print(Style.temp.value);
-        Style.temp.value = '0xffff0000';
-        print(Style.temp.value);
-      },
+      onPressed: () {},
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -593,12 +595,12 @@ class TitleRow extends StatelessWidget {
             sub.toUpperCase(),
             style: Style.subtitle.copyWith(
               fontSize: 12,
-              color: Style.accentDark.withOpacity(0.60),
+              color: Style.accent.withOpacity(0.60),
             ),
           ),
           Icon(
             Icons.arrow_right,
-            color: Style.accentDark.withOpacity(0.87),
+            color: Style.accent.withOpacity(0.87),
           )
         ],
       ),
@@ -614,7 +616,7 @@ class HalfSizedCards extends StatelessWidget {
         Get.to(ItemPage());
       },
       child: Card(
-        elevation: 2,
+        elevation: 8,
         // color: Style.background.withOpacity(0.87),
         shadowColor: Style.accent.withOpacity(0.08),
         shape: RoundedRectangleBorder(
@@ -694,7 +696,8 @@ class HalfSizedCards extends StatelessWidget {
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
-                  color: Style.primary50.withOpacity(0.01),
+                  // color: Style.prime.withOpacity(0.0982),
+                  color: Style.white.withOpacity(0.87),
                   borderRadius: BorderRadius.only(
                     // topLeft: Radius.circular(15),
                     bottomLeft: Radius.circular(15),
@@ -715,7 +718,7 @@ class HalfSizedCards extends StatelessWidget {
                               EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(2),
-                            color: Style.primary50,
+                            color: Style.prime.withOpacity(0.2),
                           ),
                           child: Text(
                             'Hot & Spicy',
@@ -771,7 +774,7 @@ class HalfSizedCards extends StatelessWidget {
                           'Most Favorite',
                           style: Style.body1.copyWith(
                             fontSize: 10,
-                            color: Style.primary400,
+                            color: Style.prime[500],
                             fontWeight: FontWeight.w400,
                             letterSpacing: 0.8,
                           ),
@@ -780,7 +783,7 @@ class HalfSizedCards extends StatelessWidget {
                           '\$ 3.5',
                           style: Style.body1.copyWith(
                             fontSize: 12,
-                            color: Style.accentDark,
+                            color: Style.accent[900],
                             fontWeight: FontWeight.w500,
                             letterSpacing: 0.8,
                           ),

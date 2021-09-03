@@ -31,207 +31,201 @@ class _ItemPageState extends State<ItemPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       // appBar: AppBar(),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Stack(
-                children: [
-                  Container(
-                    height: 350,
-                    width: Get.width,
-                    decoration: new BoxDecoration(
-                      color: Colors.white,
-                      image: DecorationImage(
-                        image: AssetImage(
-                          'assets/images/Background.jpg',
-                        ),
-                        fit: BoxFit.cover,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              height: Get.height / 32,
+            ),
+            Stack(
+              children: [
+                Container(
+                  height: Get.height / 2.1,
+                  width: Get.width,
+                  decoration: new BoxDecoration(
+                    color: Colors.white,
+                    image: DecorationImage(
+                      image: AssetImage(
+                        'assets/images/Background.jpg',
+                      ),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: new RadialGradient(
+                        radius: 0.85,
+                        colors: [
+                          Colors.transparent,
+                          Style.black.withOpacity(0.42),
+                          Style.black.withOpacity(0.62),
+                          Style.black.withOpacity(0.77),
+                        ],
                       ),
                     ),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        gradient: new RadialGradient(
-                          radius: 0.85,
-                          colors: [
-                            Colors.transparent,
-                            Colors.transparent,
-                            Colors.black.withOpacity(0.32),
-                            Colors.black.withOpacity(0.87),
-                          ],
-                        ),
-                      ),
-                      child: Image(
-                        image: AssetImage(
-                          'assets/images/Background.jpg',
-                        ),
+                    child: Image(
+                      image: AssetImage(
+                        'assets/images/Background.jpg',
                       ),
                     ),
                   ),
-                  Positioned(
-                    left: 8,
-                    top: 1,
-                    child: SizedBox(
-                      width: Get.width,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              Get.back();
-                            },
-                            icon: Icon(
-                              Icons.arrow_back_ios,
-                              color: Colors.white,
-                              size: 24,
+                ),
+                Positioned(
+                  left: 8,
+                  top: 1,
+                  child: SizedBox(
+                    width: Get.width,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            Get.back();
+                          },
+                          icon: Icon(
+                            Icons.arrow_back_ios,
+                            color: Colors.white,
+                            size: 24,
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Share',
+                              style: TextStyle(
+                                fontSize: 16,
+                                // letterSpacing: 0.5,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white.withOpacity(0.87),
+                              ),
                             ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Share',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  // letterSpacing: 0.5,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white.withOpacity(0.87),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 8,
-                              ),
-                              Icon(
-                                Icons.favorite_outline,
-                                size: 20,
-                                color: Colors.white,
-                              ),
-                              SizedBox(
-                                width: 16,
-                              ),
-                            ],
-                          ),
-                        ],
+                            SizedBox(
+                              width: 8,
+                            ),
+                            Icon(
+                              Icons.favorite_outline,
+                              size: 20,
+                              color: Colors.white,
+                            ),
+                            SizedBox(
+                              width: 16,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 8,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'Description',
+                    style: Style.title.copyWith(
+                      fontSize: 20,
+                    ),
+                  ),
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      elevation: 4,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(24),
                       ),
+                      backgroundColor: Style.prime,
+                      padding:
+                          EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+                    ),
+                    onPressed: () {},
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Promo Code',
+                          style: Style.subtitle.copyWith(
+                            color: Style.white.withOpacity(0.87),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Icon(
+                          Icons.local_offer,
+                          color: Colors.white.withOpacity(0.87),
+                          size: 16,
+                        )
+                      ],
                     ),
                   ),
                 ],
               ),
-              SizedBox(
-                height: 16,
+            ),
+            SizedBox(
+              height: 8,
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+              padding: EdgeInsets.symmetric(
+                horizontal: 16,
               ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Description',
-                      style: Style.title.copyWith(
-                        fontSize: 20,
-                      ),
-                    ),
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        elevation: 4,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(24)),
-                        backgroundColor: Style.primary,
-                        padding:
-                            EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-                      ),
-                      onPressed: () {},
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Promo Code',
-                            style: Style.subtitle.copyWith(
-                              color: Colors.white.withOpacity(0.87),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Icon(
-                            Icons.local_offer,
-                            color: Colors.white.withOpacity(0.87),
-                            size: 16,
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
+              child: Container(
+                height: 120,
+                child: Text(
+                  'A food with a sharp taste.A food with a sharp taste.A food with a sharp taste Often used to refer to tart or sour foods as well with less harsh taste than bitterness. Couples tartness with sweetness and has A bright flavor like that of lemons, limes, oranges, and other citrus fruits.',
+                  style: Style.caption,
+                  textAlign: TextAlign.justify,
                 ),
               ),
-              SizedBox(
-                height: 8,
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-                padding: EdgeInsets.symmetric(
-                  horizontal: 16,
-                ),
-                child: Container(
-                  height: 120,
-                  child: Text(
-                    'A food with a sharp taste.A food with a sharp taste.A food with a sharp taste Often used to refer to tart or sour foods as well with less harsh taste than bitterness. Couples tartness with sweetness and has A bright flavor like that of lemons, limes, oranges, and other citrus fruits.',
-                    style: Style.caption,
-                    // style: TextStyle(
-                    //   letterSpacing: 0.2,
-                    //   wordSpacing: 0.4,
-                    //   color: Style.accent.withOpacity(0.87),
-                    //   fontSize: 14,
-                    //   fontWeight: FontWeight.w300,
-                    //   // fontStyle: 8,
-                    // ),
-                    textAlign: TextAlign.justify,
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 28, vertical: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    'Combo With',
+                    style: Style.title.copyWith(fontWeight: FontWeight.w600),
                   ),
-                ),
+                ],
               ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 28, vertical: 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Combo With',
-                      style: Style.title.copyWith(fontWeight: FontWeight.w600),
-                    ),
-                  ],
-                ),
+            ),
+            Container(
+              height: 226,
+              padding: EdgeInsets.symmetric(horizontal: 24),
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: 4,
+                itemBuilder: (context, index) {
+                  return Container(
+                    height: 200,
+                    width: 160,
+                    margin: EdgeInsets.symmetric(horizontal: 6),
+                    child: HalfSizedCards(),
+                  );
+                },
               ),
-              Container(
-                height: 226,
-                padding: EdgeInsets.symmetric(horizontal: 24),
-                // color: Colors.deepOrange.withOpacity(0.87),
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 4,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      height: 200,
-                      width: 160,
-                      margin: EdgeInsets.symmetric(horizontal: 6),
-                      child: HalfSizedCards(),
-                    );
-                  },
-                ),
-              ),
-              SizedBox(
-                height: 80,
-              )
-            ],
-          ),
+            ),
+            SizedBox(
+              height: 80,
+            )
+          ],
         ),
       ),
-      bottomSheet: BottomSide(),
+      extendBody: true,
+      bottomNavigationBar: BottomSide(),
       // bottomSheet: Padding(
       //   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       //   child: Container(
@@ -296,7 +290,7 @@ class _ItemPageState extends State<ItemPage> {
   }
 }
 
-class BottomSide extends GetView {
+class BottomSide extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -304,25 +298,25 @@ class BottomSide extends GetView {
       margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
         // backgroundBlendMode: BlendMode.overlay,
-        // boxShadow: [
-        //   BoxShadow(
-        //     color: Colors.green,
-        //     blurRadius: 5,
-        //     spreadRadius: 0.5,
-        //     offset: Offset(1, 1),
-        //   ),
-        //   BoxShadow(
-        //     color: Colors.grey[50],
-        //     blurRadius: 5,
-        //     spreadRadius: 0.5,
-        //     offset: Offset(1, 1),
-        //   ),
-        // ],
-        color: Colors.transparent,
-        // color: Style.background.withOpacity(0.87),
+        boxShadow: [
+          BoxShadow(
+            color: Style.accent[50]!,
+            blurRadius: 5,
+            spreadRadius: 0.5,
+            offset: Offset(0.5, 1.5),
+          ),
+          BoxShadow(
+            color: Style.white,
+            blurRadius: 0.5,
+            spreadRadius: 0.5,
+            offset: Offset(1, 1),
+          ),
+        ],
+        // color: Colors.red,
+        color: Style.white.withOpacity(0.87),
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           Container(
             padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -347,7 +341,7 @@ class BottomSide extends GetView {
                         fontSize: 16,
                         letterSpacing: 0.8,
                         fontWeight: FontWeight.w500,
-                        color: Colors.black.withOpacity(0.87),
+                        color: Style.black.withOpacity(0.87),
                       ),
                     ),
                     Text(
@@ -373,43 +367,37 @@ class BottomSide extends GetView {
               ],
             ),
           ),
-          Container(
-            height: 38,
-            // width: MediaQuery.of(context).size.width / 2,
-            // width: Get.width / 2,
-            // ignore: deprecated_member_use
-            child: TextButton(
-              style: TextButton.styleFrom(
-                elevation: 4,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(24)),
-                backgroundColor: Style.accent,
-                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-              ),
-              onPressed: () {},
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Order Now',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                      letterSpacing: 0.8,
-                      color: Style.background.withOpacity(0.87),
-                    ),
+          TextButton(
+            style: TextButton.styleFrom(
+              elevation: 4,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24)),
+              backgroundColor: Style.accent,
+              padding: EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+            ),
+            onPressed: () {},
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Order Now',
+                  style: Style.title.copyWith(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
+                    letterSpacing: 0.8,
+                    color: Style.white.withOpacity(0.87),
                   ),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  Icon(
-                    IconData(0xf37f, fontFamily: 'MaterialIcons'),
-                    color: Colors.white.withOpacity(0.87),
-                    size: 16,
-                  )
-                  // IconData(0xf37f, fontFamily: 'MaterialIcons'),
-                ],
-              ),
+                ),
+                SizedBox(
+                  width: 8,
+                ),
+                Icon(
+                  Icons.shopping_cart_outlined,
+                  color: Colors.white.withOpacity(0.87),
+                  size: 16,
+                )
+                // IconData(0xf37f, fontFamily: 'MaterialIcons'),
+              ],
             ),
           ),
         ],
@@ -426,7 +414,7 @@ class HalfSizedCards extends StatelessWidget {
         Get.to(ItemPage());
       },
       child: Card(
-        elevation: 4,
+        elevation: 8,
         // color: Style.background.withOpacity(0.87),
         shadowColor: Style.accent.withOpacity(0.08),
         shape: RoundedRectangleBorder(
@@ -506,7 +494,8 @@ class HalfSizedCards extends StatelessWidget {
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
-                  color: Style.primary50.withOpacity(0.01),
+                  // color: Style.prime.withOpacity(0.0982),
+                  color: Style.white.withOpacity(0.87),
                   borderRadius: BorderRadius.only(
                     // topLeft: Radius.circular(15),
                     bottomLeft: Radius.circular(15),
@@ -527,7 +516,7 @@ class HalfSizedCards extends StatelessWidget {
                               EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(2),
-                            color: Style.primary50,
+                            color: Style.prime.withOpacity(0.2),
                           ),
                           child: Text(
                             'Hot & Spicy',
@@ -583,7 +572,7 @@ class HalfSizedCards extends StatelessWidget {
                           'Most Favorite',
                           style: Style.body1.copyWith(
                             fontSize: 10,
-                            color: Style.primary400,
+                            color: Style.prime[500],
                             fontWeight: FontWeight.w400,
                             letterSpacing: 0.8,
                           ),
@@ -592,7 +581,7 @@ class HalfSizedCards extends StatelessWidget {
                           '\$ 3.5',
                           style: Style.body1.copyWith(
                             fontSize: 12,
-                            color: Style.accentDark,
+                            color: Style.accent[900],
                             fontWeight: FontWeight.w500,
                             letterSpacing: 0.8,
                           ),

@@ -16,8 +16,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final storage = GetStorage();
-    storage.writeIfNull('primary', '828CC8');
-    // storage.write('primary', '828CC8');
+    storage.writeIfNull('primary', '74B04C');
+    storage.writeIfNull('accent', '4D434B');
+    // storage.write('primary', '74B04C');
+    // storage.write('accent', '4D434B');
+
     Style.tempr.value = Color(int.parse('0xFF' + storage.read('primary')));
     return Obx(
       () => GetMaterialApp(

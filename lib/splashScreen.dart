@@ -35,7 +35,11 @@ class _SplashState extends State<Splash> {
     Timer(Duration(milliseconds: 3200), () {
       print('To Home page');
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => Homepage()));
+        context,
+        MaterialPageRoute(
+          builder: (context) => Homepage(),
+        ),
+      );
       //use profile to go to desired section.
     });
     // SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -89,15 +93,13 @@ class _SplashState extends State<Splash> {
                         elevation: 8,
                         shape: CircleBorder(side: BorderSide.none),
                         borderOnForeground: true,
-                        shadowColor: Style.primary.withOpacity(0.2),
+                        // shadowColor: Style.primary.withOpacity(0.2),
+                        shadowColor: Style.prime.withOpacity(0.2),
                         clipBehavior: Clip.antiAlias,
                         child: CircleAvatar(
                           maxRadius: 100.0,
-                          child: Center(
-                            child: Image(
-                              image: AssetImage('assets/images/Logo.jpeg'),
-                            ),
-                          ),
+                          foregroundImage:
+                              AssetImage('assets/images/Logo.jpeg'),
                         ),
                       ),
                     ),
@@ -144,7 +146,7 @@ class _SplashState extends State<Splash> {
                             shadows: [
                               Shadow(
                                 blurRadius: 0.8,
-                                color: Style.accentDark.withOpacity(0.60),
+                                color: Style.accent[800]!,
                                 offset: Offset(0.51, 0.851),
                               ),
                               // Shadow(

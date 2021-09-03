@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'dart:math';
 
 class Style {
   static final storage = GetStorage();
@@ -16,7 +17,13 @@ class Style {
   // static const Color primary100   = Color(0xFFd9ecca);
   // static const Color primary50    = Color(0xFFf0f8ea);
 
-  static final Color primaryDark = tempr.value;
+  static final MaterialColor primaryDark = generateMaterialColor(tempr.value);
+  static final MaterialColor prime =
+      generateMaterialColor(Color(int.parse('0xFF' + storage.read('primary'))));
+  static final MaterialColor accent =
+      generateMaterialColor(Color(int.parse('0xFF' + storage.read('accent'))));
+  // static final MaterialColor accent = generateMaterialColor()
+
   static final Color primary800 = tempr.value;
   static final Color primary = tempr.value;
   static final Color primary400 = tempr.value;
@@ -34,7 +41,6 @@ class Style {
   static final Color prime100 = tempr.value;
   static final Color prime50 = tempr.value;
 
-  static const Color accent = Color(0xFF4D434B);
   static const Color accentDark = Color(0xFF2b2229);
   static const Color darkerText = Color(0xFF343434);
   static const Color darkText = Color(0xFF4B414B);
@@ -52,7 +58,11 @@ class Style {
   // static const Color prime100 = Color(0xffd2efc5);
   // static const Color prime50 = Color(0xffedf9e8);
   static const Color background = Color(0xffD9DBDA);
+  static const Color white = Color(0xffffffff);
+  static const Color black = Color(0xff000000);
   static const String fontName = 'Poppins';
+
+  //INVERT BLACK TO WHITE WHEN IT COMES TO COLOUR INVERSION OR THEME CHANGES.
 
   static TextTheme textTheme = TextTheme(
     headline4: display1,
@@ -127,6 +137,33 @@ class Style {
     letterSpacing: 0.2,
     color: lightText, // was lightText
   );
+
+  static MaterialColor generateMaterialColor(Color color) {
+    return MaterialColor(
+      color.value,
+      {
+        50: tintColor(color, 0.5),
+        100: tintColor(color, 0.4),
+        200: tintColor(color, 0.3),
+        300: tintColor(color, 0.2),
+        400: tintColor(color, 0.1),
+        500: tintColor(color, 0),
+        600: tintColor(color, -0.1),
+        700: tintColor(color, -0.2),
+        800: tintColor(color, -0.3),
+        900: tintColor(color, -0.4),
+      },
+    );
+  }
+
+  static int tintValue(int value, double factor) =>
+      max(0, min((value + ((255 - value) * factor)).round(), 255));
+
+  static Color tintColor(Color color, double factor) => Color.fromRGBO(
+      tintValue(color.red, factor),
+      tintValue(color.green, factor),
+      tintValue(color.blue, factor),
+      1);
 }
 
 class ColorUtil extends Color {
