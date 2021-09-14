@@ -47,6 +47,18 @@ class Style {
   static const Color lightText = Color(0xFF6C6C6C);
   static const Color dark_grey = Color(0xFF313A44);
 
+  static final colors = [
+    Colors.brown[400],
+    Colors.green[400],
+    Colors.red[400],
+    Colors.blue[400],
+    Colors.deepPurple[400],
+    Colors.orange[400],
+    Colors.red[400],
+    Colors.pink[400],
+    Colors.deepOrange[400],
+  ];
+
   // static const Color prime900 = Color(0xff006d01);
   // static const Color prime800 = Color(0xff1d9019);
   // static const Color prime700 = Color(0xff39a424);

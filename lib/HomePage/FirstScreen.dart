@@ -13,17 +13,6 @@ class FirstScreen extends StatefulWidget {
 
 class _FirstScreenState extends State<FirstScreen> {
   final input = [];
-  final colors = [
-    Colors.brown[400],
-    Colors.green[400],
-    Colors.red[400],
-    Colors.blue[400],
-    Colors.deepPurple[400],
-    Colors.orange[400],
-    Colors.red[400],
-    Colors.pink[400],
-    Colors.deepOrange[400],
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -192,7 +181,7 @@ class _FirstScreenState extends State<FirstScreen> {
                             spreadRadius: 0.08,
                           ),
                           BoxShadow(
-                            color: colors[index]!,
+                            color: Style.colors[index]!,
                             offset: const Offset(
                               0.81,
                               0.8,
@@ -221,7 +210,7 @@ class _FirstScreenState extends State<FirstScreen> {
                         decoration: BoxDecoration(
                           borderRadius:
                               BorderRadius.all(Radius.elliptical(8, 8)),
-                          color: colors[index]!.withOpacity(0.7),
+                          color: Style.colors[index]!.withOpacity(0.7),
                         ),
                         child: Center(
                           child: Text(
@@ -343,6 +332,7 @@ class _FirstScreenState extends State<FirstScreen> {
                   ),
                 ),
               ),
+
               Card(
                 elevation: 2,
                 shadowColor: Style.primary50,
