@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:subscription_mobile_app/HomePage/CompanyRegistrationPage.dart';
 import 'package:subscription_mobile_app/HomePage/MainPageContainer.dart';
 import 'package:subscription_mobile_app/Theme.dart';
 
@@ -17,343 +19,395 @@ class _FirstScreenState extends State<FirstScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: CustomScrollView(
-          scrollDirection: Axis.vertical,
-          slivers: <Widget>[
-            SliverAppBar(
-              //TODO: CHANGE IT TO APPROPRIATE BACKGROUND COLOUR
-              backgroundColor: Style.white,
-              foregroundColor: Style.accent[500],
-              pinned: true,
-              snap: false,
-              floating: false,
-              expandedHeight: Get.height / 1.7,
+    return Scaffold(
+      // backgroundColor: Style.prime[50]!.withOpacity(0.87),
+      backgroundColor: Colors.transparent,
+      body: CustomScrollView(
+        scrollDirection: Axis.vertical,
+        slivers: <Widget>[
+          SliverAppBar(
+            //TODO: CHANGE IT TO APPROPRIATE BACKGROUND COLOUR
+            backgroundColor: Style.white,
+            foregroundColor: Style.accent[500],
+            pinned: true,
+            snap: false,
+            floating: false,
+            expandedHeight: Get.height / 1.7,
+            centerTitle: true,
+            leading: Container(),
+            flexibleSpace: FlexibleSpaceBar(
+              collapseMode: CollapseMode.parallax,
               centerTitle: true,
-              leading: Container(),
-              flexibleSpace: FlexibleSpaceBar(
-                collapseMode: CollapseMode.parallax,
-                centerTitle: true,
-                title: Text(
-                  'Subscription App'.toUpperCase(),
-                  style: Style.subtitle.copyWith(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    letterSpacing: 0.8,
-                    color: Style.accent[500],
-                    shadows: [
-                      Shadow(
-                        color: Style.prime[50]!.withOpacity(0.32),
-                        blurRadius: 8,
-                        offset: Offset(0.8, 0.8),
+              title: Text(
+                'Subscription App'.toUpperCase(),
+                style: Style.subtitle.copyWith(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  letterSpacing: 0.8,
+                  color: Style.accent[500],
+                  shadows: [
+                    Shadow(
+                      color: Style.prime[50]!.withOpacity(0.32),
+                      blurRadius: 8,
+                      offset: Offset(0.8, 0.8),
+                    ),
+                  ],
+                ),
+              ),
+              titlePadding: EdgeInsets.all(8),
+              background: MainPageContainer(),
+            ),
+          ),
+          const SliverToBoxAdapter(
+            child: SizedBox(
+              height: 20,
+              child: Center(
+                child: const Text(
+                  'Advertising HOT SALE Text Here ( can be disabled)',
+                  style: TextStyle(fontSize: 8),
+                ),
+              ),
+            ),
+          ),
+          SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                Container(
+                  margin: EdgeInsets.all(8),
+                  // color: Style.white,
+                  color: Style.prime[50]!.withOpacity(0.016),
+
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: Get.height / 36,
                       ),
-                    ],
-                  ),
-                ),
-                titlePadding: EdgeInsets.all(8),
-                background: MainPageContainer(),
-              ),
-            ),
-            const SliverToBoxAdapter(
-              child: SizedBox(
-                height: 20,
-                child: Center(
-                  child: const Text(
-                    'Advertising HOT SALE Text Here ( can be disabled)',
-                    style: TextStyle(fontSize: 8),
-                  ),
-                ),
-              ),
-            ),
-            SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  Container(
-                    margin: EdgeInsets.all(8),
-                    color: Style.white,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: Get.height / 36,
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          right: 8,
+                          left: 6,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            right: 8,
-                            left: 6,
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              RichText(
-                                text: TextSpan(
-                                    text: 'Hi, ',
-                                    style: Style.subtitle.copyWith(
-                                      letterSpacing: 0.4,
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.w600,
-                                      color: Style.accent[400],
-                                    ),
-                                    children: [
-                                      TextSpan(
-                                        text: 'Blue',
-                                        style: Style.subtitle.copyWith(
-                                          letterSpacing: 0.8,
-                                          fontSize: 22,
-                                          fontWeight: FontWeight.w600,
-                                          color: Style.prime[900],
-                                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            RichText(
+                              text: TextSpan(
+                                  text: 'Hi, ',
+                                  style: Style.subtitle.copyWith(
+                                    letterSpacing: 0.4,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w600,
+                                    color: Style.accent[400],
+                                  ),
+                                  children: [
+                                    TextSpan(
+                                      text: 'Blue',
+                                      style: Style.subtitle.copyWith(
+                                        letterSpacing: 0.8,
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.w600,
+                                        color: Style.prime[900],
                                       ),
-                                    ]),
+                                    ),
+                                  ]),
+                            ),
+                            SizedBox(
+                              height: 4,
+                            ),
+                            Text(
+                              'Let\'s Have Some Delicious Food',
+                              style: Style.body2.copyWith(
+                                color: Style.accent[300],
+                                letterSpacing: 0.4,
                               ),
-                              SizedBox(
-                                height: 4,
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: Get.height / 48,
+                      ),
+                      Row(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 4, vertical: 8.0),
+                            child: Text(
+                              'Objectives',
+                              textAlign: TextAlign.left,
+                              style: Style.title.copyWith(
+                                fontWeight: FontWeight.w600,
+                                color: Style.accent[800],
                               ),
-                              Text(
-                                'Let\'s Have Some Delicious Food',
-                                style: Style.body2.copyWith(
-                                  color: Style.accent[300],
-                                  letterSpacing: 0.4,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: Get.height / 64,
+                      ),
+                      Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Expanded(
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 6, vertical: 8),
+                                  child: Container(
+                                    height: Get.height / 7,
+                                    decoration: BoxDecoration(
+                                      color: Style.prime[500],
+                                      boxShadow: [
+                                        BoxShadow(
+                                          blurRadius: 10,
+                                          color: Style.prime[50]!,
+                                          offset: Offset(2, 2),
+                                          spreadRadius: 0.5,
+                                        ),
+                                        BoxShadow(
+                                          blurRadius: 8,
+                                          color: Style.prime[200]!,
+                                          offset: Offset(2, 2),
+                                          spreadRadius: 0.5,
+                                        ),
+                                      ],
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(16),
+                                      ),
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Icon(
+                                          Icons.food_bank_outlined,
+                                          size: 50,
+                                          color: Style.white.withOpacity(0.87),
+                                        ),
+                                        Text(
+                                          'Slim',
+                                          style: TextStyle(
+                                            color: Style.white,
+                                            fontWeight: FontWeight.bold,
+                                            letterSpacing: 1.6,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: HalfSizedCards2(
+                                  title: 'Healthy',
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                        SizedBox(
-                          height: Get.height / 48,
-                        ),
-                        Row(
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Expanded(
+                                child: HalfSizedCards2(
+                                  title: 'Gain Weight',
+                                ),
+                              ),
+                              Expanded(
+                                child: HalfSizedCards2(
+                                  title: 'Body Building',
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 4, vertical: 8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 4, vertical: 8.0),
-                              child: Text(
-                                'Objectives',
-                                textAlign: TextAlign.left,
-                                style: Style.title.copyWith(
+                            Text(
+                              'Companies',
+                              style: Style.title.copyWith(
                                   fontWeight: FontWeight.w600,
-                                  color: Style.accent[800],
-                                ),
-                              ),
+                                  color: Style.black.withOpacity(0.87)),
+                            ),
+                            TitleRow(
+                              sub: 'View All',
                             ),
                           ],
                         ),
-                        SizedBox(
-                          height: Get.height / 64,
-                        ),
-                        Column(
+                      ),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Expanded(
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 6, vertical: 8),
-                                    child: Container(
-                                      height: Get.height / 7,
-                                      decoration: BoxDecoration(
-                                        color: Style.prime[500],
-                                        boxShadow: [
-                                          BoxShadow(
-                                            blurRadius: 10,
-                                            color: Style.prime[50]!,
-                                            offset: Offset(2, 2),
-                                            spreadRadius: 0.5,
-                                          ),
-                                          BoxShadow(
-                                            blurRadius: 8,
-                                            color: Style.prime[200]!,
-                                            offset: Offset(2, 2),
-                                            spreadRadius: 0.5,
-                                          ),
-                                        ],
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(16),
-                                        ),
-                                      ),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Icon(
-                                            Icons.food_bank_outlined,
-                                            size: 50,
-                                            color:
-                                                Style.white.withOpacity(0.87),
-                                          ),
-                                          Text(
-                                            'Slim',
-                                            style: TextStyle(
-                                              color: Style.white,
-                                              fontWeight: FontWeight.bold,
-                                              letterSpacing: 1.6,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: HalfSizedCards2(
-                                    title: 'Healthy',
-                                  ),
-                                ),
-                              ],
+                            CompanyContainers(
+                              title: 'Food Circles',
+                              image: 'assets/images/Hotel.png',
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Expanded(
-                                  child: HalfSizedCards2(
-                                    title: 'Gain Weight',
-                                  ),
-                                ),
-                                Expanded(
-                                  child: HalfSizedCards2(
-                                    title: 'Body Building',
-                                  ),
-                                ),
-                              ],
+                            CompanyContainers(
+                              title: 'Chicken Kitchen',
+                              image: 'assets/images/Hotel1.jpg',
+                            ),
+                            CompanyContainers(
+                              title: 'Butterfly Restaurant',
+                              image: 'assets/images/Hotel2.jpg',
+                            ),
+                            CompanyContainers(
+                              title: 'JagerHaus Restaurant',
+                              image: 'assets/images/Hotel3.jpg',
                             ),
                           ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 4, vertical: 8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Companies',
-                                style: Style.title.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    color: Style.black.withOpacity(0.87)),
-                              ),
-                              TitleRow(
-                                sub: 'View All',
-                              ),
-                            ],
-                          ),
-                        ),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: [
-                              CompanyContainers(
-                                title: 'Food Circles',
-                                image: 'assets/images/Hotel.png',
-                              ),
-                              CompanyContainers(
-                                title: 'Chicken Kitchen',
-                                image: 'assets/images/Hotel1.jpg',
-                              ),
-                              CompanyContainers(
-                                title: 'Butterfly Restaurant',
-                                image: 'assets/images/Hotel2.jpg',
-                              ),
-                              CompanyContainers(
-                                title: 'JagerHaus Restaurant',
-                                image: 'assets/images/Hotel3.jpg',
-                              ),
-                            ],
-                          ),
-                        ),
+                      ),
 
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 4, vertical: 8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Categories',
-                                style: Style.title.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    color: Style.black.withOpacity(0.87)),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 64, vertical: 16),
+                        child: SizedBox(
+                          width: Get.width,
+                          height: Get.height / 16,
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                              elevation: MaterialStateProperty.all(8),
+                              padding: MaterialStateProperty.all(
+                                EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 8),
                               ),
-                              TitleRow(
-                                sub: 'See All',
+                              backgroundColor:
+                                  MaterialStateProperty.all(Style.accent[700]),
+                              foregroundColor: MaterialStateProperty.all(
+                                Style.white.withOpacity(0.87),
                               ),
-                            ],
-                          ),
-                        ),
-
-                        Container(
-                          height: 240,
-                          // color: Colors.deepOrange.withOpacity(0.87),
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: 9,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                height: 250,
-                                width: 160,
-                                color: Colors.transparent,
-                                margin: EdgeInsets.symmetric(horizontal: 6),
-                                child: HalfSizedCards(),
-                              );
+                            ),
+                            onPressed: () {
+                              Get.to(CompanyRegistrationpage());
                             },
-                          ),
-                        ),
-                        SizedBox(
-                          height: 16,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 4,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Deals Of The Day!'.toUpperCase(),
-                                textAlign: TextAlign.center,
-                                style: thisPageStyle.copyWith(
-                                  fontSize: 20,
-                                  color: Style.black.withOpacity(0.80),
-                                  fontWeight: FontWeight.w600,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.add,
+                                  size: 20,
                                 ),
-                              ),
-                              // TextButton(
-                              //   style: textButtonStyle(),
-                              //   onPressed: () {},
-                              //   child: Row(
-                              //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              //     crossAxisAlignment: CrossAxisAlignment.center,
-                              //     children: [
-                              //       Text(
-                              //         'Claim More'.toUpperCase(),
-                              //         style: TextStyle(
-                              //           fontWeight: FontWeight.bold,
-                              //           fontSize: 12,
-                              //           color: Style.primary.withOpacity(0.60),
-                              //         ),
-                              //         // ),
-                              //         // style: TextStyle(
-                              //         //   color: Colors.purple.shade900,
-                              //         //   fontWeight: FontWeight.bold,
-                              //         //   letterSpacing: 1.0,
-                              //         //   fontSize: 12,
-                              //         // ),
-                              //       ),
-                              //       Icon(
-                              //         Icons.arrow_right,
-                              //         color: Style.primary,
-                              //       )
-                              //     ],
-                              //   ),
-                              // ),
-                            ],
+                                SizedBox(
+                                  width: 4,
+                                ),
+                                Text(
+                                  'List Your Company'.toUpperCase(),
+                                  textAlign: TextAlign.right,
+                                  style: Style.subtitle.copyWith(
+                                    letterSpacing: 0.8,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 14,
+                                    color: Style.white.withOpacity(0.87),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                        //TODO: CHECK FOR THE IMBALANCE IN STYLE HERE
-                        Container(
+                      ),
+
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 4, vertical: 8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Categories',
+                              style: Style.title.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  color: Style.black.withOpacity(0.87)),
+                            ),
+                            TitleRow(
+                              sub: 'See All',
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      Container(
+                        height: 240,
+                        // color: Colors.deepOrange.withOpacity(0.87),
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 9,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              height: 250,
+                              width: 160,
+                              color: Colors.transparent,
+                              margin: EdgeInsets.symmetric(horizontal: 6),
+                              child: HalfSizedCards(),
+                            );
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 4,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Deals Of The Day!'.toUpperCase(),
+                              textAlign: TextAlign.center,
+                              style: thisPageStyle.copyWith(
+                                fontSize: 20,
+                                color: Style.black.withOpacity(0.80),
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            // TextButton(
+                            //   style: textButtonStyle(),
+                            //   onPressed: () {},
+                            //   child: Row(
+                            //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            //     crossAxisAlignment: CrossAxisAlignment.center,
+                            //     children: [
+                            //       Text(
+                            //         'Claim More'.toUpperCase(),
+                            //         style: TextStyle(
+                            //           fontWeight: FontWeight.bold,
+                            //           fontSize: 12,
+                            //           color: Style.primary.withOpacity(0.60),
+                            //         ),
+                            //         // ),
+                            //         // style: TextStyle(
+                            //         //   color: Colors.purple.shade900,
+                            //         //   fontWeight: FontWeight.bold,
+                            //         //   letterSpacing: 1.0,
+                            //         //   fontSize: 12,
+                            //         // ),
+                            //       ),
+                            //       Icon(
+                            //         Icons.arrow_right,
+                            //         color: Style.primary,
+                            //       )
+                            //     ],
+                            //   ),
+                            // ),
+                          ],
+                        ),
+                      ),
+                      //TODO: CHECK FOR THE IMBALANCE IN STYLE HERE
+                      SafeArea(
+                        child: Container(
                           height: Get.height / 2.58,
                           width: Get.width / 1.091,
                           color: Colors.grey.withOpacity(0.03),
@@ -436,326 +490,324 @@ class _FirstScreenState extends State<FirstScreen> {
                             },
                           ),
                         ),
+                      ),
 
-                        SizedBox(
-                          height: 8,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 4,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 4, vertical: 8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Order Now',
-                                style: thisPageStyle,
-                              ),
-                              TitleRow(
-                                sub: 'Explore',
-                              ),
-                            ],
-                          ),
-                        ),
-                        Card(
-                          elevation: 2,
-                          shadowColor: Style.primary50,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 4, vertical: 8),
-                            child: ListTile(
-                              leading: Material(
-                                elevation: 2,
-                                shadowColor: Style.primary.withOpacity(0.60),
-                                child: Image(
-                                  image: AssetImage('assets/images/Food1.png'),
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
-                              // leading: Card(
-                              //   elevation: 4.0,
-                              //   shape: CircleBorder(side: BorderSide.none),
-                              //   borderOnForeground: true,
-                              //   // shadowColor: Style.primary.withOpacity(0.2),
-                              //   clipBehavior: Clip.antiAlias,
-                              //   child: CircleAvatar(
-                              //     maxRadius: 32.0,
-                              //     minRadius: 24,
-                              //     backgroundColor:
-                              //         Style.background.withOpacity(0.8),
-                              //     child: Image(
-                              //       image: AssetImage('assets/images/Food1.png'),
-                              //       fit: BoxFit.contain,
-                              //     ),
-                              //   ),
-                              // ),
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  IconButton(
-                                    onPressed: () {},
-                                    color: Style.primary.withOpacity(0.87),
-                                    icon: Icon(
-                                      Icons.add,
-                                      color: Style.primary.withOpacity(0.87),
-                                      size: 16,
-                                    ),
-                                  ),
-                                  Text(
-                                    '2',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      Icons.remove,
-                                      size: 16,
-                                      color: Style.accent.withOpacity(0.87),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              title: Container(
-                                margin: EdgeInsets.symmetric(vertical: 8),
-                                child: Text(
-                                  'Spizy Hot Sale',
-                                  style: Style.title.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 16,
-                                    letterSpacing: 0.4,
-                                  ),
-                                ),
-                              ),
-                              subtitle: Text(
-                                'Order Now',
-                                style: Style.subtitle.copyWith(
-                                  fontSize: 12,
-                                ),
-                              ),
-                              // isThreeLine: true,
-                              dense: true,
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 8, horizontal: 8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Order Now',
+                              style: thisPageStyle,
                             ),
+                            TitleRow(
+                              sub: 'Explore',
+                            ),
+                          ],
+                        ),
+                      ),
+                      Card(
+                        elevation: 2,
+                        shadowColor: Style.primary50,
+                        child: Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+                          child: ListTile(
+                            leading: Material(
+                              elevation: 2,
+                              shadowColor: Style.primary.withOpacity(0.60),
+                              child: Image(
+                                image: AssetImage('assets/images/Food1.png'),
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                            // leading: Card(
+                            //   elevation: 4.0,
+                            //   shape: CircleBorder(side: BorderSide.none),
+                            //   borderOnForeground: true,
+                            //   // shadowColor: Style.primary.withOpacity(0.2),
+                            //   clipBehavior: Clip.antiAlias,
+                            //   child: CircleAvatar(
+                            //     maxRadius: 32.0,
+                            //     minRadius: 24,
+                            //     backgroundColor:
+                            //         Style.background.withOpacity(0.8),
+                            //     child: Image(
+                            //       image: AssetImage('assets/images/Food1.png'),
+                            //       fit: BoxFit.contain,
+                            //     ),
+                            //   ),
+                            // ),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  onPressed: () {},
+                                  color: Style.primary.withOpacity(0.87),
+                                  icon: Icon(
+                                    Icons.add,
+                                    color: Style.primary.withOpacity(0.87),
+                                    size: 16,
+                                  ),
+                                ),
+                                Text(
+                                  '2',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(
+                                    Icons.remove,
+                                    size: 16,
+                                    color: Style.accent.withOpacity(0.87),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            title: Container(
+                              margin: EdgeInsets.symmetric(vertical: 8),
+                              child: Text(
+                                'Spizy Hot Sale',
+                                style: Style.title.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16,
+                                  letterSpacing: 0.4,
+                                ),
+                              ),
+                            ),
+                            subtitle: Text(
+                              'Order Now',
+                              style: Style.subtitle.copyWith(
+                                fontSize: 12,
+                              ),
+                            ),
+                            // isThreeLine: true,
+                            dense: true,
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 8),
                           ),
                         ),
+                      ),
 
-                        Card(
-                          elevation: 2,
-                          shadowColor: Style.primary50,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 4, vertical: 8),
-                            child: ListTile(
-                              leading: Material(
-                                elevation: 2,
-                                shadowColor: Style.primary.withOpacity(0.60),
-                                child: Image(
-                                  image: AssetImage('assets/images/Food1.png'),
-                                  fit: BoxFit.contain,
-                                ),
+                      Card(
+                        elevation: 2,
+                        shadowColor: Style.primary50,
+                        child: Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+                          child: ListTile(
+                            leading: Material(
+                              elevation: 2,
+                              shadowColor: Style.primary.withOpacity(0.60),
+                              child: Image(
+                                image: AssetImage('assets/images/Food1.png'),
+                                fit: BoxFit.contain,
                               ),
-                              // leading: Card(
-                              //   elevation: 4.0,
-                              //   shape: CircleBorder(side: BorderSide.none),
-                              //   borderOnForeground: true,
-                              //   // shadowColor: Style.primary.withOpacity(0.2),
-                              //   clipBehavior: Clip.antiAlias,
-                              //   child: CircleAvatar(
-                              //     maxRadius: 32.0,
-                              //     minRadius: 24,
-                              //     backgroundColor:
-                              //         Style.background.withOpacity(0.8),
-                              //     child: Image(
-                              //       image: AssetImage('assets/images/Food1.png'),
-                              //       fit: BoxFit.contain,
-                              //     ),
-                              //   ),
-                              // ),
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  IconButton(
-                                    onPressed: () {},
-                                    color: Style.primary.withOpacity(0.87),
-                                    icon: Icon(
-                                      Icons.add,
-                                      color: Style.primary.withOpacity(0.87),
-                                      size: 16,
-                                    ),
-                                  ),
-                                  Text(
-                                    '2',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      Icons.remove,
-                                      size: 16,
-                                      color: Style.accent.withOpacity(0.87),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              title: Container(
-                                margin: EdgeInsets.symmetric(vertical: 8),
-                                child: Text(
-                                  'Spizy Hot Sale',
-                                  style: Style.title.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 16,
-                                    letterSpacing: 0.4,
-                                  ),
-                                ),
-                              ),
-                              subtitle: Text(
-                                'Order Now',
-                                style: Style.subtitle.copyWith(
-                                  fontSize: 12,
-                                ),
-                              ),
-                              // isThreeLine: true,
-                              dense: true,
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 8, horizontal: 8),
                             ),
-                          ),
-                        ),
-                        Card(
-                          elevation: 2,
-                          shadowColor: Style.primary50,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 4, vertical: 8),
-                            child: ListTile(
-                              leading: Material(
-                                elevation: 2,
-                                shadowColor: Style.primary.withOpacity(0.60),
-                                child: Image(
-                                  image: AssetImage('assets/images/Food1.png'),
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
-                              // leading: Card(
-                              //   elevation: 4.0,
-                              //   shape: CircleBorder(side: BorderSide.none),
-                              //   borderOnForeground: true,
-                              //   // shadowColor: Style.primary.withOpacity(0.2),
-                              //   clipBehavior: Clip.antiAlias,
-                              //   child: CircleAvatar(
-                              //     maxRadius: 32.0,
-                              //     minRadius: 24,
-                              //     backgroundColor:
-                              //         Style.background.withOpacity(0.8),
-                              //     child: Image(
-                              //       image: AssetImage('assets/images/Food1.png'),
-                              //       fit: BoxFit.contain,
-                              //     ),
-                              //   ),
-                              // ),
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  IconButton(
-                                    onPressed: () {},
+                            // leading: Card(
+                            //   elevation: 4.0,
+                            //   shape: CircleBorder(side: BorderSide.none),
+                            //   borderOnForeground: true,
+                            //   // shadowColor: Style.primary.withOpacity(0.2),
+                            //   clipBehavior: Clip.antiAlias,
+                            //   child: CircleAvatar(
+                            //     maxRadius: 32.0,
+                            //     minRadius: 24,
+                            //     backgroundColor:
+                            //         Style.background.withOpacity(0.8),
+                            //     child: Image(
+                            //       image: AssetImage('assets/images/Food1.png'),
+                            //       fit: BoxFit.contain,
+                            //     ),
+                            //   ),
+                            // ),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  onPressed: () {},
+                                  color: Style.primary.withOpacity(0.87),
+                                  icon: Icon(
+                                    Icons.add,
                                     color: Style.primary.withOpacity(0.87),
-                                    icon: Icon(
-                                      Icons.add,
-                                      color: Style.primary.withOpacity(0.87),
-                                      size: 16,
-                                    ),
+                                    size: 16,
                                   ),
-                                  Text(
-                                    '2',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      Icons.remove,
-                                      size: 16,
-                                      color: Style.accent.withOpacity(0.87),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              title: Container(
-                                margin: EdgeInsets.symmetric(vertical: 8),
-                                child: Text(
-                                  'Spizy Hot Sale',
-                                  style: Style.title.copyWith(
-                                    fontWeight: FontWeight.w600,
+                                ),
+                                Text(
+                                  '2',
+                                  style: TextStyle(
                                     fontSize: 16,
-                                    letterSpacing: 0.4,
                                   ),
                                 ),
-                              ),
-                              subtitle: Text(
-                                'Order Now',
-                                style: Style.subtitle.copyWith(
-                                  fontSize: 12,
+                                IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(
+                                    Icons.remove,
+                                    size: 16,
+                                    color: Style.accent.withOpacity(0.87),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            title: Container(
+                              margin: EdgeInsets.symmetric(vertical: 8),
+                              child: Text(
+                                'Spizy Hot Sale',
+                                style: Style.title.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16,
+                                  letterSpacing: 0.4,
                                 ),
                               ),
-                              // isThreeLine: true,
-                              dense: true,
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 8, horizontal: 8),
                             ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 4, vertical: 8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Hot Wings',
-                                style: thisPageStyle,
+                            subtitle: Text(
+                              'Order Now',
+                              style: Style.subtitle.copyWith(
+                                fontSize: 12,
                               ),
-                              TitleRow(
-                                sub: 'See All',
+                            ),
+                            // isThreeLine: true,
+                            dense: true,
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 8),
+                          ),
+                        ),
+                      ),
+                      Card(
+                        elevation: 2,
+                        shadowColor: Style.primary50,
+                        child: Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+                          child: ListTile(
+                            leading: Material(
+                              elevation: 2,
+                              shadowColor: Style.primary.withOpacity(0.60),
+                              child: Image(
+                                image: AssetImage('assets/images/Food1.png'),
+                                fit: BoxFit.contain,
                               ),
-                            ],
+                            ),
+                            // leading: Card(
+                            //   elevation: 4.0,
+                            //   shape: CircleBorder(side: BorderSide.none),
+                            //   borderOnForeground: true,
+                            //   // shadowColor: Style.primary.withOpacity(0.2),
+                            //   clipBehavior: Clip.antiAlias,
+                            //   child: CircleAvatar(
+                            //     maxRadius: 32.0,
+                            //     minRadius: 24,
+                            //     backgroundColor:
+                            //         Style.background.withOpacity(0.8),
+                            //     child: Image(
+                            //       image: AssetImage('assets/images/Food1.png'),
+                            //       fit: BoxFit.contain,
+                            //     ),
+                            //   ),
+                            // ),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  onPressed: () {},
+                                  color: Style.primary.withOpacity(0.87),
+                                  icon: Icon(
+                                    Icons.add,
+                                    color: Style.primary.withOpacity(0.87),
+                                    size: 16,
+                                  ),
+                                ),
+                                Text(
+                                  '2',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(
+                                    Icons.remove,
+                                    size: 16,
+                                    color: Style.accent.withOpacity(0.87),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            title: Container(
+                              margin: EdgeInsets.symmetric(vertical: 8),
+                              child: Text(
+                                'Spizy Hot Sale',
+                                style: Style.title.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16,
+                                  letterSpacing: 0.4,
+                                ),
+                              ),
+                            ),
+                            subtitle: Text(
+                              'Order Now',
+                              style: Style.subtitle.copyWith(
+                                fontSize: 12,
+                              ),
+                            ),
+                            // isThreeLine: true,
+                            dense: true,
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 8),
                           ),
                         ),
-                        Container(
-                          height: 240,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: 5,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                height: 200,
-                                width: 160,
-                                margin: EdgeInsets.symmetric(horizontal: 6),
-                                child: HalfSizedCards(),
-                              );
-                            },
-                          ),
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 4, vertical: 8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Hot Wings',
+                              style: thisPageStyle,
+                            ),
+                            TitleRow(
+                              sub: 'See All',
+                            ),
+                          ],
                         ),
-                        SizedBox(
-                          height: 80,
-                        )
-                      ],
-                    ),
+                      ),
+                      Container(
+                        height: 240,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 5,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              height: 200,
+                              width: 160,
+                              margin: EdgeInsets.symmetric(horizontal: 6),
+                              child: HalfSizedCards(),
+                            );
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        height: 80,
+                      )
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

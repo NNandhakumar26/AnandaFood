@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
+import 'package:subscription_mobile_app/LastPage/addressPage.dart';
+
+import '../Theme.dart';
 
 class ColourPicker extends StatefulWidget {
   const ColourPicker({Key? key}) : super(key: key);
@@ -72,7 +75,80 @@ class _ColourPickerState extends State<ColourPicker> {
           SizedBox(
             height: 32,
           ),
-          // ColourTool(),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Card(
+              color: Style.prime[50]!.withOpacity(0.87),
+              elevation: 8,
+              shadowColor: Style.accent[50]!.withOpacity(0.87),
+              child: ListTile(
+                onTap: () {
+                  // Get.to(AboutPage());
+                },
+                contentPadding: EdgeInsets.all(10),
+                dense: true,
+                title: Row(
+                  children: [
+                    Container(
+                      width: Get.width / 2.5,
+                      child: Text(
+                        'Johar Mandov',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 0.8,
+                          color: Style.accent[900]!.withOpacity(0.87),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 24,
+                    ),
+                  ],
+                ),
+                leading: CircleAvatar(
+                  radius: 40,
+                  foregroundColor: Style.prime,
+                  backgroundColor: Style.prime,
+                  foregroundImage: AssetImage('assets/images/Profile2.jpg'),
+                  // child: (controller.imageUrl.value == null)
+                  //     ? Container(
+                  //         color: Styling.primary,
+                  //       )
+                  //     : Container(
+                  //         height: 150.h,
+                  //         width: 150.w,
+                  //         decoration: new BoxDecoration(
+                  //           shape: BoxShape.circle,
+                  //           image: new DecorationImage(
+                  //             fit: BoxFit.cover,
+                  //             image: NetworkImage(
+                  //                 controller.imageUrl.value.toString()),
+                  //           ),
+                  //         ),
+                  //       ),
+                ),
+                trailing: SizedBox(
+                  width: 50,
+                  child: Icon(
+                    Icons.edit_outlined,
+                    color: Style.accent[700],
+                    size: 20,
+                  ),
+                ),
+                subtitle: Text(
+                  '+91 95854 47986',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: Style.accent[500]!.withOpacity(0.87),
+                    // color: lightTextColor,
+                  ),
+                ),
+              ),
+              // ),
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: ColourTool(
@@ -85,6 +161,52 @@ class _ColourPickerState extends State<ColourPicker> {
               type: 'accent',
             ),
           ),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Style.accent[300]!,
+                width: 0.4,
+              ),
+              borderRadius: BorderRadius.circular(4),
+              color: Style.white,
+            ),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Get.to(AddressPage());
+                      },
+                      child: Card(
+                        elevation: 1,
+                        margin: EdgeInsets.all(8),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            children: [
+                              Image(
+                                image: AssetImage('assets/images/Hotel.png'),
+                                height: 50,
+                                width: 50,
+                              ),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              Text('Address'),
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                Row()
+              ],
+            ),
+          )
         ],
       ),
     );
@@ -116,81 +238,96 @@ class _ColourToolState extends State<ColourTool> {
   Widget build(BuildContext context) {
     return Card(
       elevation: 8,
-      child: ListTile(
-        dense: false,
-        title: Text('${widget.type.toUpperCase()} Colour'.toUpperCase()),
-        subtitle: Text(
-          '${ColorTools.materialNameAndCode(
-            dialogSelectColor,
-          )} '
-          ' --->   ${ColorTools.nameThatColor(dialogSelectColor)}',
-        ),
-        leading: ColorIndicator(
-          width: 40,
-          height: 40,
-          borderRadius: 0,
-          color: dialogSelectColor,
-          elevation: 1,
-          onSelectFocus: false,
-          onSelect: () async {
-            // Wait for the dialog to return color selection result.
-            final Color newColor = await showColorPickerDialog(
-              // The dialog needs a context, we pass it in.
-              context,
-              // We use the dialogSelectColor, as its starting color.
+      shadowColor: Style.accent[50]!.withOpacity(0.32),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+        child: ListTile(
+          dense: true,
+          title: Text(
+            '${widget.type.toUpperCase()} Colour'.toUpperCase(),
+            style: Style.subtitle.copyWith(
+              fontWeight: FontWeight.w600,
+              color: Style.accent[500],
+            ),
+          ),
+          subtitle: Text(
+            '${ColorTools.materialNameAndCode(
               dialogSelectColor,
-              title: Text('ColorPicker',
-                  style: Theme.of(context).textTheme.headline6),
-              width: 40,
-              height: 40,
-              spacing: 0,
-              runSpacing: 0,
-              borderRadius: 0,
-              wheelDiameter: 165,
-              enableOpacity: true,
-              showColorCode: true,
-              colorCodeHasColor: true,
-              //CHECK WHAT IT IS
-              // customColorSwatchesAndNames: customSwatches,
+            )} '
+            ' --->   ${ColorTools.nameThatColor(dialogSelectColor)}',
+            style: Style.subtitle.copyWith(
+              fontWeight: FontWeight.w400,
+              color: Style.accent[300],
+              fontSize: 12,
+            ),
+          ),
+          leading: ColorIndicator(
+            width: 40,
+            height: 40,
+            borderRadius: 0,
+            color: dialogSelectColor,
+            elevation: 1,
+            onSelectFocus: false,
+            onSelect: () async {
+              // Wait for the dialog to return color selection result.
+              final Color newColor = await showColorPickerDialog(
+                // The dialog needs a context, we pass it in.
+                context,
+                // We use the dialogSelectColor, as its starting color.
+                dialogSelectColor,
+                title: Text('ColorPicker',
+                    style: Theme.of(context).textTheme.headline6),
+                width: 40,
+                height: 40,
+                spacing: 0,
+                runSpacing: 0,
+                borderRadius: 0,
+                wheelDiameter: 165,
+                enableOpacity: true,
+                showColorCode: true,
+                colorCodeHasColor: true,
+                //CHECK WHAT IT IS
+                // customColorSwatchesAndNames: customSwatches,
 
-              pickersEnabled: <ColorPickerType, bool>{
-                ColorPickerType.wheel: true,
-                ColorPickerType.primary: false,
-                ColorPickerType.accent: false,
-              },
-              copyPasteBehavior: const ColorPickerCopyPasteBehavior(
-                copyButton: true,
-                pasteButton: false,
-                longPressMenu: false,
-              ),
-              actionButtons: const ColorPickerActionButtons(
-                okButton: true,
-                closeButton: true,
-                dialogActionButtons: true,
-              ),
-              constraints: const BoxConstraints(
-                minHeight: 480,
-                minWidth: 320,
-                maxWidth: 320,
-              ),
-            );
+                pickersEnabled: <ColorPickerType, bool>{
+                  ColorPickerType.wheel: true,
+                  ColorPickerType.primary: false,
+                  ColorPickerType.accent: false,
+                },
+                copyPasteBehavior: const ColorPickerCopyPasteBehavior(
+                  copyButton: true,
+                  pasteButton: false,
+                  longPressMenu: false,
+                ),
+                actionButtons: const ColorPickerActionButtons(
+                  okButton: true,
+                  closeButton: true,
+                  dialogActionButtons: true,
+                ),
+                constraints: const BoxConstraints(
+                  minHeight: 480,
+                  minWidth: 320,
+                  maxWidth: 320,
+                ),
+              );
 
-            setState(
-              () {
-                dialogSelectColor = newColor;
-                storage.write(
-                    widget.type,
-                    dialogSelectColor
-                        .toString()
-                        .toUpperCase()
-                        .replaceAll('COLOR(0XFF', '')
-                        .replaceAll(')', ''));
-                Get.snackbar(
-                    'Hey User', 'Restart Application to see colour change');
-                print('colur value is ${storage.read(widget.type)}');
-              },
-            );
-          },
+              setState(
+                () {
+                  dialogSelectColor = newColor;
+                  storage.write(
+                      widget.type,
+                      dialogSelectColor
+                          .toString()
+                          .toUpperCase()
+                          .replaceAll('COLOR(0XFF', '')
+                          .replaceAll(')', ''));
+                  Get.snackbar(
+                      'Hey User', 'Restart Application to see colour change');
+                  print('colur value is ${storage.read(widget.type)}');
+                },
+              );
+            },
+          ),
         ),
       ),
     );

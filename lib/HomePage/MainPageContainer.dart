@@ -35,10 +35,10 @@ class MainPageContainer extends StatelessWidget {
                         Text(
                           'Let\'s',
                           style: Style.subtitle.copyWith(
-                            fontSize: 18,
+                            fontSize: 24,
                             letterSpacing: 0.8,
                             color: Style.accent[700],
-                            fontWeight: FontWeight.w400,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                         const SizedBox(
@@ -46,8 +46,8 @@ class MainPageContainer extends StatelessWidget {
                         ),
                         DefaultTextStyle(
                           style: Style.subtitle.copyWith(
-                            color: Style.prime[700],
-                            fontSize: 16.0,
+                            color: Style.prime[900],
+                            fontSize: 20,
                             letterSpacing: 1.2,
                             fontWeight: FontWeight.w600,
                           ),
