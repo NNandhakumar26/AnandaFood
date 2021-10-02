@@ -1,11 +1,12 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:subscription_mobile_app/HomePage.dart';
-
 import 'Theme.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'groupPage.dart';
 
 class Splash extends StatefulWidget {
   @override
@@ -13,7 +14,7 @@ class Splash extends StatefulWidget {
 }
 
 class _SplashState extends State<Splash> {
-  bool _visible = true;
+  bool _visible = true; // For Splash Screen Visibility
 
   @override
   void initState() {
@@ -32,31 +33,24 @@ class _SplashState extends State<Splash> {
   }
 
   getPage() async {
-    Timer(Duration(milliseconds: 3200), () {
-      print('To Home page');
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => Homepage(),
-        ),
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    if (prefs.get('custID') != null) {
+      Timer(
+        Duration(milliseconds: 3200),
+        () {
+          Get.to(Homepage());
+          //use profile to go to desired section.
+        },
       );
-      //use profile to go to desired section.
-    });
-    // SharedPreferences prefs = await SharedPreferences.getInstance();
-    // if (prefs.get('custID') != null) {
-    //   Timer(Duration(milliseconds: 2800), () {
-    //     print('To Home page');
-    //     Navigator.pushReplacement(
-    //         context, MaterialPageRoute(builder: (context) => HomePage()));
-    //     //use profile to go to desired section.
-    //   });
-    // } else {
-    //   Timer(Duration(milliseconds: 2800), () {
-    //     print('To Group page');
-    //     Navigator.pushReplacement(
-    //         context, MaterialPageRoute(builder: (context) => GroupPage()));
-    //   });
-    // }
+    } else {
+      Timer(
+        Duration(milliseconds: 3200),
+        () {
+          Get.to(GroupPage());
+        },
+      );
+    }
   }
 
   DateTime date = DateTime.now();
@@ -119,11 +113,6 @@ class _SplashState extends State<Splash> {
                             fontSize: 22,
                             letterSpacing: 1.6,
                             shadows: [
-                              // Shadow(
-                              //   blurRadius: 0.08,
-                              //   color: Style.primary,
-                              //   offset: Offset(0.051, 0.51),
-                              // ),
                               Shadow(
                                 blurRadius: 0.8,
                                 color: Style.accent,
@@ -149,11 +138,6 @@ class _SplashState extends State<Splash> {
                                 color: Style.accent[800]!,
                                 offset: Offset(0.51, 0.851),
                               ),
-                              // Shadow(
-                              //   blurRadius: 0.8,
-                              //   color: Style.primary,
-                              //   offset: Offset(0.1, 0.1),
-                              // ),
                             ],
                             fontWeight: FontWeight.w500,
                           ),

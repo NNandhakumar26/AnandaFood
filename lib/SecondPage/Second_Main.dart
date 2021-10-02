@@ -3,23 +3,35 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:subscription_mobile_app/CustomPlan.dart';
 import '../Theme.dart';
+import '../groupPage.dart';
 import 'AvailablePlansScreen.dart';
-import 'MealCustomizationPlan.dart';
 
 class SecondPage extends StatelessWidget {
-  const SecondPage({Key? key}) : super(key: key);
+  final Map<String, List<Group>> groups;
+  final Map<String, String> images = {
+    'Building': 'muscle.png',
+    'Diet': 'diet (2).png',
+    'Slimming': 'diet (1).png',
+    'Healthy': 'Soup.png',
+    'Ramadan': 'dish.png'
+  };
+  final bool isLoggedIn;
+
+  SecondPage({required this.groups, this.isLoggedIn = false});
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        color: Style.prime[50]!.withOpacity(0.04),
+        color: Style.prime[50]!.withOpacity(0.016),
         child: Column(
           children: [
             SizedBox(
-              height: 40,
+              height: Get.height / 16,
             ),
             Padding(
               padding: const EdgeInsets.only(
@@ -32,10 +44,10 @@ class SecondPage extends StatelessWidget {
                 children: [
                   Text(
                     'Your Existing Plans',
-                    style: Style.headline.copyWith(
+                    style: Style.subtitle.copyWith(
                       letterSpacing: 0.4,
+                      fontSize: 20,
                       fontWeight: FontWeight.w500,
-                      //TODO: Check the font color
                       color: Style.accent[900],
                     ),
                   ),
@@ -45,7 +57,7 @@ class SecondPage extends StatelessWidget {
                   Text(
                     'Choose More Plans',
                     style: Style.body2.copyWith(
-                      color: Style.prime.withOpacity(0.87),
+                      color: Style.prime[300],
                     ),
                   ),
                 ],
@@ -62,18 +74,14 @@ class SecondPage extends StatelessWidget {
                   TabBar(
                     unselectedLabelStyle: Style.subtitle.copyWith(
                       fontWeight: FontWeight.w400,
-
-                      // color: Style.accent[400],
                     ),
                     labelStyle: Style.subtitle.copyWith(
                       fontWeight: FontWeight.w600,
                       letterSpacing: 1.6,
-                      // color: Style.accent[800],
                     ),
                     labelColor: Style.prime[800],
                     unselectedLabelColor: Style.accent[400],
                     indicatorColor: Style.prime[50],
-                    // indicatorPadding: EdgeInsets.all(16),
                     labelPadding: EdgeInsets.all(8),
                     indicatorWeight: 2.4,
                     tabs: [
@@ -102,78 +110,221 @@ class SecondPage extends StatelessWidget {
                     margin: EdgeInsets.symmetric(vertical: 16),
                     child: TabBarView(
                       children: [
-                        SingleChildScrollView(
-                          physics: BouncingScrollPhysics(),
-                          child: Column(
-                            children: [
-                              PlansContainer(
-                                title: 'Body Building ',
-                                grams: '200 Grams',
-                                price: '24',
-                                first: true,
-                              ),
-                              SizedBox(
-                                height: 4,
-                              ),
-                              PlansContainer(
-                                title: 'Fitness Diet ',
-                                grams: '150 Grams',
-                                price: '32',
-                                first: true,
-                              ),
-                              SizedBox(
-                                height: 4,
-                              ),
-                              PlansContainer(
-                                title: 'Easy Slimming Diet ',
-                                grams: '100 Grams',
-                                price: '64',
-                                first: true,
-                              ),
-                            ],
-                          ),
-                        ),
                         Container(
-                          child: SingleChildScrollView(
-                            physics: BouncingScrollPhysics(),
-                            child: Column(
-                              children: [
-                                PlansContainer(
-                                  title: 'Subscription Apps\'s ',
-                                  grams: 'Custom Plan',
-                                  price: '54',
-                                  first: false,
-                                ),
-                                SizedBox(
-                                  height: 4,
-                                ),
-                                PlansContainer(
-                                  title: 'Body Building ',
-                                  grams: '200 Gms',
-                                  price: '40',
-                                  first: false,
-                                ),
-                                SizedBox(
-                                  height: 4,
-                                ),
-                                PlansContainer(
-                                  title: 'Fitness Diet ',
-                                  grams: '150 Gms',
-                                  price: '23',
-                                  first: false,
-                                ),
-                                SizedBox(
-                                  height: 4,
-                                ),
-                                PlansContainer(
-                                  title: 'Easy Slimming Diet ',
-                                  grams: '100 Gms',
-                                  price: '30',
-                                  first: false,
+                          child: (groups['active']!.length == 0)
+                              ? Container(
+                                  child: Center(
+                                    child: Text(
+                                      'empty'.tr,
+                                      style: Style.subtitle.copyWith(
+                                        color: Style.prime[900],
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.w800,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
                                 )
-                              ],
-                            ),
-                          ),
+                              : ListView.builder(
+                                  itemCount: groups['active']!.length,
+                                  itemBuilder: (context, index) {
+                                    print(groups);
+                                    return PlansContainer(
+                                      title: groups['active']![index].groupName,
+                                      // grams: '200 Grams',
+                                      // price: '24',
+                                      // first: true,
+                                      image: images[(groups['active']![index]
+                                                  .groupName!
+                                                  .split(" ")
+                                                  .length >
+                                              1)
+                                          ? groups['active']![index]
+                                              .groupName!
+                                              .split(" ")[1]
+                                          : groups['active']![index]
+                                              .groupName!
+                                              .split(" ")[0]],
+                                      onTap: () async {
+                                        if (isLoggedIn) {
+                                          var groupId =
+                                              groups['active']![index].groupId;
+                                          var groupName =
+                                              groups['active']![index]
+                                                  .groupName;
+                                          var preferences =
+                                              await SharedPreferences
+                                                  .getInstance();
+                                          preferences.setInt('id', groupId!);
+                                          preferences.setString(
+                                              'planTitle', groupName!);
+                                          return Get.to(
+                                            () => PlansAvailableScreen(
+                                                id: groupId,
+                                                groupName: groupName),
+                                          );
+                                        } else
+                                          return Get.to(
+                                            PlansAvailableScreen(
+                                              id: groups['active']![index]
+                                                  .groupId!,
+                                              groupName:
+                                                  groups['active']![index]
+                                                      .groupName
+                                                      .toString(),
+                                            ),
+                                          );
+                                      },
+                                    );
+                                  },
+                                ),
+                        ),
+                        // SingleChildScrollView(
+                        //   physics: BouncingScrollPhysics(),
+                        //   child: Column(
+                        //     children: groups['active']!.map(
+                        //       (e) {
+                        //         return PlansContainer(
+                        //           title: e.groupName,
+                        //           grams: '200 Grams',
+                        //           price: '24',
+                        //           first: true,
+                        //         );
+                        //       },
+                        //     ).toList(),
+                        //     // children: [
+                        //     //   PlansContainer(
+                        //     //     title: 'Body Building ',
+                        //     //     grams: '200 Grams',
+                        //     //     price: '24',
+                        //     //     first: true,
+                        //     //   ),
+                        //     //   PlansContainer(
+                        //     //     title: 'Fitness Diet ',
+                        //     //     grams: '150 Grams',
+                        //     //     price: '32',
+                        //     //     first: true,
+                        //     //   ),
+                        //     //   PlansContainer(
+                        //     //     title: 'Easy Slimming Diet ',
+                        //     //     grams: '100 Grams',
+                        //     //     price: '64',
+                        //     //     first: true,
+                        //     //   ),
+                        //     // ],
+                        //   ),
+                        // ),
+                        Container(
+                          child: (groups['inActive']!.length == 0)
+                              ? Container(
+                                  child: Center(
+                                    child: Text(
+                                      'empty'.tr,
+                                      style: Style.subtitle.copyWith(
+                                        color: Style.prime[900],
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.w800,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                )
+                              : ListView.builder(
+                                  itemCount: groups['inActive']!.length,
+                                  itemBuilder: (context, index) {
+                                    return PlansContainer(
+                                      title:
+                                          groups['inActive']![index].groupName,
+                                      image: images[(groups['inActive']![index]
+                                                  .groupName!
+                                                  .split(" ")
+                                                  .length >
+                                              1)
+                                          ? groups['inActive']![index]
+                                              .groupName!
+                                              .split(" ")[1]
+                                          : groups['inActive']![index]
+                                              .groupName!
+                                              .split(" ")[0]],
+                                      onTap: () async {
+                                        if (isLoggedIn) {
+                                          var groupId =
+                                              groups['inActive']![index]
+                                                  .groupId;
+                                          var groupName =
+                                              groups['inActive']![index]
+                                                  .groupName;
+                                          var preferences =
+                                              await SharedPreferences
+                                                  .getInstance();
+                                          preferences.setInt('id', groupId!);
+                                          preferences.setString(
+                                              'planTitle', groupName!);
+                                          //CustomisePlan(
+                                          // groupId: groupId, groupName: groupName),
+                                          Get.to(
+                                            CustomisePlan(
+                                              groupId: groupId,
+                                              groupName: groupName,
+                                            ),
+                                          );
+                                        } else
+                                          return Get.dialog(
+                                            AlertDialog(
+                                              title: Text('coming_soon'.tr),
+                                              content:
+                                                  Text('coming_message'.tr),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () => Get.back(),
+                                                  child: Text('ok'.tr),
+                                                )
+                                              ],
+                                            ),
+                                          );
+                                      },
+                                    );
+                                  },
+                                ),
+                          // child: SingleChildScrollView(
+                          //   physics: BouncingScrollPhysics(),
+                          //   child: Column(
+                          //     children: groups['inActive']!.map(
+                          //       (e) {
+                          //         return PlansContainer(
+                          //           title: e.groupName,
+                          //           grams: '200 Grams',
+                          //           price: '24',
+                          //           first: false,
+                          //         );
+                          //       },
+                          //     ).toList(),
+                          //     // PlansContainer(
+                          //     //   title: 'Subscription Apps\'s ',
+                          //     //   grams: 'Custom Plan',
+                          //     //   price: '54',
+                          //     //   first: false,
+                          //     // ),
+                          //     // PlansContainer(
+                          //     //   title: 'Body Building ',
+                          //     //   grams: '200 Gms',
+                          //     //   price: '40',
+                          //     //   first: false,
+                          //     // ),
+                          //     // PlansContainer(
+                          //     //   title: 'Fitness Diet ',
+                          //     //   grams: '150 Gms',
+                          //     //   price: '23',
+                          //     //   first: false,
+                          //     // ),
+                          //     // PlansContainer(
+                          //     //   title: 'Easy Slimming Diet ',
+                          //     //   grams: '100 Gms',
+                          //     //   price: '30',
+                          //     //   first: false,
+                          //     // )
+                          //   ),
+                          // ),
                         )
                       ],
                     ),
@@ -196,22 +347,35 @@ class PlansContainer extends StatelessWidget {
   final grams;
   final price;
   final first;
-  PlansContainer({this.title, this.grams, this.price, this.first});
+  final String? image;
+  final Function? onTap;
+  PlansContainer({
+    this.title,
+    this.grams,
+    this.price,
+    this.first,
+    this.image = 'Dinner.png',
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        if (first) {
-          Get.to(PlansScreen());
-        } else {
-          Get.to(CustomMealPage());
-        }
-        // Get.to(PlansScreen());
+      onTap: () async {
+        onTap!();
+        // if (first) {
+        //   onTap!();
+        // } else {
+        //   var preferences = await SharedPreferences.getInstance();
+        //   if (preferences.get('custId') != null) {
+        //     Get.to(CustomMealPage());
+        //   } else {
+        //     //Display the coming soon screen.
+        //   }
+        // }
       },
       child: Container(
         height: Get.height / 4.5,
-        // color: Style.white,
         child: Stack(
           alignment: Alignment.center,
           children: [
@@ -236,10 +400,10 @@ class PlansContainer extends StatelessWidget {
                     ),
                   ],
                   borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(64),
-                    bottomLeft: Radius.circular(64),
-                    topRight: Radius.circular(4),
-                    bottomRight: Radius.circular(4),
+                    topLeft: Radius.circular(80),
+                    bottomLeft: Radius.circular(80),
+                    topRight: Radius.circular(16),
+                    bottomRight: Radius.circular(16),
                   ),
                   border: Border.all(
                     width: 0.3,
@@ -315,15 +479,19 @@ class PlansContainer extends StatelessWidget {
               child: Card(
                 shape: CircleBorder(side: BorderSide.none),
                 borderOnForeground: true,
-                // shadowColor: Style.primary.withOpacity(0.2),
-                shadowColor: Style.prime[900]!.withOpacity(0.2),
+                shadowColor: Style.prime[900]!.withOpacity(0.32),
                 clipBehavior: Clip.antiAlias,
                 elevation: 20,
                 child: CircleAvatar(
                   foregroundColor: Style.accent[900],
                   backgroundColor: Style.prime[50]!.withOpacity(0.098),
                   radius: 48,
-                  foregroundImage: AssetImage('assets/images/Pizza2.jpg'),
+                  // foregroundImage: AssetImage('assets/images/$image'),
+                  child: Image(
+                    image: AssetImage('assets/images/$image'),
+                    color: Style.prime[900],
+                    fit: BoxFit.contain,
+                  ),
                 ),
               ),
             )

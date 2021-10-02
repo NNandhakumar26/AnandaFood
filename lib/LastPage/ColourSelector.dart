@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
+import 'package:subscription_mobile_app/LastPage/CartPage.dart';
 import 'package:subscription_mobile_app/LastPage/addressPage.dart';
 
+import '../LoginScreen.dart';
 import '../Theme.dart';
+import 'ContractScreen.dart';
 
 class ColourPicker extends StatefulWidget {
   const ColourPicker({Key? key}) : super(key: key);
@@ -70,144 +73,235 @@ class _ColourPickerState extends State<ColourPicker> {
     // // };
 
     return SafeArea(
-      child: Column(
-        children: [
-          SizedBox(
-            height: 32,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Card(
-              color: Style.prime[50]!.withOpacity(0.87),
-              elevation: 8,
-              shadowColor: Style.accent[50]!.withOpacity(0.87),
-              child: ListTile(
-                onTap: () {
-                  // Get.to(AboutPage());
-                },
-                contentPadding: EdgeInsets.all(10),
-                dense: true,
-                title: Row(
-                  children: [
-                    Container(
-                      width: Get.width / 2.5,
-                      child: Text(
-                        'Johar Mandov',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 0.8,
-                          color: Style.accent[900]!.withOpacity(0.87),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 24,
-                    ),
-                  ],
-                ),
-                leading: CircleAvatar(
-                  radius: 40,
-                  foregroundColor: Style.prime,
-                  backgroundColor: Style.prime,
-                  foregroundImage: AssetImage('assets/images/Profile2.jpg'),
-                  // child: (controller.imageUrl.value == null)
-                  //     ? Container(
-                  //         color: Styling.primary,
-                  //       )
-                  //     : Container(
-                  //         height: 150.h,
-                  //         width: 150.w,
-                  //         decoration: new BoxDecoration(
-                  //           shape: BoxShape.circle,
-                  //           image: new DecorationImage(
-                  //             fit: BoxFit.cover,
-                  //             image: NetworkImage(
-                  //                 controller.imageUrl.value.toString()),
-                  //           ),
-                  //         ),
-                  //       ),
-                ),
-                trailing: SizedBox(
-                  width: 50,
-                  child: Icon(
-                    Icons.edit_outlined,
-                    color: Style.accent[700],
-                    size: 20,
-                  ),
-                ),
-                subtitle: Text(
-                  '+91 95854 47986',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    color: Style.accent[500]!.withOpacity(0.87),
-                    // color: lightTextColor,
-                  ),
-                ),
-              ),
-              // ),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 32,
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: ColourTool(
-              type: 'primary',
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: ColourTool(
-              type: 'accent',
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            padding: EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: Style.accent[300]!,
-                width: 0.4,
-              ),
-              borderRadius: BorderRadius.circular(4),
-              color: Style.white,
-            ),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        Get.to(AddressPage());
-                      },
-                      child: Card(
-                        elevation: 1,
-                        margin: EdgeInsets.all(8),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            children: [
-                              Image(
-                                image: AssetImage('assets/images/Hotel.png'),
-                                height: 50,
-                                width: 50,
-                              ),
-                              SizedBox(
-                                height: 8,
-                              ),
-                              Text('Address'),
-                            ],
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Card(
+                color: Style.white,
+                elevation: 24,
+                shadowColor: Style.accent[50]!.withOpacity(0.24),
+                child: ListTile(
+                  onTap: () {
+                    // Get.to(AboutPage());
+                  },
+                  contentPadding: EdgeInsets.all(10),
+                  dense: true,
+                  title: Row(
+                    children: [
+                      Container(
+                        width: Get.width / 2.5,
+                        child: Text(
+                          'Johar Mandov',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 0.8,
+                            color: Style.accent[900]!.withOpacity(0.87),
                           ),
                         ),
                       ),
-                    )
-                  ],
+                      SizedBox(
+                        height: 24,
+                      ),
+                    ],
+                  ),
+                  leading: CircleAvatar(
+                    radius: 40,
+                    foregroundColor: Style.prime,
+                    backgroundColor: Style.prime,
+                    foregroundImage: AssetImage('assets/images/Profile2.jpg'),
+                    // child: (controller.imageUrl.value == null)
+                    //     ? Container(
+                    //         color: Styling.primary,
+                    //       )
+                    //     : Container(
+                    //         height: 150.h,
+                    //         width: 150.w,
+                    //         decoration: new BoxDecoration(
+                    //           shape: BoxShape.circle,
+                    //           image: new DecorationImage(
+                    //             fit: BoxFit.cover,
+                    //             image: NetworkImage(
+                    //                 controller.imageUrl.value.toString()),
+                    //           ),
+                    //         ),
+                    //       ),
+                  ),
+                  trailing: SizedBox(
+                    width: 50,
+                    child: Icon(
+                      Icons.edit_outlined,
+                      color: Style.accent[700],
+                      size: 20,
+                    ),
+                  ),
+                  subtitle: Text(
+                    '+91 95854 47986',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                      color: Style.accent[500]!.withOpacity(0.87),
+                      // color: lightTextColor,
+                    ),
+                  ),
                 ),
-                Row()
-              ],
+                // ),
+              ),
             ),
-          )
-        ],
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: ColourTool(
+                type: 'primary',
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: ColourTool(
+                type: 'accent',
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              padding: EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Style.accent[300]!,
+                  width: 0.4,
+                ),
+                borderRadius: BorderRadius.circular(4),
+                color: Style.white,
+              ),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Others'.toUpperCase(),
+                      style: Style.subtitle.copyWith(
+                        color: Style.prime[900],
+                        fontSize: 16,
+                        letterSpacing: 0.48,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      SettingsCard(
+                        title: 'Address',
+                        onPressed: () {
+                          return Get.to(AddressPage());
+                        },
+                      ),
+                      SettingsCard(
+                        title: 'Nutritional Support',
+                        onPressed: () {
+                          Get.dialog(
+                            Container(
+                              margin: EdgeInsets.only(
+                                left: 24,
+                                right: 24,
+                                top: 48,
+                              ),
+                              child: LoginPopupContainer(),
+                            ),
+                            barrierDismissible: false,
+                          );
+                        },
+                      ),
+                      SettingsCard(
+                        title: 'Technical Support',
+                        onPressed: () {
+                          Get.to(ContractPage());
+                        },
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      SettingsCard(
+                        title: 'Language',
+                        onPressed: () {
+                          Get.to(CartPage());
+                        },
+                      ),
+                      SettingsCard(title: 'Support'),
+                      SettingsCard(
+                        title: 'Log Out',
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class SettingsCard extends StatelessWidget {
+  final Image? image;
+  final String? title;
+  final Function? onPressed;
+
+  SettingsCard({this.image, this.title, this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () => onPressed!(),
+      child: Card(
+        elevation: 8,
+        shadowColor: Style.accent[50]!.withOpacity(0.24),
+        margin: EdgeInsets.all(8),
+        shape: RoundedRectangleBorder(
+          side: BorderSide(
+            color: Style.accent[50]!.withOpacity(0.32),
+            width: 0.8,
+          ),
+          borderRadius: BorderRadius.circular(4),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(0.0),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: Image(
+                  image: AssetImage('assets/images/Hotel.png'),
+                  height: 40,
+                  width: 40,
+                ),
+              ),
+              Container(
+                width: Get.width / 4,
+                height: Get.height / 16,
+                margin: EdgeInsets.symmetric(vertical: 4),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    title ?? '',
+                    textAlign: TextAlign.center,
+                    style: Style.subtitle.copyWith(
+                      fontSize: 14,
+                      color: Style.accent[300],
+                      fontWeight: FontWeight.w500,
+                    ),
+                    softWrap: true,
+                    // overflow: ,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

@@ -46,7 +46,7 @@ class CompanyRegistrationpage extends StatelessWidget {
                 //SEARCH ROW WITH ADD YOUR COMPANY
 
                 TextFormField(
-                  decoration: inputTextDecoration(
+                  decoration: Style.inputTextDecoration(
                     title: 'Company Name',
                   ),
                   cursorColor: Style.accent[700],
@@ -58,7 +58,7 @@ class CompanyRegistrationpage extends StatelessWidget {
                   ),
                 ),
                 TextFormField(
-                  decoration: inputTextDecoration(
+                  decoration: Style.inputTextDecoration(
                     title: 'Owner Name',
                   ),
                   cursorColor: Style.accent[700],
@@ -71,7 +71,7 @@ class CompanyRegistrationpage extends StatelessWidget {
                 ),
                 TextFormField(
                   keyboardType: TextInputType.number,
-                  decoration: inputTextDecoration(
+                  decoration: Style.inputTextDecoration(
                     title: 'Mobile Number',
                   ),
                   cursorColor: Style.accent[700],
@@ -84,7 +84,7 @@ class CompanyRegistrationpage extends StatelessWidget {
                 ),
                 TextFormField(
                   keyboardType: TextInputType.emailAddress,
-                  decoration: inputTextDecoration(
+                  decoration: Style.inputTextDecoration(
                     title: 'Email Address',
                   ),
                   cursorColor: Style.accent[700],
@@ -96,7 +96,7 @@ class CompanyRegistrationpage extends StatelessWidget {
                   ),
                 ),
                 TextFormField(
-                  decoration: inputTextDecoration(
+                  decoration: Style.inputTextDecoration(
                     title: 'Remarks',
                   ),
                   cursorColor: Style.accent[700],
@@ -132,40 +132,6 @@ class CompanyRegistrationpage extends StatelessWidget {
               ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-  InputDecoration inputTextDecoration({String title = ''}) {
-    return InputDecoration(
-      filled: true,
-      fillColor: Style.accent[50]!.withOpacity(0.10),
-      contentPadding: EdgeInsets.all(16),
-      labelText: title,
-      floatingLabelStyle: Style.caption.copyWith(
-        color: Style.prime[900],
-        letterSpacing: 0.8,
-        fontSize: 12,
-      ),
-      labelStyle: Style.subtitle.copyWith(
-        color: Style.accent[500],
-        fontSize: 14,
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(4),
-        gapPadding: 4.0,
-        borderSide: BorderSide(
-          width: 0.8,
-          color: Style.accent[600]!,
-        ),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(4),
-        gapPadding: 4.0,
-        borderSide: BorderSide(
-          width: 0.8,
-          color: Style.prime[900]!,
         ),
       ),
     );

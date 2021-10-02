@@ -12,7 +12,7 @@ class CustomMealPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Style.white.withOpacity(0.87),
         centerTitle: true,
-        title: Text('Plans Available'),
+        title: Text('Custom Plan Screen'),
         titleTextStyle: Style.subtitle.copyWith(
           fontSize: 16,
           color: Style.prime[900],
@@ -35,7 +35,7 @@ class CustomMealPage extends StatelessWidget {
           child: Container(
             height: Get.height,
             width: Get.width,
-            color: Style.white.withOpacity(0.0087),
+            color: Style.prime[50]!.withOpacity(0.016),
             child: ListView.builder(
               physics: BouncingScrollPhysics(),
               itemBuilder: (context, index) {
@@ -47,12 +47,12 @@ class CustomMealPage extends StatelessWidget {
                       // margin: EdgeInsets.symmetric(horizontal: 8),
                       padding: EdgeInsets.symmetric(
                         horizontal: 8,
-                        vertical: 8,
+                        vertical: 4,
                       ),
                       child: ListTile(
                         // minLeadingWidth: Get.width / 24,
                         leading: CircleAvatar(
-                          radius: 28,
+                          radius: 30,
                           foregroundImage: AssetImage(
                             'assets/images/Food1.png',
                           ),
@@ -63,10 +63,10 @@ class CustomMealPage extends StatelessWidget {
                           children: [
                             IconButton(
                               onPressed: () {},
-                              color: Style.primary.withOpacity(0.87),
+                              color: Style.prime.withOpacity(0.87),
                               icon: Icon(
                                 Icons.add,
-                                color: Style.primary.withOpacity(0.87),
+                                color: Style.prime.withOpacity(0.87),
                                 size: 16,
                               ),
                             ),
@@ -103,7 +103,7 @@ class CustomMealPage extends StatelessWidget {
                             text: 'Amount',
                             style: Style.subtitle.copyWith(
                               fontSize: 12,
-                              color: Style.prime[50],
+                              color: Style.accent[50],
                               fontWeight: FontWeight.w600,
                             ),
                             children: [
@@ -113,15 +113,15 @@ class CustomMealPage extends StatelessWidget {
                               TextSpan(
                                 text: '0.0',
                                 style: Style.title.copyWith(
-                                  color: Style.prime[500],
-                                  fontWeight: FontWeight.w700,
+                                  color: Style.prime[700],
+                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
                               TextSpan(
                                 text: ' kd',
                                 //also go with caption.
                                 style: Style.subtitle.copyWith(
-                                  color: Style.prime100,
+                                  color: Style.prime[200],
                                 ),
                               ),
                             ],

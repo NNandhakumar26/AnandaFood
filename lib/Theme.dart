@@ -3,6 +3,83 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'dart:math';
 
+const int TenentID = 14;
+const String fcmToken = "";
+
+Future<bool> onWillPop() async {
+  return await Get.dialog(
+    AlertDialog(
+      title: Text(
+        'you_sure'.tr,
+        style: Style.subtitle.copyWith(
+          color: Style.accent[700],
+          fontSize: 20,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+      elevation: 16,
+      actionsPadding: EdgeInsets.symmetric(
+        horizontal: 8,
+      ),
+      content: Text(
+        'exit_app'.tr,
+        style: Style.subtitle.copyWith(
+          color: Style.accent[500],
+          fontSize: 14,
+          letterSpacing: 0.4,
+          fontWeight: FontWeight.w400,
+        ),
+      ),
+      actions: [
+        TextButton(
+          style: ButtonStyle(
+            padding: MaterialStateProperty.all(
+              EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            ),
+            foregroundColor: MaterialStateProperty.all(Colors.black87),
+          ),
+          onPressed: () {
+            Get.back(canPop: false);
+            // Navigator.of(context).pop(false);
+          },
+          child: Text(
+            'no'.tr,
+            style: Style.subtitle.copyWith(
+              color: Style.accent[700],
+              fontSize: 16,
+              letterSpacing: 0.8,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+        ElevatedButton(
+          style: ButtonStyle(
+            padding: MaterialStateProperty.all(
+              EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            ),
+            backgroundColor: MaterialStateProperty.all(Style.prime),
+            foregroundColor: MaterialStateProperty.all(
+              Colors.white,
+            ),
+          ),
+          onPressed: () async {
+            Get.back(canPop: true);
+          },
+          child: Text(
+            'yes'.tr,
+            style: Style.subtitle.copyWith(
+              color: Style.white,
+              fontSize: 16,
+              letterSpacing: 0.8,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
 class Style {
   static final storage = GetStorage();
 
@@ -24,22 +101,11 @@ class Style {
       generateMaterialColor(Color(int.parse('0xFF' + storage.read('accent'))));
   // static final MaterialColor accent = generateMaterialColor()
 
-  static final Color primary800 = tempr.value;
-  static final Color primary = tempr.value;
-  static final Color primary400 = tempr.value;
-  static final Color primary100 = tempr.value;
-  static final Color primary50 = tempr.value;
-
-  static final Color prime900 = tempr.value;
-  static final Color prime800 = tempr.value;
-  static final Color prime700 = tempr.value;
-  static final Color prime600 = tempr.value;
-  static final Color prime500 = tempr.value;
-  static final Color prime400 = tempr.value;
-  static final Color prime300 = tempr.value;
-  static final Color prime200 = tempr.value;
-  static final Color prime100 = tempr.value;
-  static final Color prime50 = tempr.value;
+  // static final Color primary800 = tempr.value;
+  // static final Color primary = tempr.value;
+  // static final Color primary400 = tempr.value;
+  // static final Color primary100 = tempr.value;
+  // static final Color primary50 = tempr.value;
 
   static const Color accentDark = Color(0xFF2b2229);
   static const Color darkerText = Color(0xFF343434);
@@ -73,6 +139,57 @@ class Style {
   static const Color white = Color(0xffffffff);
   static const Color black = Color(0xff000000);
   static const String fontName = 'Poppins';
+
+  static InputDecoration inputTextDecoration({String title = ''}) {
+    return InputDecoration(
+      filled: true,
+      fillColor: Style.accent[50]!.withOpacity(0.10),
+      contentPadding: EdgeInsets.all(16),
+      labelText: title,
+      floatingLabelStyle: Style.caption.copyWith(
+        color: Style.prime[900],
+        letterSpacing: 0.4,
+        fontSize: 14,
+      ),
+      labelStyle: Style.subtitle.copyWith(
+        color: Style.accent[500],
+        fontSize: 12,
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(4),
+        gapPadding: 4.0,
+        borderSide: BorderSide(
+          width: 0.6,
+          color: Style.accent[700]!,
+        ),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(4),
+        gapPadding: 4.0,
+        borderSide: BorderSide(
+          width: 1.2,
+          color: Colors.red,
+        ),
+      ),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(4),
+        gapPadding: 4.0,
+        borderSide: BorderSide(
+          width: 0.8,
+          color: Colors.red,
+          // color: Style.accent[600]!,
+        ),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(4),
+        gapPadding: 4.0,
+        borderSide: BorderSide(
+          width: 1,
+          color: Style.prime[900]!,
+        ),
+      ),
+    );
+  }
 
   //INVERT BLACK TO WHITE WHEN IT COMES TO COLOUR INVERSION OR THEME CHANGES.
 

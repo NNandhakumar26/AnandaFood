@@ -304,8 +304,8 @@ class _FirstScreenState extends State<FirstScreen> {
                                   'List Your Company'.toUpperCase(),
                                   textAlign: TextAlign.right,
                                   style: Style.subtitle.copyWith(
-                                    letterSpacing: 0.8,
-                                    fontWeight: FontWeight.w400,
+                                    letterSpacing: 0.4,
+                                    fontWeight: FontWeight.w500,
                                     fontSize: 14,
                                     color: Style.white.withOpacity(0.87),
                                   ),
@@ -408,12 +408,12 @@ class _FirstScreenState extends State<FirstScreen> {
                       //TODO: CHECK FOR THE IMBALANCE IN STYLE HERE
                       SafeArea(
                         child: Container(
-                          height: Get.height / 2.58,
+                          height: Get.height / 3.2,
                           width: Get.width / 1.091,
                           color: Colors.grey.withOpacity(0.03),
                           // color: Colors.red,
                           child: GridView.builder(
-                            physics: BouncingScrollPhysics(),
+                            physics: NeverScrollableScrollPhysics(),
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 3,
@@ -511,15 +511,17 @@ class _FirstScreenState extends State<FirstScreen> {
                         ),
                       ),
                       Card(
-                        elevation: 2,
-                        shadowColor: Style.primary50,
+                        elevation: 16,
+                        shadowColor: Style.prime[50]!.withOpacity(0.24),
+                        margin:
+                            EdgeInsets.symmetric(vertical: 8, horizontal: 4),
                         child: Padding(
                           padding:
                               EdgeInsets.symmetric(horizontal: 4, vertical: 8),
                           child: ListTile(
                             leading: Material(
                               elevation: 2,
-                              shadowColor: Style.primary.withOpacity(0.60),
+                              shadowColor: Style.prime.withOpacity(0.60),
                               child: Image(
                                 image: AssetImage('assets/images/Food1.png'),
                                 fit: BoxFit.contain,
@@ -547,10 +549,10 @@ class _FirstScreenState extends State<FirstScreen> {
                               children: [
                                 IconButton(
                                   onPressed: () {},
-                                  color: Style.primary.withOpacity(0.87),
+                                  color: Style.prime.withOpacity(0.87),
                                   icon: Icon(
                                     Icons.add,
-                                    color: Style.primary.withOpacity(0.87),
+                                    color: Style.prime.withOpacity(0.87),
                                     size: 16,
                                   ),
                                 ),
@@ -596,15 +598,17 @@ class _FirstScreenState extends State<FirstScreen> {
                       ),
 
                       Card(
-                        elevation: 2,
-                        shadowColor: Style.primary50,
+                        elevation: 16,
+                        shadowColor: Style.prime[50]!.withOpacity(0.24),
+                        margin:
+                            EdgeInsets.symmetric(vertical: 8, horizontal: 4),
                         child: Padding(
                           padding:
                               EdgeInsets.symmetric(horizontal: 4, vertical: 8),
                           child: ListTile(
                             leading: Material(
                               elevation: 2,
-                              shadowColor: Style.primary.withOpacity(0.60),
+                              shadowColor: Style.prime.withOpacity(0.60),
                               child: Image(
                                 image: AssetImage('assets/images/Food1.png'),
                                 fit: BoxFit.contain,
@@ -632,10 +636,10 @@ class _FirstScreenState extends State<FirstScreen> {
                               children: [
                                 IconButton(
                                   onPressed: () {},
-                                  color: Style.primary.withOpacity(0.87),
+                                  color: Style.prime.withOpacity(0.87),
                                   icon: Icon(
                                     Icons.add,
-                                    color: Style.primary.withOpacity(0.87),
+                                    color: Style.prime.withOpacity(0.87),
                                     size: 16,
                                   ),
                                 ),
@@ -680,15 +684,17 @@ class _FirstScreenState extends State<FirstScreen> {
                         ),
                       ),
                       Card(
-                        elevation: 2,
-                        shadowColor: Style.primary50,
+                        elevation: 16,
+                        shadowColor: Style.prime[50]!.withOpacity(0.24),
+                        margin:
+                            EdgeInsets.symmetric(vertical: 8, horizontal: 4),
                         child: Padding(
                           padding:
                               EdgeInsets.symmetric(horizontal: 4, vertical: 8),
                           child: ListTile(
                             leading: Material(
                               elevation: 2,
-                              shadowColor: Style.primary.withOpacity(0.60),
+                              shadowColor: Style.prime.withOpacity(0.60),
                               child: Image(
                                 image: AssetImage('assets/images/Food1.png'),
                                 fit: BoxFit.contain,
@@ -716,10 +722,10 @@ class _FirstScreenState extends State<FirstScreen> {
                               children: [
                                 IconButton(
                                   onPressed: () {},
-                                  color: Style.primary.withOpacity(0.87),
+                                  color: Style.prime.withOpacity(0.87),
                                   icon: Icon(
                                     Icons.add,
-                                    color: Style.primary.withOpacity(0.87),
+                                    color: Style.prime.withOpacity(0.87),
                                     size: 16,
                                   ),
                                 ),
