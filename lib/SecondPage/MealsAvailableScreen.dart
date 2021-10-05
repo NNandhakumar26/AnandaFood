@@ -206,39 +206,56 @@ class CustomCard extends StatelessWidget {
   final Function onTap;
   final int? allowedMeal;
   final String? image;
+  final bool isSubscreen;
   const CustomCard({
     this.allowedMeal,
     required this.onTap,
     required this.title,
     this.image,
+    this.isSubscreen = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return Card(
       color: Style.white,
-      margin: const EdgeInsets.all(8),
-      elevation: 24,
-      shadowColor: Style.accent[50]!.withOpacity(0.32),
+      margin: const EdgeInsets.all(12),
+      elevation: 8,
+      shadowColor: Style.accent[50]!.withOpacity(0.60),
+      // elevation: 24,
+      // shadowColor: Style.accent[50]!.withOpacity(0.32),
       child: Padding(
         padding: const EdgeInsets.all(10),
         child: ListTile(
           onTap: () {
             return onTap();
           },
-          minLeadingWidth: Get.width / 6,
-          leading: Image(
-            image: (image == null)
-                ? AssetImage('assets/images/$title.png')
-                : AssetImage('assets/images/$image.png'),
-            color: Style.prime[900],
+          minLeadingWidth: Get.width / 8,
+          leading: CircleAvatar(
+            radius: 45,
+            foregroundColor: Colors.transparent,
+            backgroundColor: Colors.transparent,
+            child: (!isSubscreen)
+                ? Image(
+                    image: (image == null)
+                        ? AssetImage('assets/images/$title.png')
+                        : AssetImage('assets/images/$image.png'),
+                    color: Style.prime[900],
+                  )
+                : (image == null)
+                    ? Image(image: AssetImage('assets/images/haha2.png'))
+                    : Image(
+                        image: NetworkImage(image!),
+                      ),
           ),
           title: Text(
-            '$title ($allowedMeal)',
+            (allowedMeal != null)
+                ? '$title ($allowedMeal)'
+                : title.capitalizeFirst!,
             style: Style.subtitle.copyWith(
-              fontSize: 16,
+              fontSize: 14,
               letterSpacing: 0.5,
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w500,
               color: Style.accent[700],
             ),
           ),

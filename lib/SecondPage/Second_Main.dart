@@ -380,14 +380,18 @@ class PlansContainer extends StatelessWidget {
           alignment: Alignment.center,
           children: [
             Positioned(
-              left: Get.width / 6,
+              // left: Get.width / 6,
+              left: 0,
               child: Container(
-                width: Get.width / 1.4,
+                // width: Get.width / 1.4,
+                width: Get.width - 40,
                 padding: EdgeInsets.only(
-                  left: Get.width / 6,
+                  // left: Get.width / 6,
+                  left: Get.width / 3.2,
                   top: 24,
                   bottom: 24,
-                  right: Get.width / 10,
+                  right: 12,
+                  // right: Get.width / 8,
                 ),
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -400,13 +404,14 @@ class PlansContainer extends StatelessWidget {
                     ),
                   ],
                   borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(80),
-                    bottomLeft: Radius.circular(80),
-                    topRight: Radius.circular(16),
-                    bottomRight: Radius.circular(16),
+                    //previously it was 80 for top left and bottomleft
+                    topLeft: Radius.circular(8),
+                    bottomLeft: Radius.circular(8),
+                    topRight: Radius.circular(8),
+                    bottomRight: Radius.circular(8),
                   ),
                   border: Border.all(
-                    width: 0.3,
+                    width: 0.083,
                     color: Style.accent,
                     style: BorderStyle.solid,
                   ),

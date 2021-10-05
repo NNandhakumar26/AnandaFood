@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:subscription_mobile_app/Lang/localization_service.dart';
+import 'package:subscription_mobile_app/LastPage/AddressList.dart';
 import 'package:subscription_mobile_app/LastPage/CartPage.dart';
 import 'package:subscription_mobile_app/LastPage/addressPage.dart';
+import 'package:subscription_mobile_app/groupPage.dart';
 
 import '../LoginScreen.dart';
 import '../Theme.dart';
@@ -18,15 +22,30 @@ class ColourPicker extends StatefulWidget {
 
 class _ColourPickerState extends State<ColourPicker> {
   final storage = GetStorage();
+  String? userID;
+  String? lng;
 
   late Color dialogSelectColor;
 
   @override
   void initState() {
     super.initState();
+    lng = LocalizationService().getCurrentLang();
 
     // A purple color.,
     dialogSelectColor = Color(int.parse('0xFF' + storage.read('primary')));
+  }
+
+  Future sharedPref() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs != null) {
+      setState(() {
+        userID = prefs.get('custID').toString();
+      });
+      return prefs;
+    } else {
+      return null;
+    }
   }
 
   @override
@@ -73,173 +92,282 @@ class _ColourPickerState extends State<ColourPicker> {
     // // };
 
     return SafeArea(
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 32,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Card(
-                color: Style.white,
-                elevation: 24,
-                shadowColor: Style.accent[50]!.withOpacity(0.24),
-                child: ListTile(
-                  onTap: () {
-                    // Get.to(AboutPage());
-                  },
-                  contentPadding: EdgeInsets.all(10),
-                  dense: true,
-                  title: Row(
-                    children: [
-                      Container(
-                        width: Get.width / 2.5,
-                        child: Text(
-                          'Johar Mandov',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: 0.8,
-                            color: Style.accent[900]!.withOpacity(0.87),
-                          ),
+      child: Scaffold(
+        // appBar: AppBar(
+        //   title: Row(
+        //     children: [
+        //       Container(
+        //         alignment: Alignment.topRight,
+        //         child: Text(
+        //           'الملف الشخصي',
+        //           style: Style.subtitle
+        //               .copyWith(fontSize: 32, color: Colors.white),
+        //         ),
+        //       ),
+        //       Padding(
+        //         padding: const EdgeInsets.only(left: 10),
+        //         child: Text(
+        //           'Profile',
+        //           style: Style.subtitle
+        //               .copyWith(color: Colors.white, fontSize: 19),
+        //         ),
+        //       ),
+        //     ],
+        //   ),
+        // ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 32,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Card(
+                  color: Style.white,
+                  elevation: 24,
+                  shadowColor: Style.accent[50]!.withOpacity(0.24),
+                  child: FutureBuilder(
+                    future: sharedPref(),
+                    builder: (context, AsyncSnapshot snapshot) {
+                      if (snapshot.connectionState != ConnectionState.none) {
+                        if (snapshot.hasData) {
+                          var email = snapshot.data.get('email');
+                          var number = snapshot.data.get('number');
+                          return ListTile(
+                            onTap: () {
+                              // Get.to(AboutPage());
+                            },
+                            contentPadding: EdgeInsets.all(10),
+                            dense: true,
+                            title: Container(
+                              padding: EdgeInsets.symmetric(vertical: 4),
+                              child: Text(
+                                email.toString(),
+                                softWrap: false,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: 0.8,
+                                  color: Style.accent[900]!.withOpacity(0.87),
+                                ),
+                              ),
+                            ),
+                            leading: CircleAvatar(
+                              radius: 40,
+                              foregroundColor: Style.prime,
+                              backgroundColor: Style.prime,
+                              foregroundImage:
+                                  AssetImage('assets/images/Profile2.jpg'),
+                              // child: (controller.imageUrl.value == null)
+                              //     ? Container(
+                              //         color: Styling.primary,
+                              //       )
+                              //     : Container(
+                              //         height: 150.h,
+                              //         width: 150.w,
+                              //         decoration: new BoxDecoration(
+                              //           shape: BoxShape.circle,
+                              //           image: new DecorationImage(
+                              //             fit: BoxFit.cover,
+                              //             image: NetworkImage(
+                              //                 controller.imageUrl.value.toString()),
+                              //           ),
+                              //         ),
+                              //       ),
+                            ),
+                            trailing: SizedBox(
+                              width: Get.width / 8,
+                              child: Icon(
+                                Icons.edit_outlined,
+                                color: Style.accent[700],
+                                size: 20,
+                              ),
+                            ),
+                            subtitle: Text(
+                              number.toString(),
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: 0.4,
+                                color: Style.accent[300]!.withOpacity(0.60),
+                                // color: lightTextColor,
+                              ),
+                            ),
+                          );
+                        } else
+                          return Container(
+                            child: Text(snapshot.hasError.toString()),
+                          );
+                      }
+                      return Container();
+                    },
+                  ),
+                  // ),
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: ColourTool(
+                  type: 'primary',
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: ColourTool(
+                  type: 'accent',
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Style.accent[300]!,
+                    width: 0.4,
+                  ),
+                  borderRadius: BorderRadius.circular(4),
+                  color: Style.white,
+                ),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Others'.toUpperCase(),
+                        style: Style.subtitle.copyWith(
+                          color: Style.accent[900],
+                          fontSize: 16,
+                          letterSpacing: 0.48,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
-                      SizedBox(
-                        height: 24,
-                      ),
-                    ],
-                  ),
-                  leading: CircleAvatar(
-                    radius: 40,
-                    foregroundColor: Style.prime,
-                    backgroundColor: Style.prime,
-                    foregroundImage: AssetImage('assets/images/Profile2.jpg'),
-                    // child: (controller.imageUrl.value == null)
-                    //     ? Container(
-                    //         color: Styling.primary,
-                    //       )
-                    //     : Container(
-                    //         height: 150.h,
-                    //         width: 150.w,
-                    //         decoration: new BoxDecoration(
-                    //           shape: BoxShape.circle,
-                    //           image: new DecorationImage(
-                    //             fit: BoxFit.cover,
-                    //             image: NetworkImage(
-                    //                 controller.imageUrl.value.toString()),
-                    //           ),
-                    //         ),
-                    //       ),
-                  ),
-                  trailing: SizedBox(
-                    width: 50,
-                    child: Icon(
-                      Icons.edit_outlined,
-                      color: Style.accent[700],
-                      size: 20,
                     ),
-                  ),
-                  subtitle: Text(
-                    '+91 95854 47986',
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                      color: Style.accent[500]!.withOpacity(0.87),
-                      // color: lightTextColor,
-                    ),
-                  ),
-                ),
-                // ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: ColourTool(
-                type: 'primary',
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: ColourTool(
-                type: 'accent',
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-              padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Style.accent[300]!,
-                  width: 0.4,
-                ),
-                borderRadius: BorderRadius.circular(4),
-                color: Style.white,
-              ),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Others'.toUpperCase(),
-                      style: Style.subtitle.copyWith(
-                        color: Style.prime[900],
-                        fontSize: 16,
-                        letterSpacing: 0.48,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      SettingsCard(
-                        title: 'Address',
-                        onPressed: () {
-                          return Get.to(AddressPage());
-                        },
-                      ),
-                      SettingsCard(
-                        title: 'Nutritional Support',
-                        onPressed: () {
-                          Get.dialog(
-                            Container(
-                              margin: EdgeInsets.only(
-                                left: 24,
-                                right: 24,
-                                top: 48,
+                    Row(
+                      children: [
+                        SettingsCard(
+                          image: 'location (1).png',
+                          title: 'address'.tr,
+                          onPressed: () {
+                            return Get.to(AddressList());
+                          },
+                        ),
+                        SettingsCard(
+                          image: 'support (1).png',
+                          title: 'nutri_support'.tr,
+                          onPressed: () {
+                            Get.dialog(
+                              Container(
+                                margin: EdgeInsets.only(
+                                  left: 24,
+                                  right: 24,
+                                  top: 48,
+                                ),
+                                child: LoginPopupContainer(),
                               ),
-                              child: LoginPopupContainer(),
-                            ),
-                            barrierDismissible: false,
-                          );
-                        },
-                      ),
-                      SettingsCard(
-                        title: 'Technical Support',
-                        onPressed: () {
-                          Get.to(ContractPage());
-                        },
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      SettingsCard(
-                        title: 'Language',
-                        onPressed: () {
-                          Get.to(CartPage());
-                        },
-                      ),
-                      SettingsCard(title: 'Support'),
-                      SettingsCard(
-                        title: 'Log Out',
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            )
-          ],
+                              barrierDismissible: false,
+                            );
+                          },
+                        ),
+                        SettingsCard(
+                          image: 'support (1).png',
+                          title: 'tech_support'.tr,
+                          onPressed: () {
+                            Get.to(ContractPage());
+                          },
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        SettingsCard(
+                          image: 'translation.png',
+                          title: 'language'.tr,
+                          onPressed: () {
+                            Get.dialog(
+                              Scaffold(
+                                backgroundColor: Colors.transparent,
+                                body: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 8, vertical: 16),
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: 60, vertical: 260),
+                                  color: Style.white,
+                                  child: SingleChildScrollView(
+                                    // child: Column(
+                                    //   children: [
+                                    //     RadioListTile(value: value, groupValue: groupValue, onChanged: onChanged)
+                                    //     RadioListTile(value: value, groupValue: groupValue, onChanged: onChanged)
+                                    //   ],
+                                    // )
+                                    child: Column(
+                                      children: LocalizationService.langs.map(
+                                        (String value) {
+                                          return RadioListTile(
+                                            title: Text(
+                                              value.toString(),
+                                              style: Style.subtitle.copyWith(
+                                                fontSize: 16,
+                                                color: Style.accent[700],
+                                                letterSpacing: 0.8,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                            tileColor:
+                                                Style.white.withOpacity(0.87),
+                                            value: value,
+                                            groupValue: this.lng,
+                                            onChanged: (String? values) async {
+                                              setState(
+                                                () {
+                                                  this.lng = values;
+                                                  LocalizationService()
+                                                      .changeLocale(values!);
+                                                },
+                                              );
+                                              Get.back();
+                                            },
+                                            // ),
+                                          );
+                                        },
+                                      ).toList(),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                            // Get.to(CartPage());
+                          },
+                        ),
+                        SettingsCard(
+                          image: 'whatsapp.png',
+                          title: 'support'.tr,
+                        ),
+                        SettingsCard(
+                          image: 'exit.png',
+                          title: 'logout'.tr,
+                          onPressed: () async {
+                            SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                            prefs.clear();
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => GroupPage(),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -247,7 +375,7 @@ class _ColourPickerState extends State<ColourPicker> {
 }
 
 class SettingsCard extends StatelessWidget {
-  final Image? image;
+  final String? image;
   final String? title;
   final Function? onPressed;
 
@@ -275,9 +403,12 @@ class SettingsCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8),
                 child: Image(
-                  image: AssetImage('assets/images/Hotel.png'),
+                  image: AssetImage('assets/images/$image'),
                   height: 40,
                   width: 40,
+                  color: (image != 'whatsapp.png')
+                      ? Style.prime[900]
+                      : Colors.red.withOpacity(0.1),
                 ),
               ),
               Container(
@@ -289,6 +420,7 @@ class SettingsCard extends StatelessWidget {
                   child: Text(
                     title ?? '',
                     textAlign: TextAlign.center,
+
                     style: Style.subtitle.copyWith(
                       fontSize: 14,
                       color: Style.accent[300],

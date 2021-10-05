@@ -265,7 +265,7 @@ class CustomContainer extends StatelessWidget {
               },
               child: Container(
                 decoration: BoxDecoration(
-                  color: Style.accent.withOpacity(0.87),
+                  color: Style.accent[700]!.withOpacity(0.87),
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(20),
                     bottomRight: Radius.circular(20),
@@ -280,7 +280,7 @@ class CustomContainer extends StatelessWidget {
                       style: Style.title.copyWith(
                         fontWeight: FontWeight.w600,
                         fontSize: 14,
-                        letterSpacing: 0.8,
+                        letterSpacing: 1.2,
                         color: Style.white.withOpacity(0.87),
                       ),
                     ),
@@ -396,12 +396,12 @@ class CustomContainer extends StatelessWidget {
                                           margin: EdgeInsets.symmetric(
                                               horizontal: 4),
                                           decoration: BoxDecoration(
-                                            color: Style.colors[Random()
-                                                    .nextInt(
-                                                        Style.colors.length)]!
-                                                .withOpacity(0.60),
-                                            shape: BoxShape.circle,
-                                          ),
+                                              color: Style.colors[Random()
+                                                      .nextInt(
+                                                          Style.colors.length)]!
+                                                  .withOpacity(0.87),
+                                              // color: Style.prime[900],
+                                              shape: BoxShape.circle),
                                         ),
                                         Padding(
                                           padding: EdgeInsets.symmetric(

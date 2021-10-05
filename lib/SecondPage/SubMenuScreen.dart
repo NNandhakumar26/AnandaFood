@@ -44,13 +44,13 @@ class _SubMenuScreenState extends State<SubMenuScreen> {
                 if (snapshot.data['data'][0]['ShortName'] != null) {
                   var showData = snapshot.data;
                   var showDataList = showData["data"];
-                  print(showData['data'][1]['ProdName1']);
-                  print('Came In');
+
                   //INCLUDE A DIVIDER IF REQUIRED
                   return Container(
-                    height: 500,
-                    color: Colors.blue,
+                    // height: 500,
+                    // color: Colors.blue,
                     child: ListView.builder(
+                      physics: BouncingScrollPhysics(),
                       itemCount: showData['data'].length,
                       itemBuilder: (context, index) {
                         // return Container(
@@ -59,6 +59,7 @@ class _SubMenuScreenState extends State<SubMenuScreen> {
                         //   color: Colors.red,
                         // );
                         return CustomCard(
+                          isSubscreen: true,
                           onTap: () {
                             Get.to(
                               MealDetailPage(),

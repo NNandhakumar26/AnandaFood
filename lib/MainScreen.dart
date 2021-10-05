@@ -34,155 +34,159 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: RichText(
-          text: TextSpan(
-            children: [
-              TextSpan(
-                text: 'your_existing'.tr,
-              ),
-              TextSpan(
-                text: 'plan'.tr,
-              )
-            ],
-          ),
-        ),
-      ),
-      body: Container(
-        height: Get.height,
-        width: Get.width,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 10,
-              ),
-              FutureBuilder(
-                future: _queryMain(),
-                builder: (context, AsyncSnapshot snap) {
-                  if (snap.connectionState == ConnectionState.done) {
-                    if (snap.data != null &&
-                        snap.data.isNotEmpty &&
-                        queryListForHd.isNotEmpty) {
-                      return Container(
+    return SafeArea(
+      child: Scaffold(
+        // appBar: AppBar(
+        //   leading: Container(),
+        //   title: RichText(
+        //     text: TextSpan(
+        //       children: [
+        //         TextSpan(
+        //           text: 'your_existing'.tr,
+        //         ),
+        //         TextSpan(
+        //           text: 'plan'.tr,
+        //         )
+        //       ],
+        //     ),
+        //   ),
+        // ),
+
+        body: Container(
+          height: Get.height,
+          width: Get.width,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 10,
+                ),
+                FutureBuilder(
+                  future: _queryMain(),
+                  builder: (context, AsyncSnapshot snap) {
+                    if (snap.connectionState == ConnectionState.done) {
+                      if (snap.data != null &&
+                          snap.data.isNotEmpty &&
+                          queryListForHd.isNotEmpty) {
+                        return Container(
                           height: MediaQuery.of(context).size.height * 0.28,
                           width: MediaQuery.of(context).size.width,
                           child: ListView.builder(
-                              physics: BouncingScrollPhysics(),
-                              scrollDirection: Axis.horizontal,
-                              itemCount: snap.data.length,
-                              itemBuilder: (context, index) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) {
-                                          return Container();
-                                          // return MealSelection(
-                                          //   planId: queryListForHd[index]
-                                          //       ['planid'],
-                                          //   transId: queryListForHd[index]
-                                          //       ['mytransid'],
-                                          // );
-                                        },
-                                      ),
-                                    );
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Stack(
-                                      children: [
-                                        Container(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.28,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.9,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(20),
-                                              color: Style.prime
-                                                  .withOpacity(0.11)),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.9,
-                                                child: Image(
-                                                  fit: BoxFit.fitWidth,
-                                                  image: AssetImage(
-                                                      'assets/images/haha2.png'),
-                                                ),
+                            physics: BouncingScrollPhysics(),
+                            scrollDirection: Axis.horizontal,
+                            itemCount: snap.data.length,
+                            itemBuilder: (context, index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return Container();
+                                        // return MealSelection(
+                                        //   planId: queryListForHd[index]
+                                        //       ['planid'],
+                                        //   transId: queryListForHd[index]
+                                        //       ['mytransid'],
+                                        // );
+                                      },
+                                    ),
+                                  );
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Stack(
+                                    children: [
+                                      Container(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.28,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.9,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          color: Style.prime.withOpacity(0.11),
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.9,
+                                              child: Image(
+                                                fit: BoxFit.fitWidth,
+                                                image: AssetImage(
+                                                    'assets/images/haha2.png'),
                                               ),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 10.0),
-                                                    child: Container(
-                                                      width:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width *
-                                                              0.6,
-                                                      child: Text(
-                                                        '${planTitlesList.length != 0 ? planTitlesList[index] : ""}',
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                      ),
+                                            ),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 10.0),
+                                                  child: Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.6,
+                                                    child: Text(
+                                                      '${planTitlesList.length != 0 ? planTitlesList[index] : ""}',
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                     ),
                                                   ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            right: 10),
-                                                    child: Text(
-                                                      '${queryListForHd[index]['mytransid']}',
-                                                    ),
-                                                  )
-                                                ],
-                                              )
-                                            ],
-                                          ),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 10),
+                                                  child: Text(
+                                                    '${queryListForHd[index]['mytransid']}',
+                                                  ),
+                                                )
+                                              ],
+                                            )
+                                          ],
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
-                                );
-                              }));
+                                ),
+                              );
+                            },
+                          ),
+                        );
+                      } else {
+                        return Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 30),
+                          child: Text(
+                            'no_active_plan'.tr,
+                            textAlign: TextAlign.center,
+                          ),
+                        );
+                      }
                     } else {
-                      return Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 30),
-                        child: Text(
-                          'no_active_plan'.tr,
-                          textAlign: TextAlign.center,
-                        ),
-                      );
+                      return CircularProgressIndicator();
                     }
-                  } else {
-                    return CircularProgressIndicator();
-                  }
-                },
-              ),
-              SecondPage(
-                groups: groups,
-                isLoggedIn: true,
-              )
-            ],
+                  },
+                ),
+                SecondPage(
+                  groups: groups,
+                  isLoggedIn: true,
+                )
+              ],
+            ),
           ),
         ),
       ),

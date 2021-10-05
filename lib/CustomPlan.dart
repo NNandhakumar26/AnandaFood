@@ -282,6 +282,7 @@ class _CustomisePlanState extends State<CustomisePlan> {
                                 child: ListTile(
                                   minVerticalPadding: 4,
                                   // minLeadingWidth: Get.width / 24,
+                                  minLeadingWidth: 8,
                                   leading: CircleAvatar(
                                     maxRadius: 48.0,
                                     foregroundColor: Colors.red,
