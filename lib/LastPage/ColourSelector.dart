@@ -5,8 +5,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:subscription_mobile_app/Lang/localization_service.dart';
 import 'package:subscription_mobile_app/LastPage/AddressList.dart';
-import 'package:subscription_mobile_app/LastPage/CartPage.dart';
-import 'package:subscription_mobile_app/LastPage/addressPage.dart';
+
 import 'package:subscription_mobile_app/groupPage.dart';
 
 import '../LoginScreen.dart';
@@ -468,6 +467,64 @@ class _ColourToolState extends State<ColourTool> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
         child: ListTile(
+          onTap: () async {
+            final Color newColor = await showColorPickerDialog(
+              // The dialog needs a context, we pass it in.
+              context,
+              // We use the dialogSelectColor, as its starting color.
+              dialogSelectColor,
+              title: Text('ColorPicker',
+                  style: Theme.of(context).textTheme.headline6),
+              width: 40,
+              height: 40,
+              spacing: 0,
+              runSpacing: 0,
+              borderRadius: 0,
+              wheelDiameter: 165,
+              enableOpacity: true,
+              showColorCode: true,
+              colorCodeHasColor: true,
+              //CHECK WHAT IT IS
+              // customColorSwatchesAndNames: customSwatches,
+
+              pickersEnabled: <ColorPickerType, bool>{
+                ColorPickerType.wheel: true,
+                ColorPickerType.primary: false,
+                ColorPickerType.accent: false,
+              },
+              copyPasteBehavior: const ColorPickerCopyPasteBehavior(
+                copyButton: true,
+                pasteButton: false,
+                longPressMenu: false,
+              ),
+              actionButtons: const ColorPickerActionButtons(
+                okButton: true,
+                closeButton: true,
+                dialogActionButtons: true,
+              ),
+              constraints: const BoxConstraints(
+                minHeight: 480,
+                minWidth: 320,
+                maxWidth: 320,
+              ),
+            );
+
+            setState(
+              () {
+                dialogSelectColor = newColor;
+                storage.write(
+                    widget.type,
+                    dialogSelectColor
+                        .toString()
+                        .toUpperCase()
+                        .replaceAll('COLOR(0XFF', '')
+                        .replaceAll(')', ''));
+                Get.snackbar(
+                    'Hey User', 'Restart Application to see colour change');
+                print('colur value is ${storage.read(widget.type)}');
+              },
+            );
+          },
           dense: true,
           title: Text(
             '${widget.type.toUpperCase()} Colour'.toUpperCase(),
@@ -496,62 +553,62 @@ class _ColourToolState extends State<ColourTool> {
             onSelectFocus: false,
             onSelect: () async {
               // Wait for the dialog to return color selection result.
-              final Color newColor = await showColorPickerDialog(
-                // The dialog needs a context, we pass it in.
-                context,
-                // We use the dialogSelectColor, as its starting color.
-                dialogSelectColor,
-                title: Text('ColorPicker',
-                    style: Theme.of(context).textTheme.headline6),
-                width: 40,
-                height: 40,
-                spacing: 0,
-                runSpacing: 0,
-                borderRadius: 0,
-                wheelDiameter: 165,
-                enableOpacity: true,
-                showColorCode: true,
-                colorCodeHasColor: true,
-                //CHECK WHAT IT IS
-                // customColorSwatchesAndNames: customSwatches,
+              // final Color newColor = await showColorPickerDialog(
+              //   // The dialog needs a context, we pass it in.
+              //   context,
+              //   // We use the dialogSelectColor, as its starting color.
+              //   dialogSelectColor,
+              //   title: Text('ColorPicker',
+              //       style: Theme.of(context).textTheme.headline6),
+              //   width: 40,
+              //   height: 40,
+              //   spacing: 0,
+              //   runSpacing: 0,
+              //   borderRadius: 0,
+              //   wheelDiameter: 165,
+              //   enableOpacity: true,
+              //   showColorCode: true,
+              //   colorCodeHasColor: true,
+              //   //CHECK WHAT IT IS
+              //   // customColorSwatchesAndNames: customSwatches,
 
-                pickersEnabled: <ColorPickerType, bool>{
-                  ColorPickerType.wheel: true,
-                  ColorPickerType.primary: false,
-                  ColorPickerType.accent: false,
-                },
-                copyPasteBehavior: const ColorPickerCopyPasteBehavior(
-                  copyButton: true,
-                  pasteButton: false,
-                  longPressMenu: false,
-                ),
-                actionButtons: const ColorPickerActionButtons(
-                  okButton: true,
-                  closeButton: true,
-                  dialogActionButtons: true,
-                ),
-                constraints: const BoxConstraints(
-                  minHeight: 480,
-                  minWidth: 320,
-                  maxWidth: 320,
-                ),
-              );
+              //   pickersEnabled: <ColorPickerType, bool>{
+              //     ColorPickerType.wheel: true,
+              //     ColorPickerType.primary: false,
+              //     ColorPickerType.accent: false,
+              //   },
+              //   copyPasteBehavior: const ColorPickerCopyPasteBehavior(
+              //     copyButton: true,
+              //     pasteButton: false,
+              //     longPressMenu: false,
+              //   ),
+              //   actionButtons: const ColorPickerActionButtons(
+              //     okButton: true,
+              //     closeButton: true,
+              //     dialogActionButtons: true,
+              //   ),
+              //   constraints: const BoxConstraints(
+              //     minHeight: 480,
+              //     minWidth: 320,
+              //     maxWidth: 320,
+              //   ),
+              // );
 
-              setState(
-                () {
-                  dialogSelectColor = newColor;
-                  storage.write(
-                      widget.type,
-                      dialogSelectColor
-                          .toString()
-                          .toUpperCase()
-                          .replaceAll('COLOR(0XFF', '')
-                          .replaceAll(')', ''));
-                  Get.snackbar(
-                      'Hey User', 'Restart Application to see colour change');
-                  print('colur value is ${storage.read(widget.type)}');
-                },
-              );
+              // setState(
+              //   () {
+              //     dialogSelectColor = newColor;
+              //     storage.write(
+              //         widget.type,
+              //         dialogSelectColor
+              //             .toString()
+              //             .toUpperCase()
+              //             .replaceAll('COLOR(0XFF', '')
+              //             .replaceAll(')', ''));
+              //     Get.snackbar(
+              //         'Hey User', 'Restart Application to see colour change');
+              //     print('colur value is ${storage.read(widget.type)}');
+              //   },
+              // );
             },
           ),
         ),

@@ -50,7 +50,7 @@ class _PlansAvailableScreenState extends State<PlansAvailableScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color(0xffF5F7FB),
+        backgroundColor: Style.white,
         appBar: AppBar(
           backgroundColor: Style.white.withOpacity(0.87),
           centerTitle: true,
@@ -88,6 +88,7 @@ class _PlansAvailableScreenState extends State<PlansAvailableScreen> {
         body: Container(
           height: Get.height,
           width: Get.width,
+          color: Style.prime[50]!.withOpacity(0.008),
           child: (plans.length != 0)
               ? ListView.builder(
                   itemCount: plans.length,
@@ -228,9 +229,10 @@ class CustomContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var temp = desc.split(', ');
+    temp.remove(',');
 
     return Container(
-      height: Get.height / 3.16,
+      height: Get.height / 3.2,
       margin: EdgeInsets.symmetric(
         horizontal: 16,
         vertical: 8,
@@ -245,9 +247,9 @@ class CustomContainer extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: Style.accent[50]!.withOpacity(0.32),
-            blurRadius: 20,
-            spreadRadius: 0.5,
+            color: Style.accent[50]!.withOpacity(0.16),
+            blurRadius: 6,
+            spreadRadius: 4.8,
             offset: Offset(0.8, 0.5),
           ),
         ],
@@ -396,10 +398,12 @@ class CustomContainer extends StatelessWidget {
                                           margin: EdgeInsets.symmetric(
                                               horizontal: 4),
                                           decoration: BoxDecoration(
-                                              color: Style.colors[Random()
-                                                      .nextInt(
-                                                          Style.colors.length)]!
-                                                  .withOpacity(0.87),
+                                              // color: Style.colors[Random()
+                                              //         .nextInt(
+                                              //             Style.colors.length)]!
+                                              //     .withOpacity(0.87),
+                                              color: Style.colors[i]!
+                                                  .withOpacity(0.60),
                                               // color: Style.prime[900],
                                               shape: BoxShape.circle),
                                         ),

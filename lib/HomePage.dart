@@ -22,12 +22,8 @@ class _HomepageState extends State<Homepage> {
     FirstScreen(),
     // GroupPage(),
     MainScreen(),
-    // SecondPage(),
     Center(
-      child: InkWell(
-        onTap: () {},
-        child: Text("nothing"),
-      ),
+      child: Text('data'),
     ),
     Center(
       child: Container(
@@ -137,15 +133,8 @@ class _HomepageState extends State<Homepage> {
               icon: Icon(Icons.favorite_border),
             ),
             DotNavigationBarItem(
-              icon: InkWell(
-                onTap: () async {
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
-                  prefs.clear();
-                },
-                child: Icon(
-                  Icons.circle_notifications_outlined,
-                ),
+              icon: Icon(
+                Icons.circle_notifications_outlined,
               ),
             ),
 

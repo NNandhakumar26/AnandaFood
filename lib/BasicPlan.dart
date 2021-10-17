@@ -1,14 +1,18 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:subscription_mobile_app/CustomPlan.dart';
 import 'package:subscription_mobile_app/Theme.dart';
 import 'package:subscription_mobile_app/utils.dart';
 import 'dart:convert';
 import 'Services/Constants.dart';
 import 'database/dbhelper.dart';
 import 'database/table_fields.dart';
+import 'models/generate_contract_response.dart';
+import 'models/plan_days_response.dart';
 
 class BasicPlan extends StatefulWidget {
   const BasicPlan({Key? key}) : super(key: key);
@@ -28,6 +32,10 @@ class _BasicPlanState extends State<BasicPlan> {
   List mealPlan = [];
   List<String> mealNames = [];
   var planDays = 0;
+  //or make it to late
+  GenerateContractResponse? generateContractResponse;
+
+  List<PlanDaysClass> planClassDays = [];
 
   @override
   void initState() {
@@ -36,6 +44,8 @@ class _BasicPlanState extends State<BasicPlan> {
     getNextMyTransId();
     planMealCustomerInvoiceMoreHd();
     setPlaDays();
+    getPlanDays();
+    generateCustomerContract();
   }
 
   @override
@@ -44,6 +54,16 @@ class _BasicPlanState extends State<BasicPlan> {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Colors.white,
+              size: 18,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
           backgroundColor: Style.prime[900],
           foregroundColor: Style.white,
           title: FutureBuilder(
@@ -55,29 +75,26 @@ class _BasicPlanState extends State<BasicPlan> {
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    IconButton(
-                      icon: Icon(
-                        Icons.arrow_back_ios,
-                        color: Colors.white,
-                        size: 25,
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
                     Container(
-                      width: Get.width * 0.6,
+                      width: Get.width * 0.72,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             planTitle.toString(),
-                            style: Style.title,
+                            style: Style.title.copyWith(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: 0.8,
+                                color: Style.white.withOpacity(0.87)),
                           ),
                           Text(
                             "Menu",
-                            style: Style.title,
+                            style: Style.title.copyWith(
+                              color: Style.white,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ],
                       ),
@@ -93,300 +110,441 @@ class _BasicPlanState extends State<BasicPlan> {
         body: Container(
           height: Get.height,
           width: Get.width,
+          padding: EdgeInsets.all(8),
           child: SingleChildScrollView(
-              child: FutureBuilder(
-            future: generateCustomerContract(),
-            builder: (context, AsyncSnapshot snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Padding(
-                  padding: EdgeInsets.only(top: Get.height * 0.3),
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                );
-              } else {
-                if (snapshot.data['status'] == 200) {
-                  return Container(
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            _selectDate(context);
-                          },
-                          child: NewWidget(
-                            title: '${snapshot.data['data']['StartDate']}',
-                          ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: Style.accent[300]!,
+                          width: 0.8,
                         ),
-                        //KINDA LOADING SCREEN..
-                        FutureBuilder(
-                          future: dbHelper.querySubscriptionSetup(),
-                          builder: (context, AsyncSnapshot snap) {
-                            if (snap.connectionState == ConnectionState.done) {
-                              return Text(
-                                'Delivery starts ${snap.data['Delivery_in_day']} days after the selected Date',
-                                style: Style.subtitle,
-                              );
-                            } else {
-                              return CircularProgressIndicator();
-                            }
-                          },
-                        ),
-                        GestureDetector(
-                          child: NewWidget(
-                            title: '${snapshot.data['data']['EndDate']}',
-                          ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            CupertinoSwitch(
-                                activeColor: Style.prime,
-                                value: this.value,
-                                onChanged: (value) {
-                                  setState(() {
-                                    this.value = value;
-                                  });
-                                }),
-                            SizedBox(
-                              width: 5,
-                            ), //SizedBox
-                            Text(
-                              'Deliver me on Holidays',
-                              style: Style.subtitle.copyWith(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: Style.accent[700],
-                                letterSpacing: 0.8,
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        Container(
-                          width: MediaQuery.of(context).size.width * 0.7,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  offset: Offset(0, 3),
-                                  color: Colors.black12,
-                                  blurRadius: 12,
-                                )
-                              ]),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 14),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      '${snapshot.data['data']['TotalWeek']}',
-                                      style: Style.title.copyWith(
-                                        color: Style.prime[900],
-                                        fontSize: 32,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 7,
-                                    ),
-                                    Text(
-                                      'Weeks',
-                                      style: Style.subtitle.copyWith(
-                                        color: Colors.black87,
-                                        fontSize: 24,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      '$planDays',
-                                      style: Style.subtitle.copyWith(
-                                        color: Style.prime[3000],
-                                        fontSize: 30,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 7,
-                                    ),
-                                    Text(
-                                      'Days',
-                                      style: Style.subtitle.copyWith(
-                                        color: Colors.black87,
-                                        fontSize: 20,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        FutureBuilder(
-                          future: getMealsOfAPlan(),
-                          builder: (context, snap) {
-                            if (snap.data != null) {
-                              var data = snap.data;
-                              return Container(
-                                height: 111,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: Style.prime[300],
-                                ),
-                                margin: EdgeInsets.all(15),
-                                padding: EdgeInsets.all(15),
-                                child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount:
-                                      mealNames != null ? mealNames.length : 0,
-                                  itemBuilder: (context, index) {
-                                    String item = "";
-                                    mealNames != null
-                                        ? item = mealNames[index]
-                                        : item = "";
-                                    return Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Image(
-                                          image: AssetImage(
-                                              'assets/images/$item.png'),
-                                        ),
-                                        Text(
-                                          '$item',
-                                          style: Style.subtitle.copyWith(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
-                                            color: Style.prime[500],
-                                          ),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                ),
-                              );
-                            } else {
-                              return CircularProgressIndicator();
-                            }
-                          },
-                        ),
-                        GestureDetector(
-                          onTap: () async {
-                            showDialog(
-                              barrierDismissible: false,
-                              context: context,
-                              builder: (context) {
-                                Future.delayed(
-                                  Duration(seconds: 5),
-                                  () {
-                                    try {
-                                      _insert(snapshot.data['data']
-                                          ['planmealinvoiceHD']);
-                                      _insertMoreHd().then(
-                                        (value) {
-                                          // mealPlan.clear();
-                                        },
-                                      );
-                                    } catch (e) {
-                                      Get.snackbar(
-                                        'Response',
-                                        '',
-                                        duration: Duration(seconds: 2),
-                                        margin: EdgeInsets.all(16),
-                                        padding: EdgeInsets.all(16),
-                                        forwardAnimationCurve:
-                                            Curves.easeInCubic,
-                                        titleText: Text(
-                                          "Your Plan is Already Active",
-                                          style: Style.subtitle.copyWith(
-                                            color: Style.white,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                        messageText: Text(
-                                          '',
-                                          style: Style.subtitle.copyWith(
-                                            color: Style.white,
-                                          ),
-                                        ),
-                                        colorText: Style.white,
-                                        borderRadius: 8,
-                                        backgroundColor: Style.accent[300]!
-                                            .withOpacity(0.87),
-                                      );
-
-                                      // Toast.show("Your Plan is Already Active",
-                                      //     context,
-                                      //     duration: 5);
-                                    }
-                                    Navigator.pop(context);
-                                    // Navigator.push(
-                                    //   context,
-                                    //   MaterialPageRoute(
-                                    //     builder: (context) => PackageDetails(
-                                    //       genratedContract: snapshot.data,
-                                    //       transId: myTransId,
-                                    //     ),
-                                    //   ),
-                                    // );
-                                  },
-                                );
-                                return Center(
-                                    child: CircularProgressIndicator());
-                              },
-                            );
-                          },
-                          child: Container(
-                            width: MediaQuery.of(context).size.width - 100,
-                            height: 45,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: Style.prime[300],
-                              borderRadius: BorderRadius.circular(25),
-                            ),
-                            child: Text(
-                              'Confirm',
-                              style: Style.title.copyWith(
-                                fontSize: 18,
-                                color: Style.white,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                } else if (snapshot.data['status'] == 400) {
-                  return Container(
-                    alignment: Alignment.center,
-                    height: Get.height * 0.6,
-                    width: Get.width * 0.6,
-                    child: Center(
+                      ),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                       child: Text(
-                        '${snapshot.data['message']}',
-                        textAlign: TextAlign.center,
-                        style: Style.title,
+                        "Days",
+                        style: Style.subtitle.copyWith(
+                          color: Style.accent,
+                          fontSize: 14,
+                          letterSpacing: 0.4,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        textAlign: TextAlign.right,
                       ),
                     ),
-                  );
-                } else {
-                  return Container(
-                    alignment: Alignment.center,
-                    height: Get.height * 0.65,
-                    child: Center(
-                      child: Text('${snapshot.data['message']}'),
+                    Container(
+                      height: 30,
+                      width: MediaQuery.of(context).size.width - 120,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        physics: BouncingScrollPhysics(),
+                        itemCount:
+                            planClassDays == null ? 0 : planClassDays.length,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () async {
+                              planClassDays.forEach(
+                                (planDay) {
+                                  planDay.isSelected = false;
+                                },
+                              );
+                              setState(
+                                () {
+                                  planClassDays[index].isSelected = true;
+                                },
+                              );
+                              var preferences =
+                                  await SharedPreferences.getInstance();
+                              preferences.setInt(
+                                  'planDays', planClassDays[index].noOfDays);
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: planClassDays == null
+                                    ? Style.prime
+                                    : planClassDays[index].isSelected
+                                        ? Style.prime[700]
+                                        : Style.prime[300],
+                              ),
+                              height: 48,
+                              width: 72,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(16, 5, 16, 5),
+                                child: Text(
+                                  planClassDays == null
+                                      ? ""
+                                      : "${planClassDays[index].noOfDays} day(s)",
+                                  style: Style.subtitle.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 16,
+                                    letterSpacing: 0.4,
+                                    color: planClassDays == null
+                                        ? Style.prime[300]
+                                        : planClassDays[index].isSelected
+                                            ? Style.white
+                                            : Style.accent,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    )
+                  ],
+                ),
+
+                Card(
+                  elevation: 8,
+                  shadowColor: Style.black.withOpacity(0.60),
+                  color: Style.white,
+                  borderOnForeground: true,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  margin: EdgeInsets.all(16),
+                  child: Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: ListTile(
+                      onTap: () {
+                        _selectDate(context);
+                      },
+                      leading: Icon(
+                        Icons.calendar_today_rounded,
+                        size: 18,
+                        color: Style.prime[600],
+                      ),
+                      trailing: Text(
+                        generateContractResponse != null
+                            ? generateContractResponse!
+                                .generateContractModel!.startDate!
+                            : "",
+                        style: Style.subtitle.copyWith(
+                          color: Style.prime[700],
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
+                          letterSpacing: 0.8,
+                        ),
+                      ),
+                      title: Text(
+                        'Begin Date',
+                        style: Style.subtitle.copyWith(
+                          color: Style.accent[300],
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 0.4,
+                          fontSize: 14,
+                        ),
+                      ),
                     ),
-                  );
-                }
-              }
-            },
-          )),
+                  ),
+                ),
+                //KINDA LOADING SCREEN..
+                FutureBuilder(
+                  future: dbHelper.querySubscriptionSetup(),
+                  builder: (context, AsyncSnapshot snap) {
+                    if (snap.connectionState == ConnectionState.done) {
+                      return Text(
+                        'Delivery starts ${snap.data['Delivery_in_day']} days after the selected Date',
+                        style: Style.subtitle.copyWith(
+                          color: Style.accent[200],
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                          letterSpacing: 0.4,
+                        ),
+                      );
+                    } else {
+                      return CircularProgressIndicator();
+                    }
+                  },
+                ),
+
+                Card(
+                  elevation: 8,
+                  shadowColor: Style.black.withOpacity(0.60),
+                  color: Style.white,
+                  borderOnForeground: true,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  margin: EdgeInsets.all(16),
+                  child: Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: ListTile(
+                      // onTap: () {
+                      //   _selectDate(context);
+                      // },
+                      leading: Icon(
+                        Icons.calendar_today_rounded,
+                        size: 18,
+                        color: Style.prime[600],
+                      ),
+                      trailing: Text(
+                        generateContractResponse != null
+                            ? generateContractResponse!
+                                .generateContractModel!.endDate!
+                            : "",
+                        style: Style.subtitle.copyWith(
+                          color: Style.prime[700],
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
+                          letterSpacing: 0.8,
+                        ),
+                      ),
+                      title: Text(
+                        'End Date',
+                        style: Style.subtitle.copyWith(
+                          color: Style.accent[300],
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 0.4,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    CupertinoSwitch(
+                        activeColor: Style.prime,
+                        value: this.value,
+                        onChanged: (value) {
+                          setState(() {
+                            this.value = value;
+                          });
+                        }),
+                    //SizedBox
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Text(
+                        'Deliver me on Holidays',
+                        style: Style.subtitle.copyWith(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Style.accent[500],
+                          letterSpacing: 0.4,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.7,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          offset: Offset(0.9, 3),
+                          color: Style.prime[50]!.withOpacity(0.60),
+                          blurRadius: 12,
+                          spreadRadius: 0.8,
+                        )
+                      ]),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ThisPageColumn(
+                          generateContractResponse: generateContractResponse,
+                          text1: generateContractResponse != null
+                              ? '${generateContractResponse!.generateContractModel!.totalWeek}'
+                              : " ",
+                          text2: 'Weeks',
+                        ),
+                        ThisPageColumn(
+                          generateContractResponse: generateContractResponse,
+                          text1: '$planDays',
+                          text2: 'Days',
+                        ),
+                        // Column(
+                        //   mainAxisAlignment: MainAxisAlignment.center,
+                        //   children: [
+                        //     Text(
+                        //       '$planDays',
+                        //       style: Style.subtitle.copyWith(
+                        //         color: Style.prime[3000],
+                        //         fontSize: 30,
+                        //       ),
+                        //     ),
+                        //     SizedBox(
+                        //       height: 7,
+                        //     ),
+                        //     Text(
+                        //       'Days',
+                        //       style: Style.subtitle.copyWith(
+                        //         color: Colors.black87,
+                        //         fontSize: 20,
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
+                      ],
+                    ),
+                  ),
+                ),
+                FutureBuilder(
+                  future: getMealsOfAPlan(),
+                  builder: (context, snap) {
+                    if (snap.data != null) {
+                      return Container(
+                        height: Get.height / 5.6,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(
+                            color: Style.accent[300]!,
+                            width: 0.6,
+                          ),
+                          // color: Style.prime[50]!.withOpacity(0.60),
+                          color: Style.white,
+                        ),
+                        margin: EdgeInsets.all(15),
+                        padding: EdgeInsets.all(15),
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          physics: BouncingScrollPhysics(),
+                          itemCount: mealNames != null ? mealNames.length : 0,
+                          itemBuilder: (context, index) {
+                            String item = "";
+                            mealNames != null
+                                ? item = mealNames[index]
+                                : item = "";
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image(
+                                    image:
+                                        AssetImage('assets/images/$item.png'),
+                                    fit: BoxFit.scaleDown,
+                                    height: Get.height / 13,
+                                    width: Get.width / 5.6,
+                                    color: Style.prime[300],
+                                  ),
+                                  Text(
+                                    '$item',
+                                    style: Style.subtitle.copyWith(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                      // color: Style.accent.withOpacity(0.87),
+                                      color: Style.accent[300],
+                                      letterSpacing: 0.8,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    } else {
+                      return CircularProgressIndicator();
+                    }
+                  },
+                ),
+                GestureDetector(
+                  onTap: () async {
+                    showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (context) {
+                        Future.delayed(
+                          Duration(seconds: 5),
+                          () {
+                            try {
+                              _insert(generateContractResponse!
+                                  .generateContractModel!.planmealinvoiceHD);
+                              _insertMoreHd().then(
+                                (value) {
+                                  // mealPlan.clear();
+                                },
+                              );
+                            } catch (e) {
+                              Get.snackbar(
+                                'Response',
+                                '',
+                                duration: Duration(seconds: 2),
+                                margin: EdgeInsets.all(16),
+                                padding: EdgeInsets.all(16),
+                                forwardAnimationCurve: Curves.easeInCubic,
+                                titleText: Text(
+                                  "Your Plan is Already Active",
+                                  style: Style.subtitle.copyWith(
+                                    color: Style.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                messageText: Text(
+                                  '',
+                                  style: Style.subtitle.copyWith(
+                                    color: Style.white,
+                                  ),
+                                ),
+                                colorText: Style.white,
+                                borderRadius: 8,
+                                backgroundColor:
+                                    Style.accent[300]!.withOpacity(0.87),
+                              );
+
+                              // Toast.show("Your Plan is Already Active",
+                              //     context,
+                              //     duration: 5);
+                            }
+                            Navigator.pop(context);
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) => PackageDetails(
+                            //       genratedContract: snapshot.data,
+                            //       transId: myTransId,
+                            //     ),
+                            //   ),
+                            // );
+                          },
+                        );
+                        return Center(child: CircularProgressIndicator());
+                      },
+                    );
+                  },
+                  child: Container(
+                    width: Get.width / 2,
+                    height: 52,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Style.accent[700],
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Text(
+                      'Confirm',
+                      style: Style.title.copyWith(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 0.4,
+                        color: Style.white.withOpacity(0.87),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -468,7 +626,6 @@ class _BasicPlanState extends State<BasicPlan> {
             );
           },
         );
-
         mealTypesAndQuantities.forEach(
           (mealTypeQuantity) {
             rowsFuture.forEach(
@@ -482,9 +639,9 @@ class _BasicPlanState extends State<BasicPlan> {
             );
           },
         );
+//TODO: CHECK HERE... INT.PARSE OR AS INT
 
         mealPlan.forEach((element) {
-          print(element);
           totalMealAllowed += element!['MealAllowed'] as int;
         });
       } else {
@@ -495,6 +652,12 @@ class _BasicPlanState extends State<BasicPlan> {
           });
 
           if (data['planid'] == planId) {
+            //aDDED
+            var mealTypesAndQuantityClass = MealTypesAndQuantityClass();
+            mealTypesAndQuantityClass.mealType = data["MealType"];
+            mealTypesAndQuantityClass.quantity = data["MealAllowed"];
+            mealTypesAndQuantities.add(mealTypesAndQuantityClass);
+            //aDDED
             mealPlan.add(data);
           }
         });
@@ -561,12 +724,39 @@ class _BasicPlanState extends State<BasicPlan> {
     planDays = preferences.getInt('planDays')!;
   }
 
+//aDDED
+  getPlanDays() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    var id = 1; //preferences.get('PlanID');
+    var dataMapToPost = {'TenentID': '$TenentID', 'PlanId': '${id.toString()}'};
+    print(dataMapToPost);
+    http.Response response = await http.post(
+        Uri.parse('https://foodapi.pos53.com/api/Food/GetPlanDaysInPlanMeal'),
+        body: dataMapToPost);
+    if (jsonDecode(response.body)['status'] == 200) {
+      var responseBody = jsonDecode(response.body);
+      var planDaysResponse = PlanDaysResponse.fromJson(responseBody);
+      var planDays = planDaysResponse.planDaysModel;
+      preferences.setStringList("planDaysList", planDays!);
+      planDays.forEach((element) {
+        PlanDaysClass planDay = PlanDaysClass();
+        planDay.noOfDays = int.parse(element);
+        planDay.isSelected = true;
+        setState(() {
+          planClassDays.add(planDay);
+        });
+      });
+      return jsonDecode(response.body);
+    } else {
+      return null;
+    }
+  }
+
   generateCustomerContract() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     DateTime? requiredDate = _selectedDay != null ? _selectedDay : _focusedDay;
     DateTime beginDate = requiredDate!.add(const Duration(days: 2));
 
-    print(requiredDate);
     var planId = prefs.get('id');
     var tenentID = TenentID.toString();
     var custID = prefs.get('custID');
@@ -574,32 +764,67 @@ class _BasicPlanState extends State<BasicPlan> {
         '${requiredDate.month}/${requiredDate.day}/${requiredDate.year}';
     var beginDateStr = '${beginDate.month}/${beginDate.day}/${beginDate.year}';
 
-    var response = await http.post(
-      Uri.parse('https://foodapi.pos53.com/api/Food/GenerateCustomerContract'),
-      body: {
+    //ERROR OCCURS HERE
+    final dbHelper = DatabaseHelper.instance;
+    var rowsFuture = await dbHelper.selectPlanMealWithPlaId(planId);
+
+    try {
+      int planDays = rowsFuture[0]["plandays"];
+      var map = {
         'PlanId': '$planId',
-        'TenentID': tenentID,
+        'TenentID': tenentID.toString(),
         'CustomerId': '$custID',
         'ContractDate': '$contractDate',
         'BeginDate': beginDateStr,
-        'AllowWeekend': '$value'
-      },
-    );
-    print('response is that ${response.body}');
-    print(response.statusCode);
-    // var json = jsonDecode(response.body);
-    try {
-      if (jsonDecode(response.body)['status'] == 200) {
-        return jsonDecode(response.body);
-      } else if (jsonDecode(response.body)['status'] == 400) {
-        return jsonDecode(response.body);
-      } else {
-        return jsonDecode(response.body);
+        'AllowWeekend': '$value',
+        'PlanDays': '$planDays'
+      };
+      print(map);
+      http.Response response = await http.post(
+          Uri.parse(
+              'https://foodapi.pos53.com/api/Food/GenerateCustomerContract'),
+          body: map);
+      var json = jsonDecode(response.body);
+      print(json);
+      if (json['status'] == 200) {
+        setState(
+          () {
+            generateContractResponse = GenerateContractResponse.fromJson(json);
+          },
+        );
+        print(generateContractResponse!.generateContractModel);
       }
     } catch (e) {
-      print('From Customer Contract Screen ${e.toString()}');
+      print('From GenerateCustomerContract APi ${e.toString()}');
     }
+
+    // var response = await http.post(
+    //   Uri.parse('https://foodapi.pos53.com/api/Food/GenerateCustomerContract'),
+    //   body: {
+    //     'PlanId': '$planId',
+    //     'TenentID': tenentID,
+    //     'CustomerId': '$custID',
+    //     'ContractDate': '$contractDate',
+    //     'BeginDate': beginDateStr,
+    //     'AllowWeekend': '$value'
+    //   },
+    // );
+    // print('response is that ${response.body}');
+    // print(response.statusCode);
+    // // var json = jsonDecode(response.body);
+    // try {
+    //   if (jsonDecode(response.body)['status'] == 200) {
+    //     return jsonDecode(response.body);
+    //   } else if (jsonDecode(response.body)['status'] == 400) {
+    //     return jsonDecode(response.body);
+    //   } else {
+    //     return jsonDecode(response.body);
+    //   }
+    // } catch (e) {
+    //   print('From Customer Contract Screen ${e.toString()}');
+    // }
   }
+//aDDED
 
   _selectDate(BuildContext context) async {
     final row = await dbHelper.querySubscriptionSetup();
@@ -656,7 +881,7 @@ class _BasicPlanState extends State<BasicPlan> {
         break;
     }
 
-    final DateTime? picked = await showDatePicker(
+    final picked = await showDatePicker(
       selectableDayPredicate: (dateTime) =>
           dateTime.weekday == holidayNumber ? false : true,
       context: context,
@@ -1025,6 +1250,53 @@ class _BasicPlanState extends State<BasicPlan> {
       //    Toast.show("error in api status code" + jsonDecode(res.body)['status'] + " message " + jsonDecode(res.body)['message'], context, duration: 5);
       //  }
     });
+  }
+}
+
+class ThisPageColumn extends StatelessWidget {
+  const ThisPageColumn({
+    Key? key,
+    required this.generateContractResponse,
+    required this.text1,
+    required this.text2,
+  }) : super(key: key);
+
+  final GenerateContractResponse? generateContractResponse;
+  final String text1;
+  final String text2;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        //aDDED
+        Text(
+          text1,
+          style: Style.title.copyWith(
+            color: Style.prime[700],
+            fontWeight: FontWeight.w500,
+            letterSpacing: 0.4,
+            fontSize: 26,
+          ),
+        ),
+        //aDDED
+
+        // SizedBox(
+        //   height: 7,
+        // ),
+        Text(
+          text2,
+          style: Style.subtitle.copyWith(
+            color: Style.accent[300],
+            fontWeight: FontWeight.w600,
+            letterSpacing: 0.8,
+            fontSize: 18,
+          ),
+        ),
+      ],
+    );
   }
 }
 

@@ -27,7 +27,7 @@ class SecondPage extends StatelessWidget {
     return SingleChildScrollView(
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        color: Style.prime[50]!.withOpacity(0.016),
+        color: Style.prime[50]!.withOpacity(0.008),
         child: Column(
           children: [
             SizedBox(
@@ -363,19 +363,9 @@ class PlansContainer extends StatelessWidget {
     return InkWell(
       onTap: () async {
         onTap!();
-        // if (first) {
-        //   onTap!();
-        // } else {
-        //   var preferences = await SharedPreferences.getInstance();
-        //   if (preferences.get('custId') != null) {
-        //     Get.to(CustomMealPage());
-        //   } else {
-        //     //Display the coming soon screen.
-        //   }
-        // }
       },
       child: Container(
-        height: Get.height / 4.5,
+        height: Get.height / 5,
         child: Stack(
           alignment: Alignment.center,
           children: [
@@ -385,6 +375,10 @@ class PlansContainer extends StatelessWidget {
               child: Container(
                 // width: Get.width / 1.4,
                 width: Get.width - 40,
+                constraints: BoxConstraints(
+                  minHeight: Get.height / 6,
+                  maxHeight: Get.height / 6,
+                ),
                 padding: EdgeInsets.only(
                   // left: Get.width / 6,
                   left: Get.width / 3.2,
@@ -394,15 +388,15 @@ class PlansContainer extends StatelessWidget {
                   // right: Get.width / 8,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Style.accent[50]!.withOpacity(0.60),
-                      blurRadius: 8,
-                      spreadRadius: 0.005,
-                      offset: Offset(0, 0.5),
-                    ),
-                  ],
+                  color: Style.prime[50]!.withOpacity(0.16),
+                  // boxShadow: [
+                  //   BoxShadow(
+                  //     color: Style.accent[50]!.withOpacity(0.60),
+                  //     blurRadius: 8,
+                  //     spreadRadius: 0.005,
+                  //     offset: Offset(0, 0.5),
+                  //   ),
+                  // ],
                   borderRadius: BorderRadius.only(
                     //previously it was 80 for top left and bottomleft
                     topLeft: Radius.circular(8),
@@ -417,12 +411,11 @@ class PlansContainer extends StatelessWidget {
                   ),
                 ),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  // mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Container(
-                      padding: EdgeInsets.only(right: 8),
-                      //MAKE THIS A COMMON FIELD
+                    Expanded(
+                      flex: 3,
                       child: RichText(
                         softWrap: true,
                         text: TextSpan(
@@ -449,29 +442,47 @@ class PlansContainer extends StatelessWidget {
                         ),
                       ),
                     ),
-
-                    SizedBox(
-                      height: 10,
-                    ),
                     //MAKE THIS A COMMON FIELD
-                    RichText(
-                      text: TextSpan(
-                        text: 'Plan Starts from',
-                        style: Style.subtitle.copyWith(
-                          color: Style.accent[200],
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        children: <TextSpan>[
-                          TextSpan(text: '  \$ '),
-                          TextSpan(
-                            text: price,
-                            style: Style.title.copyWith(
-                              fontWeight: FontWeight.w600,
-                              color: Style.prime,
-                              fontSize: 18,
+                    Expanded(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            'View More',
+                            style: Style.subtitle.copyWith(
+                              color: Style.prime[200],
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
+                          // RichText(
+                          //   text: TextSpan(
+                          //     text: 'View More',
+                          //     style: Style.subtitle.copyWith(
+                          //       color: Style.accent[200],
+                          //       fontSize: 12,
+                          //       fontWeight: FontWeight.w500,
+                          //     ),
+                          //     children: <TextSpan>[
+                          //       TextSpan(text: ''),
+                          //       TextSpan(
+                          //         text: price,
+                          //         style: Style.title.copyWith(
+                          //           fontWeight: FontWeight.w600,
+                          //           color: Style.prime,
+                          //           fontSize: 18,
+                          //         ),
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
+                          Icon(
+                            Icons.arrow_right,
+                            size: 16,
+                            color: Style.prime[900],
+                          )
                         ],
                       ),
                     ),
@@ -484,18 +495,22 @@ class PlansContainer extends StatelessWidget {
               child: Card(
                 shape: CircleBorder(side: BorderSide.none),
                 borderOnForeground: true,
-                shadowColor: Style.prime[900]!.withOpacity(0.32),
+                shadowColor: Style.prime[900]!.withOpacity(0.16),
                 clipBehavior: Clip.antiAlias,
-                elevation: 20,
+                elevation: 12,
                 child: CircleAvatar(
                   foregroundColor: Style.accent[900],
-                  backgroundColor: Style.prime[50]!.withOpacity(0.098),
+                  // backgroundColor: Style.prime[50]!.withOpacity(0.098),
+                  backgroundColor: Style.white,
                   radius: 48,
                   // foregroundImage: AssetImage('assets/images/$image'),
-                  child: Image(
-                    image: AssetImage('assets/images/$image'),
-                    color: Style.prime[900],
-                    fit: BoxFit.contain,
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Image(
+                      image: AssetImage('assets/images/$image'),
+                      color: Style.prime[900],
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 ),
               ),

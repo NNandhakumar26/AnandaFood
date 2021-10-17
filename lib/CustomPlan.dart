@@ -45,655 +45,459 @@ class _CustomisePlanState extends State<CustomisePlan> {
       child: SafeArea(
         child: WillPopScope(
           onWillPop: () async => true,
-          child: Container(
-            height: Get.height,
-            width: Get.width,
-            child: Column(
-              children: [
-                // Stack(
-                //   alignment: AlignmentDirectional.topCenter,
-                //   children: [
-                //     // Image(
-                //     //   image: AssetImage('assets/images/semi-circle.png'),
-                //     // ),
-                //     Positioned(
-                //       top: 5,
-                //       left: medq.width / 40,
-                //       child: Column(
-                //         mainAxisAlignment: MainAxisAlignment.center,
-                //         crossAxisAlignment: CrossAxisAlignment.start,
-                //         children: [
-                //           IconButton(
-                //             onPressed: () {
-                //               Navigator.pop(context);
-                //             },
-                //             icon: Icon(
-                //               Icons.arrow_back_ios,
-                //               color: Colors.white,
-                //             ),
-                //           ),
-                //           Text(
-                //             'Meal Customisation'.tr,
-                //             style: Style.subtitle.copyWith(
-                //                 color: Colors.white,
-                //                 fontSize: 15,
-                //                 fontWeight: FontWeight.w600),
-                //           ),
-                //           Text(
-                //             'تخصيص الخطة',
-                //             style: Style.subtitle
-                //                 .copyWith(fontSize: 19, color: Colors.white),
-                //           ),
-                //         ],
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                Container(
-                  child: SingleChildScrollView(
+          child: Scaffold(
+            extendBody: true,
+            bottomNavigationBar: BottomSide(
+              title: "Total Amount",
+              amount: "$totalAmount kd",
+              buttonText: 'confirm'.tr,
+              onPressed: () async {
+                {
+                  int totalMeal = 0;
+                  if (meals != null && meals.length > 0) {
+                    meals.forEach((meal) {
+                      totalMeal += meal.quantity;
+                    });
+                  }
+                  if (totalMeal == 0) {
+                    Get.snackbar(
+                      'Response',
+                      '',
+                      duration: Duration(seconds: 2),
+                      margin: EdgeInsets.all(16),
+                      padding: EdgeInsets.all(16),
+                      forwardAnimationCurve: Curves.easeInCubic,
+                      titleText: Text(
+                        "Please give at least one meal's quantity to continue.",
+                        style: Style.subtitle.copyWith(
+                          color: Style.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      messageText: Text(
+                        '',
+                        style: Style.subtitle.copyWith(
+                          color: Style.white,
+                        ),
+                      ),
+                      colorText: Style.white,
+                      borderRadius: 8,
+                      backgroundColor: Style.accent[300]!.withOpacity(0.87),
+                    );
+
+                    // Toast.show(
+                    //     "Please give at least one meal's quantity to continue.",
+                    //     context,
+                    //     duration: Toast.LENGTH_SHORT,
+                    //     gravity: Toast.BOTTOM);
+                  } else {
+                    mealTypesAndQuantities.clear();
+                    meals.forEach(
+                      (meal) {
+                        if (meal.quantity != 0) {
+                          var mealTypesAndQuantityClass =
+                              MealTypesAndQuantityClass();
+                          mealTypesAndQuantityClass.quantity = meal.quantity;
+                          mealTypesAndQuantityClass.mealType = meal.mealType;
+                          mealTypesAndQuantities.add(mealTypesAndQuantityClass);
+                        }
+                      },
+                    );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BasicPlan(),
+                      ),
+                    );
+                  }
+                }
+              },
+            ),
+            body: Container(
+              height: Get.height,
+              width: Get.width,
+              color: Style.prime[50]!.withOpacity(0.08),
+              margin: EdgeInsets.only(left: 8),
+              child: Column(
+                children: [
+                  Expanded(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        // Row(
-                        //     crossAxisAlignment: CrossAxisAlignment.center,
-                        //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        //     children: [
-                        //       SizedBox(width: 8),
-                        //       Container(
-                        //         decoration: BoxDecoration(
-                        //           borderRadius: BorderRadius.circular(20),
-                        //           border: Border.all(color: Style.prime),
-                        //         ),
-                        //         height: 30,
-                        //         width: 100,
-                        //         child: Padding(
-                        //           padding: const EdgeInsets.all(5.0),
-                        //           child: Text("Days",
-                        //               style: TextStyle(
-                        //                 color: Style.prime,
-                        //               ),
-                        //               textAlign: TextAlign.center),
-                        //         ),
-                        //       ),
-                        //       SizedBox(width: 8),
-                        //       Container(
-                        //         height: 30,
-                        //         width: MediaQuery.of(context).size.width - 120,
-                        //         child: ListView.builder(
-                        //             shrinkWrap: true,
-                        //             physics: BouncingScrollPhysics(),
-                        //             itemCount: planClassDays == null
-                        //                 ? 0
-                        //                 : planClassDays.length,
-                        //             scrollDirection: Axis.horizontal,
-                        //             itemBuilder: (context, index) {
-                        //               return GestureDetector(
-                        //                 onTap: () async {
-                        //                   planClassDays.forEach((planDay) {
-                        //                     planDay.isSelected = false;
-                        //                   });
-                        //                   setState(() {
-                        //                     planClassDays[index].isSelected = true;
-                        //                   });
-                        //                   var preferences =
-                        //                       await SharedPreferences.getInstance();
-                        //                   preferences.setInt('planDays',
-                        //                       planClassDays[index].noOfDays);
-                        //                 },
-                        //                 child: Container(
-                        //                     decoration: BoxDecoration(
-                        //                         borderRadius:
-                        //                             BorderRadius.circular(20),
-                        //                         color: planClassDays == null
-                        //                             ? BeHealthyTheme.kLightOrange
-                        //                             : planClassDays[index]
-                        //                                     .isSelected
-                        //                                 ? BeHealthyTheme.kMainOrange
-                        //                                 : BeHealthyTheme
-                        //                                     .kLightOrange),
-                        //                     height: 30,
-                        //                     width: 100,
-                        //                     child: Padding(
-                        //                       padding: const EdgeInsets.fromLTRB(
-                        //                           16, 5, 16, 5),
-                        //                       child: Text(
-                        //                         planClassDays == null
-                        //                             ? ""
-                        //                             : "${planClassDays[index].noOfDays} day(s)",
-                        //                         style: TextStyle(
-                        //                             color: planClassDays == null
-                        //                                 ? BeHealthyTheme
-                        //                                     .kLightOrange
-                        //                                 : planClassDays[index]
-                        //                                         .isSelected
-                        //                                     ? Colors.white
-                        //                                     : BeHealthyTheme
-                        //                                         .kMainOrange),
-                        //                         textAlign: TextAlign.center,
-                        //                       ),
-                        //                     )),
-                        //               );
-                        //             }),
-                        //       )
-                        //     ]),
-
-                        SizedBox(height: 10),
-                        // Row(
-                        //     crossAxisAlignment: CrossAxisAlignment.center,
-                        //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        //     children: [
-                        //       SizedBox(width: 8),
-                        //       Container(
-                        //         decoration: BoxDecoration(
-                        //           borderRadius: BorderRadius.circular(20),
-                        //           border:
-                        //               Border.all(color: BeHealthyTheme.kMainOrange),
-                        //         ),
-                        //         height: 30,
-                        //         width: 100,
-                        //         child: Padding(
-                        //           padding: const EdgeInsets.all(5.0),
-                        //           child: Text("Weight",
-                        //               style: TextStyle(
-                        //                 color: BeHealthyTheme.kMainOrange,
-                        //               ),
-                        //               textAlign: TextAlign.center),
-                        //         ),
-                        //       ),
-                        //       SizedBox(width: 8),
-                        //       Container(
-                        //         height: 30,
-                        //         width: MediaQuery.of(context).size.width - 120,
-                        //         child: ListView.builder(
-                        //             shrinkWrap: true,
-                        //             physics: BouncingScrollPhysics(),
-                        //             itemCount:
-                        //                 planGrams == null ? 0 : planGrams.length,
-                        //             scrollDirection: Axis.horizontal,
-                        //             itemBuilder: (context, index) {
-                        //               return GestureDetector(
-                        //                 onTap: () async {
-                        //                   planGrams.forEach((planGram) {
-                        //                     planGram.isSelected = false;
-                        //                   });
-                        //                   setState(() {
-                        //                     planGrams[index].isSelected = true;
-                        //                   });
-                        //                   var preferences =
-                        //                       await SharedPreferences.getInstance();
-                        //                   preferences.setInt('mealInGram',
-                        //                       planGrams[index].gramsOfPlan);
-                        //                 },
-                        //                 child: Container(
-                        //                     decoration: BoxDecoration(
-                        //                         borderRadius:
-                        //                             BorderRadius.circular(20),
-                        //                         color: planGrams == null
-                        //                             ? BeHealthyTheme.kLightOrange
-                        //                             : planGrams[index].isSelected
-                        //                                 ? BeHealthyTheme.kMainOrange
-                        //                                 : BeHealthyTheme
-                        //                                     .kLightOrange),
-                        //                     height: 30,
-                        //                     width: 100,
-                        //                     child: Padding(
-                        //                       padding: const EdgeInsets.fromLTRB(
-                        //                           16, 5, 16, 5),
-                        //                       child: Text(
-                        //                         planGrams == null
-                        //                             ? ""
-                        //                             : "${planGrams[index].gramsOfPlan} g",
-                        //                         style: TextStyle(
-                        //                             color: planGrams == null
-                        //                                 ? BeHealthyTheme
-                        //                                     .kLightOrange
-                        //                                 : planGrams[index]
-                        //                                         .isSelected
-                        //                                     ? Colors.white
-                        //                                     : BeHealthyTheme
-                        //                                         .kMainOrange),
-                        //                         textAlign: TextAlign.center,
-                        //                       ),
-                        //                     )),
-                        //               );
-                        //             }),
-                        //       )
-                        //     ]),
-
-                        SizedBox(height: 10),
-                        Container(
-                          height: 600,
-                          width: 1500,
-                          child: ListView.separated(
-                            separatorBuilder: (context, int) => Divider(
-                              indent: 24,
-                              endIndent: 24,
-                              thickness: 0.16,
-                              color: Style.accent[50],
-                            ),
-                            shrinkWrap: true,
-                            physics: BouncingScrollPhysics(),
-                            itemCount: meals == null ? 0 : meals.length,
-                            scrollDirection: Axis.vertical,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: ListTile(
-                                  minVerticalPadding: 4,
-                                  // minLeadingWidth: Get.width / 24,
-                                  minLeadingWidth: 8,
-                                  leading: CircleAvatar(
-                                    maxRadius: 48.0,
-                                    foregroundColor: Colors.red,
-                                    backgroundColor:
-                                        Style.prime[50]!.withOpacity(0.08),
-                                    child: Center(
-                                      child: Image(
-                                        image: AssetImage(
-                                            'assets/images/card.png'),
-                                        fit: BoxFit.fill,
-                                        color: Style.prime[900],
-                                      ),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        Expanded(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  margin: EdgeInsets.symmetric(horizontal: 6),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 8, vertical: 8),
+                                  decoration: BoxDecoration(
+                                    color: Style.white,
+                                    borderRadius: BorderRadius.circular(4),
+                                    border: Border.all(
+                                      color: Style.accent[300]!,
+                                      width: 0.56,
                                     ),
                                   ),
-                                  trailing: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      IconButton(
-                                        onPressed: () {
-                                          if (meals[index].quantity < 20) {
-                                            setState(
-                                              () {
-                                                meals[index].quantity =
-                                                    meals[index].quantity + 1;
-                                              },
-                                            );
-                                            getTotalAmount();
-                                          }
-                                        },
-                                        color: Style.prime.withOpacity(0.87),
-                                        icon: Icon(
-                                          Icons.add,
-                                          color: Style.prime[700]!
-                                              .withOpacity(0.87),
-                                          size: 20,
-                                        ),
-                                      ),
-                                      Text(
-                                        "${meals[index].quantity}",
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                        ),
-                                      ),
-                                      IconButton(
-                                        onPressed: () {
-                                          if (meals[index].quantity > 0) {
-                                            setState(
-                                              () {
-                                                meals[index].quantity =
-                                                    meals[index].quantity - 1;
-                                              },
-                                            );
-                                            getTotalAmount();
-                                          }
-                                        },
-                                        icon: Icon(
-                                          Icons.remove,
-                                          color: Style.accent[300]!
-                                              .withOpacity(0.87),
-                                          size: 16,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  title: Container(
-                                    margin: EdgeInsets.symmetric(vertical: 8),
-                                    child: Text(
-                                      meals[index].mealName,
-                                      style: Style.subtitle.copyWith(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 16,
-                                        color: Style.accent,
-                                        letterSpacing: 0.8,
-                                      ),
+                                  child: Text(
+                                    "Days",
+                                    style: Style.subtitle.copyWith(
+                                      color: Style.accent,
+                                      fontSize: 14,
+                                      letterSpacing: 0.4,
+                                      fontWeight: FontWeight.w600,
                                     ),
+                                    textAlign: TextAlign.right,
                                   ),
-                                  subtitle: RichText(
-                                    text: TextSpan(
-                                      text: 'Amount',
-                                      style: Style.subtitle.copyWith(
-                                        fontSize: 12,
-                                        color: Style.accent[50],
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                      children: [
-                                        TextSpan(
-                                          text: ' : ',
-                                        ),
-                                        TextSpan(
-                                          text:
-                                              "${meals[index].itemExtraCost * meals[index].quantity}",
-                                          style: Style.title.copyWith(
-                                            color: Style.prime[700],
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                        TextSpan(
-                                          text: ' kd',
-                                          //also go with caption.
-                                          style: Style.subtitle.copyWith(
-                                            color: Style.prime[200],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  dense: true,
-                                  contentPadding: EdgeInsets.symmetric(
-                                      vertical: 2, horizontal: 8),
                                 ),
-                              );
-                            },
+                              ),
+                              Expanded(
+                                flex: 4,
+                                child: Container(
+                                  height: 30,
+                                  margin: EdgeInsets.all(8),
+                                  width:
+                                      MediaQuery.of(context).size.width - 120,
+                                  child: ListView.builder(
+                                      shrinkWrap: true,
+                                      physics: BouncingScrollPhysics(),
+                                      itemCount: planClassDays == null
+                                          ? 0
+                                          : planClassDays.length,
+                                      scrollDirection: Axis.horizontal,
+                                      itemBuilder: (context, index) {
+                                        return GestureDetector(
+                                          onTap: () async {
+                                            planClassDays.forEach((planDay) {
+                                              planDay.isSelected = false;
+                                            });
+                                            setState(() {
+                                              planClassDays[index].isSelected =
+                                                  true;
+                                            });
+                                            var preferences =
+                                                await SharedPreferences
+                                                    .getInstance();
+                                            preferences.setInt('planDays',
+                                                planClassDays[index].noOfDays);
+                                          },
+                                          child: Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(4),
+                                                color: planClassDays == null
+                                                    ? Style.prime[200]
+                                                    : planClassDays[index]
+                                                            .isSelected
+                                                        ? Style.prime
+                                                        : Style.prime[200],
+                                              ),
+                                              height: 56,
+                                              width: 120,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        16, 5, 16, 5),
+                                                child: Text(
+                                                  planClassDays == null
+                                                      ? ""
+                                                      : "${planClassDays[index].noOfDays} day(s)",
+                                                  style:
+                                                      Style.subtitle.copyWith(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 15,
+                                                    letterSpacing: 0.4,
+                                                    color: planClassDays == null
+                                                        ? Style.prime[300]
+                                                        : planClassDays[index]
+                                                                .isSelected
+                                                            ? Style.white
+                                                            : Style.accent,
+                                                  ),
+                                                  textAlign: TextAlign.center,
+                                                  // style: TextStyle(
+                                                  //     color: planClassDays == null
+                                                  //         ? Style.prime[200]
+                                                  //         : planClassDays[index]
+                                                  //                 .isSelected
+                                                  //             ? Colors.white
+                                                  //             : Style.prime),
+                                                  // textAlign: TextAlign.center,
+                                                ),
+                                              )),
+                                        );
+                                      }),
+                                ),
+                              )
+                            ],
                           ),
                         ),
-
-                        // return Column(
-                        //   children: [
-                        //     Container(
-                        //       // decoration: BoxDecoration(
-                        //       //   borderRadius: BorderRadius.circular(20),
-                        //       //   color: BeHealthyTheme.kMainOrange
-                        //       //       .withOpacity(0.1),
-                        //       // ),
-                        //       height: 80,
-                        //       width: Get.width - 20,
-                        //       child: Column(
-                        //         mainAxisAlignment: MainAxisAlignment.center,
-                        //         children: [
-                        //           ,))}))
-
-                        //                 // Padding(
-                        //                 //   padding: const EdgeInsets.fromLTRB(
-                        //                 //       16, 5, 16, 5),
-                        //                 //   child: Row(
-                        //                 //     children: [
-                        //                 //       Image.asset(
-                        //                 //         'assets/images/card.png',
-                        //                 //         height: 25,
-                        //                 //         width: 25,
-                        //                 //       ),
-                        //                 //       SizedBox(width: 10),
-                        //                 //       Text(
-                        //                 //         meals[index].mealName,
-                        //                 //         style: TextStyle(
-                        //                 //             color:
-                        //                 //                 BeHealthyTheme.kMainOrange,
-                        //                 //             fontSize: 18,
-                        //                 //             fontWeight: FontWeight.bold),
-                        //                 //         textAlign: TextAlign.center,
-                        //                 //       ),
-                        //                 //       Spacer(),
-                        //                 //       Container(
-                        //                 //         child: Row(
-                        //                 //           children: [
-                        //                 //             SizedBox.fromSize(
-                        //                 //               size: Size(25,
-                        //                 //                   25), // button width and height
-                        //                 //               child: ClipOval(
-                        //                 //                 child: Material(
-                        //                 //                   color: BeHealthyTheme
-                        //                 //                       .kMainOrange, // button color
-                        //                 //                   child: InkWell(
-                        //                 //                     splashColor: Colors
-                        //                 //                         .green, // splash color
-                        //                 //                     onTap: () {
-                        //                 //                       // minus pressed
-                        //                 //                       if (meals[index]
-                        //                 //                               .quantity >
-                        //                 //                           0) {
-                        //                 //                         setState(() {
-                        //                 //                           meals[index]
-                        //                 //                               .quantity = meals[
-                        //                 //                                       index]
-                        //                 //                                   .quantity -
-                        //                 //                               1;
-                        //                 //                         });
-                        //                 //                         getTotalAmount();
-                        //                 //                       }
-                        //                 //                     }, // button pressed
-                        //                 //                     child: Column(
-                        //                 //                       mainAxisAlignment:
-                        //                 //                           MainAxisAlignment
-                        //                 //                               .center,
-                        //                 //                       children: <Widget>[
-                        //                 //                         Icon(Icons.remove,
-                        //                 //                             color: Colors
-                        //                 //                                 .white)
-                        //                 //                       ],
-                        //                 //                     ),
-                        //                 //                   ),
-                        //                 //                 ),
-                        //                 //               ),
-                        //                 //             ),
-                        //                 //             SizedBox(width: 5),
-                        //                 //             Text(
-                        //                 //               "${meals[index].quantity}",
-                        //                 //               style: TextStyle(
-                        //                 //                   color: BeHealthyTheme
-                        //                 //                       .kMainOrange,
-                        //                 //                   fontSize: 18),
-                        //                 //               textAlign: TextAlign.center,
-                        //                 //             ),
-                        //                 //             SizedBox(width: 5),
-                        //                 //             SizedBox.fromSize(
-                        //                 //               size: Size(30,
-                        //                 //                   30), // button width and height
-                        //                 //               child: ClipOval(
-                        //                 //                 child: Material(
-                        //                 //                   color: BeHealthyTheme
-                        //                 //                       .kMainOrange, // button color
-                        //                 //                   child: InkWell(
-                        //                 //                     splashColor: BeHealthyTheme
-                        //                 //                         .kLightOrange, // splash color
-                        //                 //                     onTap: () {
-                        //                 //                       // add pressed
-                        //                 //                       if (meals[index]
-                        //                 //                               .quantity <
-                        //                 //                           20) {
-                        //                 //                         setState(() {
-                        //                 //                           meals[index]
-                        //                 //                               .quantity = meals[
-                        //                 //                                       index]
-                        //                 //                                   .quantity +
-                        //                 //                               1;
-                        //                 //                         });
-                        //                 //                         getTotalAmount();
-                        //                 //                       }
-                        //                 //                     }, // button pressed
-                        //                 //                     child: Column(
-                        //                 //                       mainAxisAlignment:
-                        //                 //                           MainAxisAlignment
-                        //                 //                               .center,
-                        //                 //                       children: <Widget>[
-                        //                 //                         Icon(
-                        //                 //                           Icons.add,
-                        //                 //                           color:
-                        //                 //                               Colors.white,
-                        //                 //                         ), // icon// text
-                        //                 //                       ],
-                        //                 //                     ),
-                        //                 //                   ),
-                        //                 //                 ),
-                        //                 //               ),
-                        //                 //             ),
-                        //                 //           ],
-                        //                 //         ),
-                        //                 //       ),
-                        //                 //     ],
-                        //                 //   ),
-                        //                 // ),
-
-                        //                 SizedBox(height: 5),
-                        //                 Container(
-                        //                   width: MediaQuery.of(context).size.width,
-                        //                   child: Row(
-                        //                       mainAxisAlignment:
-                        //                           MainAxisAlignment.end,
-                        //                       children: [
-                        //                         Text(
-                        //                           "Amount : ",
-                        //                           style: TextStyle(
-                        //                               color: Style.prime,
-                        //                               fontSize: 16,
-                        //                               fontWeight: FontWeight.bold),
-                        //                         ),
-                        //                         Text(
-                        //                             "${meals[index].itemExtraCost * meals[index].quantity} kd",
-                        //                             style: TextStyle(fontSize: 16)),
-                        //                         SizedBox(width: 16)
-                        //                       ]),
-                        //                 ),
-                        //               ],
-                        //             ),
-                        //           ),
-                        //           SizedBox(height: 5),
-                        //         ],
-                        //       );
-                        //     },
-                        //   ),
-                        // ),
-
-                        Container(
-                          height: 80,
-                          width: MediaQuery.of(context).size.width,
-                          child: Column(children: [
-                            SizedBox(height: 10),
-                            Row(
+                        Expanded(
+                          child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                SizedBox(width: 10),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      "Total Amount",
-                                      style: TextStyle(
-                                          color: Style.prime,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Text(
-                                      "$totalAmount kd",
-                                      style: TextStyle(fontSize: 12),
-                                    ),
-                                  ],
-                                ),
-                                Spacer(),
-                                GestureDetector(
-                                  onTap: () async {
-                                    int totalMeal = 0;
-                                    if (meals != null && meals.length > 0) {
-                                      meals.forEach((meal) {
-                                        totalMeal += meal.quantity;
-                                      });
-                                    }
-                                    if (totalMeal == 0) {
-                                      Get.snackbar(
-                                        'Response',
-                                        '',
-                                        duration: Duration(seconds: 2),
-                                        margin: EdgeInsets.all(16),
-                                        padding: EdgeInsets.all(16),
-                                        forwardAnimationCurve:
-                                            Curves.easeInCubic,
-                                        titleText: Text(
-                                          "Please give at least one meal's quantity to continue.",
-                                          style: Style.subtitle.copyWith(
-                                            color: Style.white,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                        messageText: Text(
-                                          '',
-                                          style: Style.subtitle.copyWith(
-                                            color: Style.white,
-                                          ),
-                                        ),
-                                        colorText: Style.white,
-                                        borderRadius: 8,
-                                        backgroundColor: Style.accent[300]!
-                                            .withOpacity(0.87),
-                                      );
-
-                                      // Toast.show(
-                                      //     "Please give at least one meal's quantity to continue.",
-                                      //     context,
-                                      //     duration: Toast.LENGTH_SHORT,
-                                      //     gravity: Toast.BOTTOM);
-                                    } else {
-                                      mealTypesAndQuantities.clear();
-                                      meals.forEach(
-                                        (meal) {
-                                          if (meal.quantity != 0) {
-                                            var mealTypesAndQuantityClass =
-                                                MealTypesAndQuantityClass();
-                                            mealTypesAndQuantityClass.quantity =
-                                                meal.quantity;
-                                            mealTypesAndQuantityClass.mealType =
-                                                meal.mealType;
-                                            mealTypesAndQuantities
-                                                .add(mealTypesAndQuantityClass);
-                                          }
-                                        },
-                                      );
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => BasicPlan(),
-                                        ),
-                                      );
-                                    }
-                                  },
+                                Expanded(
                                   child: Container(
-                                    margin: EdgeInsets.only(bottom: 30),
-                                    width:
-                                        MediaQuery.of(context).size.width / 2,
-                                    height: 35,
-                                    alignment: Alignment.center,
+                                    margin: EdgeInsets.symmetric(horizontal: 6),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 4, vertical: 8),
                                     decoration: BoxDecoration(
-                                        color: Style.prime,
-                                        borderRadius:
-                                            BorderRadius.circular(25)),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          'confirm'.tr,
-                                          style: Style.subtitle.copyWith(
-                                              fontSize: 18,
-                                              color: Colors.white),
-                                        ),
-                                        Icon(Icons.arrow_forward_ios,
-                                            size: 20, color: Colors.white)
-                                      ],
+                                      borderRadius: BorderRadius.circular(4),
+                                      border: Border.all(
+                                        color: Style.accent[300]!,
+                                        width: 0.56,
+                                      ),
+                                    ),
+                                    child: Text(
+                                      "Weight",
+                                      style: Style.subtitle.copyWith(
+                                        color: Style.accent,
+                                        fontSize: 14,
+                                        letterSpacing: 0.4,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                      textAlign: TextAlign.right,
                                     ),
                                   ),
                                 ),
-                                SizedBox(width: 10)
-                              ],
-                            )
-                          ]),
-                        )
+                                // SizedBox(width: 8),
+                                Expanded(
+                                  flex: 4,
+                                  child: Container(
+                                    height: 30,
+                                    width:
+                                        MediaQuery.of(context).size.width - 120,
+                                    child: ListView.builder(
+                                        shrinkWrap: true,
+                                        physics: BouncingScrollPhysics(),
+                                        itemCount: planGrams == null
+                                            ? 0
+                                            : planGrams.length,
+                                        scrollDirection: Axis.horizontal,
+                                        itemBuilder: (context, index) {
+                                          return GestureDetector(
+                                            onTap: () async {
+                                              planGrams.forEach((planGram) {
+                                                planGram.isSelected = false;
+                                              });
+                                              setState(() {
+                                                planGrams[index].isSelected =
+                                                    true;
+                                              });
+                                              var preferences =
+                                                  await SharedPreferences
+                                                      .getInstance();
+                                              preferences.setInt('mealInGram',
+                                                  planGrams[index].gramsOfPlan);
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(4),
+                                                color: planClassDays == null
+                                                    ? Style.prime[200]
+                                                    : planClassDays[index]
+                                                            .isSelected
+                                                        ? Style.prime
+                                                        : Style.prime[200],
+                                              ),
+                                              height: 56,
+                                              width: 120,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        16, 5, 16, 5),
+                                                child: Text(
+                                                  planGrams == null
+                                                      ? ""
+                                                      : "${planGrams[index].gramsOfPlan} g",
+                                                  style:
+                                                      Style.subtitle.copyWith(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 15,
+                                                    letterSpacing: 0.4,
+                                                    color: planGrams == null
+                                                        ? Style.prime[300]
+                                                        : planGrams[index]
+                                                                .isSelected
+                                                            ? Style.white
+                                                            : Style.accent,
+                                                  ),
+                                                  // textAlign: TextAlign.center,
+                                                  // style: TextStyle(
+                                                  //     color: planGrams == null
+                                                  //         ? BeHealthyTheme.kLightOrange
+                                                  //         : planGrams[index].isSelected
+                                                  //             ? Colors.white
+                                                  //             : BeHealthyTheme
+                                                  //                 .kMainOrange),
+                                                  // textAlign: TextAlign.center,
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        }),
+                                  ),
+                                )
+                              ]),
+                        ),
                       ],
                     ),
                   ),
-                )
-              ],
+                  Expanded(
+                    flex: 5,
+                    child: Container(
+                      // height: Get.height / 1.48,
+                      padding: EdgeInsets.all(8),
+                      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                      decoration: BoxDecoration(
+                        color: Style.white,
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: Style.prime[300]!,
+                          width: 0.32,
+                        ),
+                      ),
+                      child: ListView.separated(
+                        separatorBuilder: (context, int) => Divider(
+                          indent: 24,
+                          endIndent: 24,
+                          thickness: 0.16,
+                          color: Style.accent[50],
+                        ),
+                        shrinkWrap: true,
+                        physics: BouncingScrollPhysics(),
+                        itemCount: meals == null ? 0 : meals.length,
+                        scrollDirection: Axis.vertical,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: ListTile(
+                              // minVerticalPadding: 4,
+                              // // minLeadingWidth: Get.width / 24,
+                              // minLeadingWidth: 8,
+                              leading: CircleAvatar(
+                                maxRadius: 30.0,
+                                backgroundColor:
+                                    Style.prime[900]!.withOpacity(0.08),
+                                child: Image(
+                                  image: AssetImage('assets/images/card.png'),
+                                  fit: BoxFit.fill,
+                                  color: Style.prime[900],
+                                ),
+                              ),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    onPressed: () {
+                                      if (meals[index].quantity > 0) {
+                                        setState(
+                                          () {
+                                            meals[index].quantity =
+                                                meals[index].quantity - 1;
+                                          },
+                                        );
+                                        getTotalAmount();
+                                      }
+                                    },
+                                    icon: Icon(
+                                      Icons.remove,
+                                      color:
+                                          Style.accent[300]!.withOpacity(0.87),
+                                      size: 16,
+                                    ),
+                                  ),
+                                  Text(
+                                    "${meals[index].quantity}",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
+                                      if (meals[index].quantity < 20) {
+                                        setState(
+                                          () {
+                                            meals[index].quantity =
+                                                meals[index].quantity + 1;
+                                          },
+                                        );
+                                        getTotalAmount();
+                                      }
+                                    },
+                                    color: Style.prime.withOpacity(0.87),
+                                    icon: Icon(
+                                      Icons.add,
+                                      color:
+                                          Style.prime[700]!.withOpacity(0.87),
+                                      size: 20,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              title: Container(
+                                margin: EdgeInsets.symmetric(vertical: 8),
+                                child: Text(
+                                  meals[index].mealName,
+                                  style: Style.subtitle.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 16,
+                                    color: Style.accent,
+                                    letterSpacing: 0.8,
+                                  ),
+                                ),
+                              ),
+                              subtitle: RichText(
+                                text: TextSpan(
+                                  text: 'Amount',
+                                  style: Style.subtitle.copyWith(
+                                    fontSize: 12,
+                                    color: Style.accent[50],
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  children: [
+                                    TextSpan(
+                                      text: ' : ',
+                                    ),
+                                    TextSpan(
+                                      text:
+                                          "${meals[index].itemExtraCost * meals[index].quantity}",
+                                      style: Style.title.copyWith(
+                                        color: Style.prime[700],
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: ' kd',
+                                      //also go with caption.
+                                      style: Style.subtitle.copyWith(
+                                        color: Style.prime[200],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              dense: true,
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 2, horizontal: 8),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -819,4 +623,92 @@ class MealTypesAndQuantityClass {
     this.mealType = 0,
     this.quantity = 0,
   });
+}
+
+class BottomSide extends StatelessWidget {
+  final String? title;
+  final String? amount;
+  final Function? onPressed;
+  final String? buttonText;
+
+  BottomSide({this.title, this.amount, this.onPressed, this.buttonText});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 60,
+      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        // backgroundBlendMode: BlendMode.overlay,
+        boxShadow: [
+          BoxShadow(
+            color: Style.accent[50]!.withOpacity(0.60),
+            blurRadius: 5,
+            spreadRadius: 0.5,
+            offset: Offset(0.5, 1.5),
+          ),
+        ],
+        color: Style.white.withOpacity(0.87),
+      ),
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          Expanded(
+            // padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title!,
+                  style: Style.subtitle.copyWith(
+                    fontSize: 14,
+                    letterSpacing: 0.8,
+                    fontWeight: FontWeight.w600,
+                    color: Style.accent[300],
+                  ),
+                ),
+                Text(
+                  amount!,
+                  style: Style.subtitle.copyWith(
+                    fontSize: 16,
+                    letterSpacing: 0.8,
+                    fontWeight: FontWeight.w400,
+                    color: Style.accent[700],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Spacer(),
+          Expanded(
+            child: TextButton(
+              style: TextButton.styleFrom(
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(24)),
+                backgroundColor: Style.accent,
+                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+              ),
+              onPressed: () {
+                return onPressed!();
+              },
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  buttonText!,
+                  style: Style.title.copyWith(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                    letterSpacing: 0.8,
+                    color: Style.white.withOpacity(0.87),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }

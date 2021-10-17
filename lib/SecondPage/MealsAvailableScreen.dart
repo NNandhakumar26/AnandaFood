@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,6 +9,7 @@ import 'package:subscription_mobile_app/database/dbhelper.dart';
 import 'package:subscription_mobile_app/groupPage.dart';
 import 'dart:convert';
 
+import '../BasicPlan.dart';
 import '../Theme.dart';
 import 'dashboard_items_dbprovider.dart';
 
@@ -52,44 +54,55 @@ class _MealsAvailableScreenState extends State<MealsAvailableScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       floatingActionButton: LoginChecker(),
       body: SafeArea(
-          child: ListView.builder(
-        shrinkWrap: true,
-        physics: BouncingScrollPhysics(),
-        itemCount: filtered != null
-            ? filtered.length
-            : 0, //(snapshot.data['meals'] as List).length,
-        itemBuilder: (context, index) {
-          return CustomCard(
-            title: (meals["meals"][index] as String).split(' ')[1],
-            allowedMeal:
-                int.parse((meals["meals"][index] as String).split(' ')[0]),
-            onTap: () async {
-              SharedPreferences preferences =
-                  await SharedPreferences.getInstance();
-              preferences.setInt('id', widget.planId!);
-              preferences.setString('planTitle', widget.planName!);
-              var mealType = filtered[index]['MealType'];
-              var id = meals['details']['id'];
-              var mealName = (meals['meals'][index] as String).split(' ')[1];
-              preferences.setInt('mealType', mealType);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SubMenuScreen(
-                    widget.planName,
-                    mealName,
-                    id,
-                    mealType,
-                    'Menu',
-                    widget.groupName,
-                  ),
-                ),
-              );
-            },
-          );
-        },
+          child: Container(
+        color: Style.prime[50]!.withOpacity(0.008),
+        child: Column(
+          children: [
+            Flexible(
+              child: ListView.builder(
+                // shrinkWrap: true,
+                physics: BouncingScrollPhysics(),
+                itemCount: filtered != null
+                    ? filtered.length
+                    : 0, //(snapshot.data['meals'] as List).length,
+                itemBuilder: (context, index) {
+                  return CustomCard(
+                    title: (meals["meals"][index] as String).split(' ')[1],
+                    allowedMeal: int.parse(
+                        (meals["meals"][index] as String).split(' ')[0]),
+                    onTap: () async {
+                      SharedPreferences preferences =
+                          await SharedPreferences.getInstance();
+                      preferences.setInt('id', widget.planId!);
+                      preferences.setString('planTitle', widget.planName!);
+                      var mealType = filtered[index]['MealType'];
+                      var id = meals['details']['id'];
+                      var mealName =
+                          (meals['meals'][index] as String).split(' ')[1];
+                      preferences.setInt('mealType', mealType);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SubMenuScreen(
+                            widget.planName,
+                            mealName,
+                            id,
+                            mealType,
+                            'Menu',
+                            widget.groupName,
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       )),
     );
   }
@@ -219,49 +232,53 @@ class CustomCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       color: Style.white,
-      margin: const EdgeInsets.all(12),
+      margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
       elevation: 8,
-      shadowColor: Style.accent[50]!.withOpacity(0.60),
-      // elevation: 24,
-      // shadowColor: Style.accent[50]!.withOpacity(0.32),
-      child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: ListTile(
-          onTap: () {
-            return onTap();
-          },
-          minLeadingWidth: Get.width / 8,
-          leading: CircleAvatar(
-            radius: 45,
-            foregroundColor: Colors.transparent,
-            backgroundColor: Colors.transparent,
-            child: (!isSubscreen)
-                ? Image(
-                    image: (image == null)
-                        ? AssetImage('assets/images/$title.png')
-                        : AssetImage('assets/images/$image.png'),
-                    color: Style.prime[900],
-                  )
-                : (image == null)
-                    ? Image(image: AssetImage('assets/images/haha2.png'))
-                    : Image(
-                        image: NetworkImage(image!),
-                      ),
+      // shadowColor: Colors.black45,
+      shadowColor: Style.accent[50]!.withOpacity(0.32),
+      child: InkWell(
+        onTap: () {
+          return onTap();
+        },
+        child: Container(
+          constraints: BoxConstraints(
+            minHeight: Get.height / 8.8,
           ),
-          title: Text(
-            (allowedMeal != null)
-                ? '$title ($allowedMeal)'
-                : title.capitalizeFirst!,
-            style: Style.subtitle.copyWith(
-              fontSize: 14,
-              letterSpacing: 0.5,
-              fontWeight: FontWeight.w500,
-              color: Style.accent[700],
+          alignment: Alignment.center,
+          child: ListTile(
+            minLeadingWidth: Get.width / 8,
+            leading: CircleAvatar(
+              radius: 45,
+              foregroundColor: Colors.transparent,
+              backgroundColor: Colors.transparent,
+              child: (!isSubscreen)
+                  ? Image(
+                      image: (image == null)
+                          ? AssetImage('assets/images/$title.png')
+                          : AssetImage('assets/images/$image.png'),
+                      color: Style.prime[900],
+                    )
+                  : (image == null)
+                      ? Image(image: AssetImage('assets/images/haha2.png'))
+                      : Image(
+                          image: NetworkImage(image!),
+                        ),
             ),
-          ),
-          trailing: Icon(
-            Icons.arrow_right,
-            color: Style.prime[700],
+            title: Text(
+              (allowedMeal != null)
+                  ? '$title ($allowedMeal)'
+                  : title.capitalizeFirst!,
+              style: Style.subtitle.copyWith(
+                fontSize: 14,
+                letterSpacing: 0.5,
+                fontWeight: FontWeight.w500,
+                color: Style.accent[700],
+              ),
+            ),
+            trailing: Icon(
+              Icons.arrow_right,
+              color: Style.prime[700],
+            ),
           ),
         ),
       ),

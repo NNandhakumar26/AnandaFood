@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:subscription_mobile_app/LastPage/addressPage.dart';
+import 'package:subscription_mobile_app/SecondPage/MealsAvailableScreen.dart';
 
 import '../Theme.dart';
 
@@ -32,7 +33,7 @@ class _AddressListState extends State<AddressList> {
         onPressed: () {
           Get.to(AddressPage());
         },
-        backgroundColor: Style.accent[900],
+        backgroundColor: Style.accent[700],
         elevation: 8,
         extendedPadding: EdgeInsets.all(8),
         icon: Padding(
@@ -63,10 +64,10 @@ class _AddressListState extends State<AddressList> {
           width: Get.width,
           child: Column(
             children: [
-              Expanded(
-                flex: 1,
-                child: Container(),
-              ),
+              // Expanded(
+              //   flex: 1,
+              //   child: Container(),
+              // ),
               Expanded(
                 flex: 8,
                 child: (_isLoading)
@@ -153,49 +154,71 @@ class AddressCard extends StatelessWidget {
 
   final thisStyle = Style.subtitle.copyWith(
     fontSize: 14,
-    color: Style.accent,
-    fontWeight: FontWeight.w600,
+    color: Style.accent[300],
+    letterSpacing: 0.4,
+    fontWeight: FontWeight.w500,
   );
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: Get.height / 4,
+      height: Get.height / 4.2,
       width: Get.width,
-      decoration: BoxDecoration(
-        color: Style.prime[50]!.withOpacity(0.60),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Column(
-        children: [
-          Expanded(
-            child: Text(
-              name,
-              style: thisStyle.copyWith(
-                fontSize: 16,
-                color: Style.accent[900],
-              ),
+      // decoration: BoxDecoration(
+      //   color: Style.prime[50]!.withOpacity(0.60),
+      //   borderRadius: BorderRadius.circular(8),
+      // ),
+      child: Card(
+        color: Style.white,
+        margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+        elevation: 8,
+        shadowColor: Style.accent[50]!.withOpacity(0.32),
+        child: ListTile(
+          tileColor: Style.prime[50]!.withOpacity(0.08),
+          leading: Text(
+            name,
+            style: thisStyle.copyWith(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Style.prime[700],
             ),
           ),
-          Expanded(
-            child: Text(
-              '$address,',
-              style: thisStyle,
+          title: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                // Expanded(
+                //   child: Text(
+                //     name,
+                //     style: thisStyle.copyWith(
+                //       fontSize: 16,
+                //       fontWeight: FontWeight.bold,
+                //       color: Style.prime,
+                //     ),
+                //   ),
+                // ),
+                Expanded(
+                  child: Text(
+                    '$address,',
+                    style: thisStyle,
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    '$city,',
+                    style: thisStyle,
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    state,
+                    style: thisStyle,
+                  ),
+                ),
+              ],
             ),
           ),
-          Expanded(
-            child: Text(
-              '$city,',
-              style: thisStyle,
-            ),
-          ),
-          Expanded(
-            child: Text(
-              state,
-              style: thisStyle,
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

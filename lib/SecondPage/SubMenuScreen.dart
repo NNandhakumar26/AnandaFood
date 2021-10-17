@@ -6,6 +6,7 @@ import 'package:subscription_mobile_app/SecondPage/MealDetailPage.dart';
 import 'package:subscription_mobile_app/SecondPage/MealsAvailableScreen.dart';
 import 'package:subscription_mobile_app/groupPage.dart';
 import 'dart:convert';
+import '../BasicPlan.dart';
 import '../Theme.dart';
 
 class SubMenuScreen extends StatefulWidget {
@@ -29,6 +30,45 @@ class _SubMenuScreenState extends State<SubMenuScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: LoginChecker(),
+      bottomNavigationBar: Container(
+        margin: EdgeInsets.all(4.0),
+        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+        // color: Style.accent[700],
+        height: Get.height / 10,
+        child: ElevatedButton(
+          style: OutlinedButton.styleFrom(
+            elevation: 16,
+            backgroundColor: Style.accent[700],
+            shadowColor: Style.prime[50]!.withOpacity(0.87),
+            padding: EdgeInsets.symmetric(horizontal: 80, vertical: 16),
+            shape: StadiumBorder(),
+          ),
+          onPressed: () async {
+            SharedPreferences preferences =
+                await SharedPreferences.getInstance();
+            preferences.setInt('id', widget.id!);
+            preferences.setString('planTitle', widget.planTitle!);
+            if (preferences.get('custID') != null) {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => BasicPlan()));
+            } else {
+              // Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //         builder: (context) => LoginScreen()));
+            }
+          },
+          child: Text(
+            'Buy Plan',
+            style: Style.subtitle.copyWith(
+              letterSpacing: 1.2,
+              fontWeight: FontWeight.w600,
+              fontSize: 16,
+              color: Style.white,
+            ),
+          ),
+        ),
+      ),
       body: SafeArea(
         child: Container(
           height: Get.height,

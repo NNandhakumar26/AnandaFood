@@ -4,7 +4,7 @@ import 'package:get_storage/get_storage.dart';
 import 'dart:math';
 
 const int TenentID = 14;
-const String fcmToken = "";
+var fcmToken = "";
 
 Future<bool> onWillPop() async {
   return await Get.dialog(
